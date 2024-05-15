@@ -18,15 +18,15 @@ class HAL9000(Widget):
 		w,h = os.get_terminal_size()
 		h = h*2 - 4
 		w = int(h / 3)
-		return Pixels.from_image_path("installer/HAL9000.jpg", (w,h))
+		return Pixels.from_image_path('resources/images/HAL9000.jpg', (w,h))
 
 
 class HAL9000InstallerApp(App):
-	CSS_PATH = "HAL9000.tcss"
-	BINDINGS = [ ("1", "tab_installer", "Show the HAL9000 installer"),
-	             ("2", "tab_terminal",  "Show a terminal window"),
-	             ("9", "tab_help", "Help"),
-	             ("ctrl+c", "app_exit", "Exit") ]
+	CSS_PATH = 'HAL9000.tcss'
+	BINDINGS = [ ('1', 'tab_installer', "Show the HAL9000 installer"),
+	             ('2', 'tab_terminal',  "Show a terminal window"),
+	             ('9', 'tab_help', "Help"),
+	             ('ctrl+c', 'app_exit', "Exit") ]
 
 
 	def __init__(self):
@@ -41,7 +41,7 @@ class HAL9000InstallerApp(App):
 
 	def compose(self) -> ComposeResult:
 		self.installer_menu_system: Tree[str] = Tree("System setup", id='installer_menu_system', data=None)
-		self.installer_menu_system_software = self.installer_menu_system.root.add("Install software",  data='scripts/system/software/run.sh')
+		self.installer_menu_system_software = self.installer_menu_system.root.add("Install software",  data='ecripts/system/software/run.sh')
 		self.installer_menu_system_software.add_leaf("Install required system packages",               data='scripts/system/software/install_packages.sh')
 		for node_model in [self.installer_menu_system_software.add("Device-specific software",            data=None)]:
 			if os.getenv('HAL9000_HARDWARE_VENDOR', default='unknown') == 'Raspberry Pi':
@@ -69,13 +69,13 @@ class HAL9000InstallerApp(App):
 			if len(node_model.children) == 0:
 				node_model.remove()
 		for node_mcu in [self.installer_menu_system_configure.add("Microcontroller", data=None)]:
-			for node in [node_mcu.add("Build firmware",           data='scripts/system/microcontroller/build/run.sh')]:
-				node.add_leaf("Prepare build environment",    data='scripts/system/microcontroller/build/prepare.sh')
-				node.add_leaf("Compile firmware",             data='scripts/system/microcontroller/build/compile_firmware.sh')
-				node.add_leaf("Flash firmware",               data='scripts/system/microcontroller/build/flash_firmware.sh')
-			for node in [node_mcu.add("Pre-build firmware",       data='scripts/system/microcontroller/pre-build/run.sh')]:
-				node.add_leaf("Download firmware",            data='scripts/system/microcontroller/pre-build/download_firmware.sh')
-				node.add_leaf("Flash firmware",               data='scripts/system/microcontroller/pre-build/flash_firmware.sh')
+			for node in [node_mcu.add("Build firmware",           data='scripts/arduino/build/run.sh')]:
+				node.add_leaf("Prepare build environment",    data='scripts/arduino/build/prepare_buildenv.sh')
+				node.add_leaf("Compile firmware",             data='scripts/arduino/build/compile_firmware.sh')
+				node.add_leaf("Flash firmware",               data='scripts/arduino/build/flash_firmware.sh')
+			for node in [node_mcu.add("Pre-build firmware",       data='scripts/arduino/pre-build/run.sh')]:
+				node.add_leaf("Download firmware",            data='scripts/arduino/pre-build/download_firmware.sh')
+				node.add_leaf("Flash firmware",               data='scripts/arduino/pre-build/flash_firmware.sh')
 		self.installer_menu_system.root.expand_all()
 		self.installer_menu_hal9000: Tree[str] = Tree("Application (HAL9000)", id='installer_menu_hal9000', data=None)
 		for node_container in [self.installer_menu_hal9000.root.add("Container",              data=self.hook_installer_hal9000_source)]:
@@ -95,19 +95,19 @@ class HAL9000InstallerApp(App):
 						node.add_leaf("Create containers",                    data='scripts/podman/pre-build/create_containers.sh development')
 						node.add_leaf("Run containers (via systemd)",         data='scripts/podman/pre-build/deploy_containers.sh development')
 		self.installer_menu_hal9000.root.expand_all()
-		self.installer_btn = Button("Execute", id="installer_btn")
-		self.installer_log = Terminal(command=None, id="installer_log")
-		self.terminal = Terminal(command="bash", id="terminal")
+		self.installer_btn = Button("Execute", id='installer_btn')
+		self.installer_log = Terminal(command=None, id='installer_log')
+		self.terminal = Terminal(command='bash', id='terminal')
 		try:
 			with open('README.md', 'r') as file:
-				self.help = MarkdownViewer(file.read(), id="help", show_table_of_contents=False)
+				self.help = MarkdownViewer(file.read(), id='help', show_table_of_contents=False)
 		except BaseException as e:
-			self.help = Static(f"ERROR: failed to open 'README.md' (cwd='{os.getcwd()}')\nException: {e}", id="help")
+			self.help = Static(f"ERROR: failed to open 'README.md' (cwd='{os.getcwd()}')\nException: {e}", id='help')
 		with Horizontal():
 			yield HAL9000(id='hal9000')
 			with Vertical():
 				yield Static("HAL9000 Installer", id='title')
-				with ContentSwitcher(initial="help", id='content'):
+				with ContentSwitcher(initial='help', id='content'):
 					with Vertical(id='installer'):
 						with Horizontal(id='installer_menu'):
 							with Vertical(id='installer_system'):
@@ -123,11 +123,12 @@ class HAL9000InstallerApp(App):
 
 	def on_mount(self) -> None:
 		self.query_one('#installer_menu').border_title = "Just what do you think you're doing, Dave?"
-		self.query_one('#help').border_title = "README.md"
+		self.query_one('#help').border_title = 'README.md'
 		self.installer_log.border_title = "Command execution"
 
 
 	def on_ready(self) -> None:
+		self.help.document.load = self.hacky_markdown_document_load_hook
 		self.terminal.start()
 		self.set_focus(self.installer_menu_system)
 		self.refresh()
@@ -186,7 +187,7 @@ class HAL9000InstallerApp(App):
 			self.installer_log_timer = self.installer_log.set_interval(1, self.on_installer_timer)
 			self.installer_log.ncol = self.installer_log.content_size.width
 			self.installer_log.nrow = self.installer_log.content_size.height
-			self.installer_log.send_queue.put_nowait(["set_size", self.installer_log.nrow, self.installer_log.ncol])
+			self.installer_log.send_queue.put_nowait(['set_size', self.installer_log.nrow, self.installer_log.ncol])
 			self.installer_log._screen.resize(self.installer_log.nrow, self.installer_log.ncol)
 			self.set_focus(self.installer_log)
 		else:
@@ -266,6 +267,9 @@ class HAL9000InstallerApp(App):
 				self.set_focus(self.installer_node)
 			else:
 				self.set_focus(self.installer_menu_system)
+
+	async def hacky_markdown_document_load_hook(self, path) -> None:
+		pass
 
 
 if __name__ == "__main__":

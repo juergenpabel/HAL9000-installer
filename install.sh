@@ -57,7 +57,7 @@ echo "Hardware Product: $HAL9000_HARDWARE_PRODUCT"
 echo "System Arch:      $HAL9000_PLATFORM_ARCH"
 echo "System OS:        $HAL9000_PLATFORM_OS"
 
-python -m venv .venv
+python3 -m venv .venv
 . .venv/bin/activate
 
 export HAL9000_HARDWARE_VENDOR
@@ -66,5 +66,5 @@ export HAL9000_PLATFORM_ARCH
 export HAL9000_PLATFORM_OS
 
 pip install -q -r requirements.txt
-python installer/HAL9000.py
+python3 HAL9000-installer/HAL9000.py
 
