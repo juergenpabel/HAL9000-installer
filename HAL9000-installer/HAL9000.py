@@ -41,59 +41,63 @@ class HAL9000InstallerApp(App):
 
 	def compose(self) -> ComposeResult:
 		self.installer_menu_system: Tree[str] = Tree("System setup", id='installer_menu_system', data=None)
-		self.installer_menu_system_software = self.installer_menu_system.root.add("Install software",  data='ecripts/system/software/run.sh')
-		self.installer_menu_system_software.add_leaf("Install required system packages",               data='scripts/system/software/install_packages.sh')
+		self.installer_menu_system_software = self.installer_menu_system.root.add("Install software",  data='resources/scripts/system/software/run.sh')
+		self.installer_menu_system_software.add_leaf("Install required system packages",               data='resources/scripts/system/software/install_packages.sh')
 		for node_model in [self.installer_menu_system_software.add("Device-specific software",            data=None)]:
 			if os.getenv('HAL9000_HARDWARE_VENDOR', default='unknown') == 'Raspberry Pi':
-				node.add_leaf("Install voicecard/respeaker sound driver", data='scripts/system/software/rpi-zero2w/install_voicecard.sh')
+				node.add_leaf("Install voicecard/respeaker sound driver", data='resources/scripts/system/software/rpi-zero2w/install_voicecard.sh')
 			if os.getenv('HAL9000_HARDWARE_VENDOR', default='unknown') == 'Raxda':
 				if os.getenv('HAL9000_HARDWARE_PRODUCT', default='unknown') == 'Zero 3':
-					for node in [node_model.add("Radxa Zero 3",                         data='scripts/system/software/radxa-zero3/run.sh')]:
+					for node in [node_model.add("Radxa Zero 3",                         data='resources/scripts/system/software/radxa-zero3/run.sh')]:
 						pass
 			if len(node_model.children) == 0:
 				node_model.remove()
-		self.installer_menu_system_configure = self.installer_menu_system.root.add("Configure system", data='scripts/system/configure/run.sh')
-		self.installer_menu_system_configure.add_leaf("Create 'hal9000' (application) user & group",   data='scripts/system/configure/create_user.sh')
-		self.installer_menu_system_configure.add_leaf("Configure TTY device",                          data='scripts/system/configure/create_udev_ttyHAL9000.sh')
-		self.installer_menu_system_configure.add_leaf("Configure ALSA sound card",                     data='scripts/system/configure/create_udev_alsa.sh')
+		self.installer_menu_system_configure = self.installer_menu_system.root.add("Configure system", data='resources/scripts/system/configure/run.sh')
+		self.installer_menu_system_configure.add_leaf("Create 'hal9000' (application) user & group",   data='resources/scripts/system/configure/create_user.sh')
+		self.installer_menu_system_configure.add_leaf("Configure TTY device",                          data='resources/scripts/system/configure/create_udev_tty.sh')
+		self.installer_menu_system_configure.add_leaf("Configure ALSA sound card",                     data='resources/scripts/system/configure/create_udev_alsa.sh')
 		for node_model in [self.installer_menu_system_configure.add("Device-specific configurations",   data=None)]:
 			if os.getenv('HAL9000_HARDWARE_VENDOR', default='unknown') == 'Raspberry Pi':
 				if os.getenv('HAL9000_HARDWARE_PRODUCT', default='unknown') == 'Zero 2 W':
-					for node in [node_model.add("Raspberry Pi Zero 2W",          data='scripts/system/configure/rpi-zero2w/run.sh')]:
-						node.add_leaf("Deactivate CPUs #2 and #3",           data='scripts/system/configure/rpi-zero2w/configure_maxcpus.sh 2')
-						node.add_leaf("Configure swap (1GB & swapiness=0)",  data='scripts/system/configure/rpi-zero2w/configure_swap.sh 1024')
+					for node in [node_model.add("Raspberry Pi Zero 2W",          data='resources/scripts/system/configure/rpi-zero2w/run.sh')]:
+						node.add_leaf("Deactivate CPUs #2 and #3",           data='resources/scripts/system/configure/rpi-zero2w/configure_maxcpus.sh 2')
+						node.add_leaf("Configure swap (1GB & swapiness=0)",  data='resources/scripts/system/configure/rpi-zero2w/configure_swap.sh 1024')
 			if os.getenv('HAL9000_HARDWARE_VENDOR', default='unknown') == 'Raxda':
 				if os.getenv('HAL9000_HARDWARE_PRODUCT', default='unknown') == 'Zero 3':
-					for node in [node_model.add("Radxa Zero 3",                  data='scripts/system/configure/radxa-zero3/run.sh')]:
+					for node in [node_model.add("Radxa Zero 3",                  data='resources/scripts/system/configure/radxa-zero3/run.sh')]:
 						pass
 			if len(node_model.children) == 0:
 				node_model.remove()
-		for node_mcu in [self.installer_menu_system_configure.add("Microcontroller", data=None)]:
-			for node in [node_mcu.add("Build firmware",           data='scripts/arduino/build/run.sh')]:
-				node.add_leaf("Prepare build environment",    data='scripts/arduino/build/prepare_buildenv.sh')
-				node.add_leaf("Compile firmware",             data='scripts/arduino/build/compile_firmware.sh')
-				node.add_leaf("Flash firmware",               data='scripts/arduino/build/flash_firmware.sh')
-			for node in [node_mcu.add("Pre-build firmware",       data='scripts/arduino/pre-build/run.sh')]:
-				node.add_leaf("Download firmware",            data='scripts/arduino/pre-build/download_firmware.sh')
-				node.add_leaf("Flash firmware",               data='scripts/arduino/pre-build/flash_firmware.sh')
+		for node_mcu in [self.installer_menu_system.root.add("Microcontroller", data=None)]:
+			if os.getenv('HAL9000_ARDUINO_VENDOR', default='unknown') in ['SBComponents', 'M5Stack', 'Waveshare']:
+				if os.getenv('HAL9000_ARDUINO_PRODUCT', default='unknown') in ['RoundyPi', 'Core2', 'RP2040_LCD128']:
+					for node in [node_mcu.add("Build firmware",           data='resources/scripts/arduino/build/run.sh')]:
+						node.add_leaf("Prepare build environment",    data='resources/scripts/arduino/build/prepare_buildenv.sh')
+						node.add_leaf("Compile firmware",             data='resources/scripts/arduino/build/compile_firmware.sh')
+						node.add_leaf("Flash firmware",               data='resources/scripts/arduino/build/flash_firmware.sh')
+					for node in [node_mcu.add("Pre-build firmware",       data='resources/scripts/arduino/pre-build/run.sh')]:
+						node.add_leaf("Download firmware",            data='resources/scripts/arduino/pre-build/download_firmware.sh')
+						node.add_leaf("Flash firmware",               data='resources/scripts/arduino/pre-build/flash_firmware.sh')
+			if len(node_mcu.children) == 0:
+				node_mcu.add_leaf("No supported microcontroller detected",    data=self.hook_installer_microcontroller_unsupported)
 		self.installer_menu_system.root.expand_all()
 		self.installer_menu_hal9000: Tree[str] = Tree("Application (HAL9000)", id='installer_menu_hal9000', data=None)
-		for node_container in [self.installer_menu_hal9000.root.add("Container",              data=self.hook_installer_hal9000_source)]:
-			for node_build in [node_container.add("Build images",                         data='scripts/podman/build/run.sh')]:
-				node_build.add_leaf("Prepare build environment",                      data='scripts/podman/build/build_prepare.sh')
-				node_build.add_leaf("Build images",                                   data='scripts/podman/build/build_images.sh')
-				node_build.add_leaf("Create containers",                              data='scripts/podman/build/create_containers.sh')
-				node_build.add_leaf("Run containers (via systemd)",                   data='scripts/podman/build/deploy_containers.sh')
+		for node_container in [self.installer_menu_hal9000.root.add("Container",              data=self.hook_installer_container_source)]:
+			for node_build in [node_container.add("Build images",                         data='resources/scripts/podman/build/run.sh')]:
+				node_build.add_leaf("Prepare build environment",                      data='resources/scripts/podman/build/build_prepare.sh')
+				node_build.add_leaf("Build images",                                   data='resources/scripts/podman/build/build_images.sh')
+				node_build.add_leaf("Create containers",                              data='resources/scripts/podman/build/create_containers.sh')
+				node_build.add_leaf("Run containers (via systemd)",                   data='resources/scripts/podman/build/deploy_containers.sh')
 			if os.getenv('HAL9000_PLATFORM_ARCH', default='unknown') in ['arm64', 'amd64']:
-				for node_ghcrio in [node_container.add("Pre-build container images",  data=None)]:
-					for node in [node_ghcrio.add("Version 'stable'",              data='scripts/podman/pre-build/run.sh stable')]:
-						node.add_leaf("Download images from ghcr.io",         data='scripts/podman/pre-build/download_images.sh stable')
-						node.add_leaf("Create containers",                    data='scripts/podman/pre-build/create_containers.sh stable')
-						node.add_leaf("Run containers (via systemd)",         data='scripts/podman/pre-build/deploy_containers.sh stable')
-					for node in [node_ghcrio.add("Version 'development'",         data='scripts/podman/pre-build/run.sh development')]:
-						node.add_leaf("Download image from ghcr.io",          data='scripts/podman/pre-build/download_images.sh development')
-						node.add_leaf("Create containers",                    data='scripts/podman/pre-build/create_containers.sh development')
-						node.add_leaf("Run containers (via systemd)",         data='scripts/podman/pre-build/deploy_containers.sh development')
+				for node_ghcrio in [node_container.add("Pre-build container images",  data=self.hook_installer_container_download_version)]:
+					for node in [node_ghcrio.add("Version 'stable'",              data='resources/scripts/podman/pre-build/run.sh stable')]:
+						node.add_leaf("Download images from ghcr.io",         data='resources/scripts/podman/pre-build/download_images.sh stable')
+						node.add_leaf("Create containers",                    data='resources/scripts/podman/pre-build/create_containers.sh stable')
+						node.add_leaf("Run containers (via systemd)",         data='resources/scripts/podman/pre-build/deploy_containers.sh stable')
+					for node in [node_ghcrio.add("Version 'development'",         data='resources/scripts/podman/pre-build/run.sh development')]:
+						node.add_leaf("Download image from ghcr.io",          data='resources/scripts/podman/pre-build/download_images.sh development')
+						node.add_leaf("Create containers",                    data='resources/scripts/podman/pre-build/create_containers.sh development')
+						node.add_leaf("Run containers (via systemd)",         data='resources/scripts/podman/pre-build/deploy_containers.sh development')
 		self.installer_menu_hal9000.root.expand_all()
 		self.installer_btn = Button("Execute", id='installer_btn')
 		self.installer_log = Terminal(command=None, id='installer_log')
@@ -210,22 +214,20 @@ class HAL9000InstallerApp(App):
 		else:
 			self.set_focus(self.installer_menu_system)
 
-	def hook_installer_system_software_model(self) -> None:
-		pass
-	def hook_installer_system_software_model_pizero2w(self) -> None:
-		pass
 
-	def hook_installer_system_configure_model(self) -> None:
-		pass
+	def hook_installer_container_source(self):
+		result = {}
+		return result
 
-	def hook_installer_system_configure_mcu_model(self) -> None:
-		pass
 
-	def hook_installer_hal9000_source(self) -> None:
-		pass
+	def hook_installer_container_download_version(self):
+		result = {}
+		return result
 
-	def hook_installer_hal9000_download(self) -> None:
-		pass
+
+	def hook_installer_microcontroller_unsupported(self):
+		self.notify("No supported microcontroller detected")
+		return {}
 
 
 	def action_tab_installer(self) -> None:
@@ -239,6 +241,7 @@ class HAL9000InstallerApp(App):
 	def action_tab_terminal(self) -> None:
 		self.query_one(ContentSwitcher).current = 'terminal'
 		self.set_focus(self.terminal)
+
 
 	def action_tab_help(self) -> None:
 		self.query_one(ContentSwitcher).current = 'help'
@@ -267,6 +270,7 @@ class HAL9000InstallerApp(App):
 				self.set_focus(self.installer_node)
 			else:
 				self.set_focus(self.installer_menu_system)
+
 
 	async def hacky_markdown_document_load_hook(self, path) -> None:
 		pass

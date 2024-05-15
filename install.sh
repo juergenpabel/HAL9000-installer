@@ -4,6 +4,8 @@ HAL9000_HARDWARE_VENDOR="${1:-unknown}"
 HAL9000_HARDWARE_PRODUCT="${2:-unknown}"
 HAL9000_PLATFORM_ARCH="${3:-unknown}"
 HAL9000_PLATFORM_OS="${4:-unknown}"
+HAL9000_ARDUINO_VENDOR="${5:-unknown}"
+HAL9000_ARDUINO_PRODUCT="${6:-unknown}"
 
 if [ "$HAL9000_HARDWARE_VENDOR" == "unknown" ]; then
 	if [ -e /sys/devices/virtual/dmi/id/sys_vendor ]; then
@@ -56,6 +58,8 @@ echo "Hardware Vendor:  $HAL9000_HARDWARE_VENDOR"
 echo "Hardware Product: $HAL9000_HARDWARE_PRODUCT"
 echo "System Arch:      $HAL9000_PLATFORM_ARCH"
 echo "System OS:        $HAL9000_PLATFORM_OS"
+echo "Arduino Vendor:   $HAL9000_ARDUINO_VENDOR"
+echo "Arduino Product:  $HAL9000_ARDUINO_PRODUCT"
 
 python3 -m venv .venv
 . .venv/bin/activate
@@ -64,6 +68,8 @@ export HAL9000_HARDWARE_VENDOR
 export HAL9000_HARDWARE_PRODUCT
 export HAL9000_PLATFORM_ARCH
 export HAL9000_PLATFORM_OS
+export HAL9000_ARDUINO_VENDOR
+export HAL9000_ARDUINO_PRODUCT
 
 pip install -q -r requirements.txt
 python3 HAL9000-installer/HAL9000.py
