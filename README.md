@@ -5,15 +5,14 @@ This installer-application features a text-based user-interface (TUI) and thus c
 It looks nice(-ish) with a resolution of at least 120 columns and 30 rows. The installer-application
 features 3 screens:
 - Installer (press '1' or use a mouse to click on the label in the footer)  
-![Screenshot: Installer screen](resources/images/screen_installer.png)
 - Terminal (press '2' or use a mouse to click on the label in the footer)  
-![Screenshot: Terminal screen](resources/images/screen_terminal.png)
 - Help screen (press '9' or use a mouse to click on the label in the footer)  
-![Screenshot: Help screen](resources/images/screen_help.png)
 
 Exiting the installer-application is done using CTRL-c (or by clicking on the label in the footer).
 
 ## Installer screen
+![Screenshot: Installer screen](resources/images/screen_installer.png)
+
 The Installer screen is used to both install required software and configure the system for running the
 HAL9000 application (which runs in containers). The screen is composed of three elements:
 - Action selector (which is actually two selectors)
@@ -33,10 +32,14 @@ be executed individually. Please note that all sub-elements of the selected elem
 execution (thus: activating a top-most element executes 'everything').
 
 ## Terminal screen
+![Screenshot: Terminal screen](resources/images/screen_terminal.png)
+
 The Terminal screen can be used to interactively execute commands while being in the application (and even
 while installation commands are being run).
 
 ## Help screen
+![Screenshot: Help screen](resources/images/screen_help.png)
+
 Well, if you're reading this from within the installer-application...you're looking at it.
 
 ## FAQ
