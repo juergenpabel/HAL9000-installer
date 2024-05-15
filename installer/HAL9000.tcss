@@ -4,6 +4,14 @@ Screen {
     background: black;
 }
 
+#hal9000 {
+    dock: left;
+    content-align: center middle;
+    width: 20%;
+    height: 100%;
+    min-width: 20;
+}
+
 #title {
     content-align: center middle;
     text_style: bold;
@@ -11,14 +19,6 @@ Screen {
     height: 10%;
     min-height: 3;
     border: double red;
-}
-
-#hal9000 {
-    dock: left;
-    content-align: center middle;
-    width: 20%;
-    height: 100%;
-    min-width: 20;
 }
 
 #content {
@@ -36,7 +36,18 @@ Screen {
     width: 100%;
     height: 50%;
     border: double grey;
-    padding: 1;
+}
+
+#installer_menu_system {
+    width: 100%;
+    height: 100%;
+    border: grey;
+}
+
+#installer_menu_hal9000 {
+    width: 100%;
+    height: 100%;
+    border: grey;
 }
 
 #installer_btn {
@@ -49,6 +60,7 @@ Screen {
 #installer_log {
     width: 100%;
     height: 40%;
+    min-height: 6;
     border: double grey;
     color: white;
     background: black;
@@ -57,6 +69,13 @@ Screen {
 #terminal {
     width: 100%;
     height: 100%;
+}
+
+#help {
+    width: 100%;
+    height: 100%;
+    background: blue;
+    border: double white;
 }
 
 .column {
