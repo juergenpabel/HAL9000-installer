@@ -60,7 +60,7 @@ saw screenshots/videos from it being run on a system for which a system-specific
 (for example: on a Raspberry Pi, an element to install the soundcard driver 'voicecard' is shown).
 
 **Question:** What tools/libraries did you use?  
-**Answer:** Foremost: [textual from textualize.io](https://github.com/textualize/textual/); the terminals
+**Answer:** Foremost: ['textual' from textualize.io](https://github.com/textualize/textual/); the terminals
 are a textual widget ['textual-terminal' from mitosch](https://github.com/mitosch/textual-terminal/); the
 HAL9000 image is rendered with ['rich-pixels' from darrenburns](https://github.com/darrenburns/rich-pixels/).
 
