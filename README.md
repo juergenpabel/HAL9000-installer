@@ -45,8 +45,8 @@ Well, if you're reading this from within the installer-application...you're look
 ## FAQ
 **Question:** Why (not simply a shell script)?  
 **Answer:** Because...I liked the idea (and it took only a few hours to implement). If you really want plain
-shell scripts, just run those under the 'scripts/' folder in this repository (in the end, that's almost
-just what this installer-application does).
+shell scripts, just run those under the 'resources/scripts/' folder in this repository (in the end, that's
+almost everything this installer-application does).
 
 **Question:** The shortcuts (the keys '1', '2' and '9') for switching the screen aren't working, what's wrong?  
 **Answer:** Most likely, the focus is inside a (simulated) terminal window (the execution-window on the
