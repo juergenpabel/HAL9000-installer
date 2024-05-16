@@ -87,6 +87,20 @@ echo "- System OS:       $HAL9000_PLATFORM_OS"
 echo "- Arduino Vendor:  $HAL9000_ARDUINO_VENDOR"
 echo "- Arduino Product: $HAL9000_ARDUINO_PRODUCT"
 
+echo "Checking required software packages (for this installer)..."
+CHECK_SOFTWARE_PACKAGES=0
+for SOFTWARE_PACKAGE in python3 python3-venv python3-pip-whl ; do
+	dpkg -s $SOFTWARE_PACKAGE 2>&1 > /dev/null
+	if [ $? -ne 0 ]; then
+		CHECK_SOFTWARE_PACKAGES=1
+		echo "ERROR: $SOFTWARE_PACKAGE not installed, please install it:"
+		echo "       sudo apt install $SOFTWARE_PACKAGE"
+	fi
+done
+if [ $CHECK_SOFTWARE_PACKAGES -ne 0 ]; then
+	exit
+fi
+
 if [ ! -d .venv ]; then
 	echo "Creating python virtual environment for the installer..."
 	python3 -m venv .venv
