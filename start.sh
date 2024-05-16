@@ -110,8 +110,12 @@ if [ $? -eq 0 ]; then
 	echo "Running post-installation checks..."
 	id hal9000 2>&1 > /dev/null
 	CHECK_USER=$?
-	podman container exists hal9000-kalliope 2>&1 > /dev/null
-	CHECK_CONTAINER=$?
+	HAL9000_SYSTEMD=`ps -ef | grep "systemd --user" | grep hal9000 | wc -l`
+	if [ "x$HAL9000_SYSTEMD" == "x1" ]; then
+		CHECK_CONTAINER=0
+	else
+		CHECK_CONTAINER=1
+	fi
 	stat /etc/udev/rules.d/99-hal9000-alsa.rules 2>&1 > /dev/null
 	CHECK_ALSA=$?
 	stat /etc/udev/rules.d/99-hal9000-tty.rules 2>&1 > /dev/null
