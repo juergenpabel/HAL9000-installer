@@ -1,6 +1,10 @@
 # HAL9000-installer
 Installer for https://github.com/juergenpabel/HAL9000
 
+`git clone https://github.com/juergenpabel/HAL9000-installer.git`
+`cd HAL9000-installer`
+`./start.sh`
+
 This installer-application features a text-based user-interface (TUI) and thus can even be used via SSH.
 It looks nice(-ish) with a resolution of at least 120 columns and 30 rows. The installer-application
 features 3 screens:
