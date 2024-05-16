@@ -43,12 +43,13 @@ class HAL9000InstallerApp(App):
 		self.installer_menu_system: Tree[str] = Tree("System setup", id='installer_menu_system', data=None)
 		self.installer_menu_system_software = self.installer_menu_system.root.add("Install software",  data='resources/scripts/system/software/run.sh')
 		self.installer_menu_system_software.add_leaf("Install required system packages",               data='resources/scripts/system/software/install_packages.sh')
-		for node_model in [self.installer_menu_system_software.add("Device-specific software",            data=None)]:
+		for node_model in [self.installer_menu_system_software.add("Device-specific software",         data=None)]:
 			if os.getenv('HAL9000_HARDWARE_VENDOR', default='unknown') == 'Raspberry Pi':
-				node.add_leaf("Install voicecard/respeaker sound driver", data='resources/scripts/system/software/rpi-zero2w/install_voicecard.sh')
+				for node in [node_model.add("Raspberry Pi Zero 2W",               data='resources/scripts/system/software/rpi-zero2w/run.sh')]:
+					node.add_leaf("Install voicecard/respeaker sound driver", data='resources/scripts/system/software/rpi-zero2w/install_voicecard.sh')
 			if os.getenv('HAL9000_HARDWARE_VENDOR', default='unknown') == 'Raxda':
 				if os.getenv('HAL9000_HARDWARE_PRODUCT', default='unknown') == 'Zero 3':
-					for node in [node_model.add("Radxa Zero 3",                         data='resources/scripts/system/software/radxa-zero3/run.sh')]:
+					for node in [node_model.add("Radxa Zero 3",               data='resources/scripts/system/software/radxa-zero3/run.sh')]:
 						pass
 			if len(node_model.children) == 0:
 				node_model.remove()
