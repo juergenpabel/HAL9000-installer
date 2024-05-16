@@ -4,25 +4,45 @@ echo "#############################################################"
 echo "#                     HAL9000 Installer                     #"
 echo "#############################################################"
 echo "Detecting system configuration..."
-HAL9000_HARDWARE_VENDOR="${1:-unknown}"
-HAL9000_HARDWARE_PRODUCT="${2:-unknown}"
-HAL9000_PLATFORM_ARCH="${3:-unknown}"
-HAL9000_PLATFORM_OS="${4:-unknown}"
-HAL9000_ARDUINO_VENDOR="${5:-unknown}"
-HAL9000_ARDUINO_PRODUCT="${6:-unknown}"
+HAL9000_HARDWARE_VENDOR="${HAL9000_HARDWARE_VENDOR:-unknown}"
+HAL9000_HARDWARE_PRODUCT="${HAL9000_HARDWARE_PRODUCT:-unknown}"
+HAL9000_PLATFORM_ARCH="${HAL9000_PLATFORM_ARCH:-unknown}"
+HAL9000_PLATFORM_OS="${HAL9000_PLATFORM_OS:-unknown}"
+HAL9000_ARDUINO_VENDOR="${HAL9000_ARDUINO_VENDOR:-unknown}"
+HAL9000_ARDUINO_PRODUCT="${HAL9000_ARDUINO_PRODUCT:-unknown}"
 
 if [ "$HAL9000_HARDWARE_VENDOR" == "unknown" ]; then
 	if [ -e /sys/devices/virtual/dmi/id/sys_vendor ]; then
 		HAL9000_HARDWARE_VENDOR=`cat /sys/devices/virtual/dmi/id/sys_vendor`
+	fi
+	if [ -e /etc/armbian-image-release ]; then
+		ARMBIAN_BOARD=`grep '^BOARD=' /etc/armbian-image-release | cut -d'=' -f 2`
+		case $ARMBIAN_BOARD in
+			orangepi*)
+				HAL9000_HARDWARE_VENDOR="Orange Pi"
+				;;
+			*)
+				;;
+		esac
 	fi
 fi
 if [ "$HAL9000_HARDWARE_PRODUCT" == "unknown" ]; then
 	if [ -e /sys/devices/virtual/dmi/id/product_name ]; then
 		HAL9000_HARDWARE_PRODUCT=`cat /sys/devices/virtual/dmi/id/product_name`
 	fi
+	if [ -e /etc/armbian-image-release ]; then
+		ARMBIAN_BOARD=`grep '^BOARD=' /etc/armbian-image-release | cut -d'=' -f 2`
+		case $ARMBIAN_BOARD in
+			orangepizero2w)
+				HAL9000_HARDWARE_PRODUCT="Zero 2W"
+				;;
+			*)
+				;;
+		esac
+	fi
 fi
 if [ "$HAL9000_HARDWARE_VENDOR" == "unknown" ] && [ "$HAL9000_HARDWARE_PRODUCT" == "unknown" ]; then
-	grep Model /proc/cpuinfo > /dev/null
+	grep Model /proc/cpuinfo >/dev/null
 	if [ $? -eq 0 ]; then
 		HAL9000_MODEL=`cat /proc/cpuinfo | grep Model | cut -d' ' -f2-`
 		if [ "${HAL9000_MODEL:0:12}" == "Raspberry Pi" ]; then
@@ -88,16 +108,16 @@ echo "- Arduino Vendor:  $HAL9000_ARDUINO_VENDOR"
 echo "- Arduino Product: $HAL9000_ARDUINO_PRODUCT"
 
 echo "Checking required software packages (for this installer)..."
-CHECK_SOFTWARE_PACKAGES=0
+MISSING_SOFTWARE_PACKAGES=""
 for SOFTWARE_PACKAGE in python3 python3-venv python3-pip-whl ; do
-	dpkg -s $SOFTWARE_PACKAGE 2>&1 > /dev/null
+	dpkg -s $SOFTWARE_PACKAGE 2>/dev/null >/dev/null
 	if [ $? -ne 0 ]; then
-		CHECK_SOFTWARE_PACKAGES=1
-		echo "ERROR: $SOFTWARE_PACKAGE not installed, please install it:"
-		echo "       sudo apt install $SOFTWARE_PACKAGE"
+		MISSING_SOFTWARE_PACKAGES="$SOFTWARE_PACKAGE $MISSING_SOFTWARE_PACKAGES"
 	fi
 done
-if [ $CHECK_SOFTWARE_PACKAGES -ne 0 ]; then
+if [ "x$MISSING_SOFTWARE_PACKAGES" != "x" ]; then
+	echo "ERROR: some required software packages are not installed, please install them:"
+	echo "       sudo apt install -y $MISSING_SOFTWARE_PACKAGES"
 	exit
 fi
 
@@ -122,7 +142,7 @@ python3 HAL9000-installer/HAL9000.py
 
 if [ $? -eq 0 ]; then
 	echo "Running post-installation checks..."
-	id hal9000 2>&1 > /dev/null
+	id hal9000 2>/dev/null >/dev/null
 	CHECK_USER=$?
 	HAL9000_SYSTEMD=`ps -ef | grep "systemd --user" | grep hal9000 | wc -l`
 	if [ "x$HAL9000_SYSTEMD" == "x1" ]; then
@@ -130,9 +150,9 @@ if [ $? -eq 0 ]; then
 	else
 		CHECK_CONTAINER=1
 	fi
-	stat /etc/udev/rules.d/99-hal9000-alsa.rules 2>&1 > /dev/null
+	stat /etc/udev/rules.d/99-hal9000-alsa.rules 2>/dev/null >/dev/null
 	CHECK_ALSA=$?
-	stat /etc/udev/rules.d/99-hal9000-tty.rules 2>&1 > /dev/null
+	stat /etc/udev/rules.d/99-hal9000-tty.rules 2>/dev/null >/dev/null
 	CHECK_TTY=$?
 	if [ $CHECK_USER -eq 0 ] && [ $CHECK_CONTAINER -eq 0 ] && [ $CHECK_ALSA -eq 0 ] && [ $CHECK_TTY -eq 0 ]; then
 		echo "HAL9000: Good afternoon, gentlemen. I am (now) a HAL 9000 computer."

@@ -1,6 +1,5 @@
 import os
 import sys
-import psutil
 
 from textual.app import App, ComposeResult, RenderResult
 from textual.containers import Horizontal, Vertical, VerticalScroll, ScrollableContainer
@@ -47,6 +46,10 @@ class HAL9000InstallerApp(App):
 			if os.getenv('HAL9000_HARDWARE_VENDOR', default='unknown') == 'Raspberry Pi':
 				for node in [node_model.add("Raspberry Pi Zero 2W",               data='resources/scripts/system/software/rpi-zero2w/run.sh')]:
 					node.add_leaf("Install voicecard/respeaker sound driver", data='resources/scripts/system/software/rpi-zero2w/install_voicecard.sh')
+			if os.getenv('HAL9000_HARDWARE_VENDOR', default='unknown') == 'Orange Pi':
+				if os.getenv('HAL9000_HARDWARE_PRODUCT', default='unknown') == 'Zero2W':
+					for node in [node_model.add("Orange Pi Zero2W",           data='resources/scripts/system/software/orangepi-zero2w/run.sh')]:
+						pass
 			if os.getenv('HAL9000_HARDWARE_VENDOR', default='unknown') == 'Raxda':
 				if os.getenv('HAL9000_HARDWARE_PRODUCT', default='unknown') == 'Zero 3':
 					for node in [node_model.add("Radxa Zero 3",               data='resources/scripts/system/software/radxa-zero3/run.sh')]:
@@ -64,6 +67,10 @@ class HAL9000InstallerApp(App):
 						node.add_leaf("Set GPU memory to 16MB",              data='resources/scripts/system/configure/rpi-zero2w/configure_gpu.sh 16')
 						node.add_leaf("Deactivate CPUs #2 and #3",           data='resources/scripts/system/configure/rpi-zero2w/configure_maxcpus.sh 2')
 						node.add_leaf("Configure swap (1GB & swapiness=0)",  data='resources/scripts/system/configure/rpi-zero2w/configure_swap.sh 1024')
+			if os.getenv('HAL9000_HARDWARE_VENDOR', default='unknown') == 'Orange Pi':
+				if os.getenv('HAL9000_HARDWARE_PRODUCT', default='unknown') == 'Zero 2W':
+					for node in [node_model.add("Orange Pi: Zero 2W",          data='resources/scripts/system/configure/opi-zero2w/run.sh')]:
+						pass
 			if os.getenv('HAL9000_HARDWARE_VENDOR', default='unknown') == 'Raxda':
 				if os.getenv('HAL9000_HARDWARE_PRODUCT', default='unknown') == 'Zero 3':
 					for node in [node_model.add("Radxa Zero 3",                  data='resources/scripts/system/configure/radxa-zero3/run.sh')]:
@@ -258,7 +265,7 @@ class HAL9000InstallerApp(App):
 
 
 	def on_installer_timer(self) -> None:
-		if self.installer_log.emulator is None or self.installer_log.emulator.pid is None or psutil.pid_exists(self.installer_log.emulator.pid) is False:
+		if self.installer_log.emulator is None or self.installer_log.emulator.pid is None or os.path.isdir(f'/proc/{self.installer_log.emulator.pid}/') is False:
 			self.installer_log_timer.stop()
 			self.installer_log_timer = None
 			self.installer_log.refresh()
