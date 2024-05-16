@@ -61,6 +61,7 @@ class HAL9000InstallerApp(App):
 			if os.getenv('HAL9000_HARDWARE_VENDOR', default='unknown') == 'Raspberry Pi':
 				if os.getenv('HAL9000_HARDWARE_PRODUCT', default='unknown') == 'Zero 2 W':
 					for node in [node_model.add("Raspberry Pi Zero 2W",          data='resources/scripts/system/configure/rpi-zero2w/run.sh')]:
+						node.add_leaf("Set GPU memory to 16MB",              data='resources/scripts/system/configure/rpi-zero2w/configure_gpu.sh 16')
 						node.add_leaf("Deactivate CPUs #2 and #3",           data='resources/scripts/system/configure/rpi-zero2w/configure_maxcpus.sh 2')
 						node.add_leaf("Configure swap (1GB & swapiness=0)",  data='resources/scripts/system/configure/rpi-zero2w/configure_swap.sh 1024')
 			if os.getenv('HAL9000_HARDWARE_VENDOR', default='unknown') == 'Raxda':
