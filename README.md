@@ -5,16 +5,16 @@ Installer for https://github.com/juergenpabel/HAL9000
 `cd HAL9000-installer`  
 `./start.sh`  
 
-This installer-application features a text-based user-interface (TUI) and thus can even be used via SSH.
-It looks nice(-ish) with a resolution of at least 120 columns and 30 rows.
-
 The installer should work on any (recent) Debian-based Linux system. During the installation process it
 installs some system packages (podman, ...), creates a local non-privileged user (and group) 'hal9000'
 for executing the HAL9000 application in containers, configures various system settings for a uniform
-system configuration and downloads (or builds) the container images. At last, it registers the containers
-to be run on system startup using a systemd user-instance (using the 'hal9000' user). That's about it.
+system configuration (soundcard, ...) and downloads (or builds) the container images. At last, it
+registers the containers to be run on system startup using a systemd user-instance (for the 'hal9000'
+user). That's about it.
 
-The installer-application features 3 screens:
+This installer-application features a text-based user-interface (TUI) and thus can even be used via SSH.
+It looks nice(-ish) with a resolution of at least 120 columns and 30 rows. The installer features 3
+screens:
 - Installer (press '1' or use a mouse to click on the label in the footer)  
 - Terminal (press '2' or use a mouse to click on the label in the footer)  
 - Help screen (press '9' or use a mouse to click on the label in the footer)  
