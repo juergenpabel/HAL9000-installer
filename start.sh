@@ -47,8 +47,9 @@ if [ "$HAL9000_HARDWARE_VENDOR" == "unknown" ] && [ "$HAL9000_HARDWARE_PRODUCT" 
 		HAL9000_MODEL=`cat /proc/cpuinfo | grep Model | cut -d' ' -f2-`
 		if [ "${HAL9000_MODEL:0:12}" == "Raspberry Pi" ]; then
 			HAL9000_HARDWARE_VENDOR="Raspberry Pi"
-			HAL9000_HARDWARE_PRODUCT="${HAL9000_MODEL:13}"
-			HAL9000_HARDWARE_PRODUCT="${HAL9000_HARDWARE_PRODUCT%% Rev *}"
+			if [ "${HAL9000_MODEL:13:8}" == "Zero 2 W" ]; then
+				HAL9000_HARDWARE_PRODUCT="Zero 2W"
+			fi
 		fi
 	fi
 fi
@@ -155,16 +156,19 @@ if [ $? -eq 0 ]; then
 	stat /etc/udev/rules.d/99-hal9000-tty.rules 2>/dev/null >/dev/null
 	CHECK_TTY=$?
 	if [ $CHECK_USER -eq 0 ] && [ $CHECK_CONTAINER -eq 0 ] && [ $CHECK_ALSA -eq 0 ] && [ $CHECK_TTY -eq 0 ]; then
-		echo "HAL9000: Good afternoon, gentlemen. I am (now) a HAL 9000 computer."
 		echo " "
-		echo "All post-installation checks have passed; reboot and enjoy!"
+		echo -e "\e[31mGood afternoon, gentlemen. I am (now) a HAL 9000 computer.\e[0m"
+		echo " "
+		echo "All post-installation checks have passed; please shutdown (power-"
+		echo "off) the system (to fully reset the microcontroller) than power-on"
+		echo "...and enjoy!"
 	else
-		echo "HAL9000: I just picked up a fault in the AE-35 Unit."
+		echo -e "\e[31mI just picked up a fault in the AE-35 Unit.\e[0m"
 		echo " "
 		echo "Some post-installation checks have failed; did you run all installation steps?"
 	fi
 else
-	echo "HAL9000: I just picked up a fault in the AE-35 Unit."
+	echo -e "\e[31mI just picked up a fault in the AE-35 Unit.\e[0m"
 	echo " "
 	echo "Something unexpected happened with the installer - please file a bug report at"
 	echo "https://github.com/juergenpabel/HAL9000-installer/issues/new"

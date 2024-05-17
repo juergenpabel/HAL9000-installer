@@ -1,0 +1,4 @@
+[submodule "HAL9000"]
+	path = resources/repositories/HAL9000
+	url = https://github.com/juergenpabel/HAL9000.git
+	branch = refactoring

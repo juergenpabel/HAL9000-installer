@@ -1,0 +1,1 @@
+../common/configure_swap.sh
