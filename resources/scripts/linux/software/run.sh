@@ -1,5 +1,7 @@
 #!/bin/sh
 
-SCRIPT_DIR=`dirname $0`
+SCRIPT_SRC=`realpath -s "$0"`
+SCRIPT_DIR=`dirname "$SCRIPT_SRC"`
+
 $SCRIPT_DIR/install_packages.sh
 

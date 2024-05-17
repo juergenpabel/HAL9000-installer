@@ -2,23 +2,32 @@
 
 USER_UID=`/usr/bin/id -u`
 USER_NAME=`/usr/bin/id -un`
-IMAGE_PREFIX="$1"
-IMAGE_TAG="$2"
+IMAGE_SRC="${1:-unknown}"
+IMAGE_TAG="${2:-unknown}"
+
+if [ "$IMAGE_SRC" = "unknown" ]; then
+	echo "Usage: $0 <IMAGE-SRC> <IMAGE-TAG>"
+	echo "       IMAGE-SRC: most likely 'localhost' or 'ghcr.io/juergenpabel'
+	echo "       IMAGE-TAG: most likely 'development' or 'stable'
+	exit 1
+fi
+
+if [ "$IMAGE_TAG" = "unknown" ]; then
+	echo "Usage: $0 $IMAGE_SRC <IMAGE-TAG>"
+	echo "       IMAGE-TAG: most likely 'development' or 'stable'
+	exit 1
+fi
 
 if [ "x$USER_NAME" != "xhal9000" ]; then
 	echo "ERROR: this script should be run as the application user 'hal9000' (current user='$USER_NAME')"
 	exit 1
 fi
 
-if [ "x$XDG_RUNTIME_DIR" == "x" ]; then
+if [ "x$XDG_RUNTIME_DIR" = "x" ]; then
 	echo "ERROR: for connecting with the user-instance of systemd, the environment variable XDG_RUNTIME_DIR must be set (export XDG_RUNTIME_DIR=/run/user/$USER_UID/)"
 	exit 1
 fi
 
-if [ "x$IMAGE_TAG" == "x" ]; then
-	echo "ERROR: no target tag (most likely 'development' or 'stable') provided as a command parameter)"
-	exit 1
-fi
 
 podman pod exists hal9000
 if [ $? -eq 0 ]; then
@@ -28,9 +37,9 @@ fi
 
 MISSING_IMAGES=""
 for IMAGE_NAME in mosquitto console frontend kalliope brain ; do
-	podman image exists "$IMAGE_PREFIX-$IMAGE_NAME:$IMAGE_TAG"
+	podman image exists "${IMAGE_SRC}/hal9000-${IMAGE_NAME}:${IMAGE_TAG}"
 	if [ $? -ne 0 ]; then
-		MISSING_IMAGES="'$IMAGE_PREFIX-$IMAGE_NAME:$IMAGE_TAG' $MISSING_IMAGES"
+		MISSING_IMAGES="'$IMAGE_SRC/hal9000-$IMAGE_NAME:$IMAGE_TAG' $MISSING_IMAGES"
 	fi
 done
 if [ "x$MISSING_IMAGES" != "x" ]; then
@@ -62,7 +71,7 @@ podman create --pod=hal9000 --name=hal9000-mosquitto \
               --group-add=keep-groups \
               --tz=local \
               --pull=never \
-              $IMAGE_PREFIX-mosquitto:$IMAGE_TAG
+              $IMAGE_SRC/hal9000-mosquitto:$IMAGE_TAG
 
 echo -n "Creating container 'hal9000-kalliope':  "
 podman create --pod=hal9000 --name=hal9000-kalliope \
@@ -72,7 +81,7 @@ podman create --pod=hal9000 --name=hal9000-kalliope \
               -v /etc/asound.conf:/etc/asound.conf:ro \
               --tz=local \
               --pull=never \
-              $IMAGE_PREFIX-kalliope:$IMAGE_TAG
+              $IMAGE_SRC/hal9000-kalliope:$IMAGE_TAG
 
 echo -n "Creating container 'hal9000-frontend':  "
 podman create --pod=hal9000 --name=hal9000-frontend \
@@ -81,7 +90,7 @@ podman create --pod=hal9000 --name=hal9000-frontend \
               $DEVICE_TTYHAL9000_ARGS \
               --tz=local \
               --pull=never \
-              $IMAGE_PREFIX-frontend:$IMAGE_TAG
+              $IMAGE_SRC/hal9000-frontend:$IMAGE_TAG
 
 echo -n "Creating container 'hal9000-brain':     "
 podman create --pod=hal9000 --name=hal9000-brain \
@@ -90,7 +99,7 @@ podman create --pod=hal9000 --name=hal9000-brain \
               --tz=local \
               $SYSTEMD_TIMESYNC_ARGS \
               --pull=never \
-              $IMAGE_PREFIX-brain:$IMAGE_TAG
+              $IMAGE_SRC/hal9000-brain:$IMAGE_TAG
 
 echo -n "Creating container 'hal9000-console':   "
 podman create --pod=hal9000 --name=hal9000-console \
@@ -98,9 +107,9 @@ podman create --pod=hal9000 --name=hal9000-console \
               --group-add=keep-groups \
               --tz=local \
               --pull=never \
-              $IMAGE_PREFIX-console:$IMAGE_TAG
+              $IMAGE_SRC/hal9000-console:$IMAGE_TAG
 
-if [ "x$DEVICE_TTYHAL9000_ARGS" == "x" ]; then
+if [ "x$DEVICE_TTYHAL9000_ARGS" = "x" ]; then
 	echo "NOTICE: no mircocontroller (/dev/ttyHAL9000) detected, not"
 	echo "        mounting the device into container 'hal9000-frontend'"
 	echo "        use the web-frontend (http://127.0.0.1:9000) as the"

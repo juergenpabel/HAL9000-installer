@@ -1,15 +1,15 @@
-#!/bin/bash
+#!/bin/sh
 
 DOWNLOAD_SOURCE=${1:-unknown}
 DOWNLOAD_TARGET=${2:-unknown}
 
 
-if [ "$DOWNLOAD_SOURCE" == "unknown" ]; then
+if [ "$DOWNLOAD_SOURCE" = "unknown" ]; then
 	echo "Usage: $0 <URL> <DIRECTORY>"
 	exit 1
 fi
 
-if [ "$DOWNLOAD_TARGET" == "unknown" ]; then
+if [ "$DOWNLOAD_TARGET" = "unknown" ]; then
 	echo "Usage: $0 $DOWNLOAD_SOURCE <DIRECTORY>"
 	exit 1
 fi

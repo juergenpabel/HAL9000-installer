@@ -1,8 +1,7 @@
 #!/bin/sh
 
-if [ "x$CONFIG_DIRECTORY" == "x" ]; then
-	CONFIG_DIRECTORY="demo-en_US"
-fi
+# TODO: $2 instead env var?
+CONFIG_DIRECTORY=${CONFIG_DIRECTORY:-demo-en_US}
 
 echo "Building images with language-related configurations from '$CONFIG_DIRECTORY'"
 echo " "

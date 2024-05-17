@@ -8,7 +8,7 @@ if [ "x$USER_NAME" != "xhal9000" ]; then
 	exit 1
 fi
 
-if [ "x$XDG_RUNTIME_DIR" == "x" ]; then
+if [ "x$XDG_RUNTIME_DIR" = "x" ]; then
 	echo "ERROR: for connecting with the user-instance of systemd, the"
 	echo "       environment variable XDG_RUNTIME_DIR must be set:"
 	echo "       export XDG_RUNTIME_DIR=/run/user/$USER_UID/"
