@@ -1,4 +1,3 @@
 textual
 textual-terminal
 rich-pixels
-platformio
