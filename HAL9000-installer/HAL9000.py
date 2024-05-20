@@ -83,11 +83,11 @@ class HAL9000InstallerApp(App):
 				if os.getenv('HAL9000_ARDUINO_PRODUCT', default='unknown') in ['RoundyPi', 'Core2', 'RP2040_LCD128']:
 					for node in [node_mcu.add("Build firmware",           data='resources/scripts/arduino/build/run.sh')]:
 						node.add_leaf("Prepare build environment",    data='resources/scripts/arduino/build/prepare_buildenv.sh')
-						node.add_leaf("Compile firmware",             data='resources/scripts/arduino/build/compile_firmware.sh')
-						node.add_leaf("Flash firmware",               data='resources/scripts/arduino/build/flash_firmware.sh')
+						node.add_leaf("Compile firmware",             data='resources/scripts/arduino/build/compile.sh')
+						node.add_leaf("Flash firmware",               data='resources/scripts/arduino/build/flash.sh')
 					for node in [node_mcu.add("Pre-build firmware",       data='resources/scripts/arduino/github.com/run.sh')]:
-						node.add_leaf("Download firmware",            data='resources/scripts/arduino/github.com/download_image.sh')
-						node.add_leaf("Flash firmware",               data='resources/scripts/arduino/github.com/flash_firmware.sh')
+						node.add_leaf("Download firmware",            data='resources/scripts/arduino/github.com/download.sh')
+						node.add_leaf("Flash firmware",               data='resources/scripts/arduino/github.com/flash.sh')
 			if len(node_mcu.children) == 0:
 				node_mcu.add_leaf("<No supported microcontroller detected>",  data=None)
 		self.installer_menu_system.root.expand_all()

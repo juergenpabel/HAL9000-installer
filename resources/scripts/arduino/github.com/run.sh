@@ -26,9 +26,6 @@ SCRIPT_DIR=`dirname "$SCRIPT_SRC"`
 
 $SCRIPT_DIR/prepare_flashenv.sh
 
-$SCRIPT_DIR/download_firmware.sh "${FIRMWARE_VERSION}"
-$SCRIPT_DIR/download_filesystem.sh "${FIRMWARE_VERSION}"
-
-$SCRIPT_DIR/flash_firmware.sh "${FIRMWARE_VERSION}"
-$SCRIPT_DIR/flash_filesystem.sh "${FIRMWARE_VERSION}"
+$SCRIPT_DIR/download.sh "${FIRMWARE_VERSION}"
+$SCRIPT_DIR/flash.sh "${FIRMWARE_VERSION}"
 
