@@ -123,7 +123,7 @@ if [ "x$MISSING_SOFTWARE_PACKAGES" != "x" ]; then
 fi
 
 if [ ! -d .venv ]; then
-	echo "Creating python virtual environment for the installer..."
+	echo "Creating python virtual environment (for this installer)..."
 	python3 -m venv .venv
 fi
 . .venv/bin/activate
@@ -135,7 +135,7 @@ export HAL9000_PLATFORM_OS
 export HAL9000_ARDUINO_VENDOR
 export HAL9000_ARDUINO_PRODUCT
 
-echo "Installing dependencies in python virtual environment..."
+echo "Installing dependencies in python virtual environment (for this installer)..."
 pip install -q -r requirements.txt
 
 echo "Starting the installer..."

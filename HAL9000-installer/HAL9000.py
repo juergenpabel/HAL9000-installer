@@ -286,6 +286,17 @@ class HAL9000InstallerApp(App):
 
 
 if __name__ == "__main__":
+	from textual_terminal._terminal import TerminalEmulator
+	def hacky_TerminalEmulator_open_terminal_hack(self, command: str):
+		import pty
+		import shlex
+		self.pid, fd = pty.fork()
+		if self.pid == 0:
+			argv = shlex.split(command)
+			# OPTIMIZE: do not use a fixed LC_ALL
+			os.execvp(argv[0], argv)
+		return fd
+	TerminalEmulator.open_terminal = hacky_TerminalEmulator_open_terminal_hack
 	app = HAL9000InstallerApp()
 	app.run()
 
