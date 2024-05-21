@@ -10,7 +10,7 @@ echo "        we now verify that sudo privileges are granted; the"
 echo "        command to verify this is: sudo -u root -l /bin/sh"
 echo "        Depending on your sudo configuration, it might be"
 echo "        neccessary to enter your password next."
-sudo -u root -l /bin/sh
+sudo -u root -l /bin/sh > /dev/null
 if [ $? -ne 0 ]; then
 	echo "ERROR:  Due to missing/unverifiable privileges for sudo"
 	echo "        usage, the installer can not continue."
@@ -58,11 +58,15 @@ fi
 if [ "$HAL9000_HARDWARE_VENDOR" = "unknown" ] && [ "$HAL9000_HARDWARE_PRODUCT" = "unknown" ]; then
 	grep Model /proc/cpuinfo >/dev/null
 	if [ $? -eq 0 ]; then
-		RPI_MODEL=`cat /proc/cpuinfo | grep Model | cut -d' ' -f2-`
-		if [ "${RPI_MODEL:0:12}" = "Raspberry Pi" ]; then
-			HAL9000_HARDWARE_VENDOR="Raspberry Pi"
-			if [ "${RPI_MODEL:13:8}" = "Zero 2 W" ]; then
-				HAL9000_HARDWARE_PRODUCT="Zero 2W"
+		SYS_MODEL=`cat /proc/cpuinfo | grep Model | cut -d' ' -f2-`
+		if [ "x${SYS_MODEL}" != "x" ]; then
+			SYS_RPI=`echo "$SYS_MODEL" | cut -c1-12`
+			if [ "x${SYS_RPI}" = "xRaspberry Pi" ]; then
+				HAL9000_HARDWARE_VENDOR="Raspberry Pi"
+				SYS_RPI_ZERO2W=`echo "$SYS_MODEL" | cut -c14-21`
+				if [ "x${SYS_RPI_ZERO2W}" = "xZero 2 W" ]; then
+					HAL9000_HARDWARE_PRODUCT="Zero 2W"
+				fi
 			fi
 		fi
 	fi
@@ -138,7 +142,7 @@ fi
 
 if [ ! -d .venv ]; then
 	echo "Creating python virtual environment (for this installer)..."
-	python3 -m venv .venv
+	python3 -m venv .venv --symlinks
 fi
 . .venv/bin/activate
 
