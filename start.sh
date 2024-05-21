@@ -153,7 +153,7 @@ export HAL9000_PLATFORM_OS
 export HAL9000_ARDUINO_VENDOR
 export HAL9000_ARDUINO_PRODUCT
 
-echo "Installing dependencies in python virtual environment (for this installer)..."
+echo "Installing dependencies in python virtual environment..."
 pip install -q -r requirements.txt
 
 echo "Starting the installer..."
