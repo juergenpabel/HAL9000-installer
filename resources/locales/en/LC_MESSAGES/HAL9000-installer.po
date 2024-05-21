@@ -1,0 +1,200 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: HAL9000-installer HEAD\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-05-21 02:11+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Juergen Pabel <juergen@pabel.net>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:30
+msgid "Show the HAL9000 installer"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:31
+msgid "Show a terminal window"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:32
+msgid "Help"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:33
+msgid "Exit"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:43
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:134
+msgid "HAL9000 Installer"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:48
+msgid "Install software"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:49
+msgid "Install required system packages"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:50
+msgid "Device-specific software"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:54
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:58
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:62
+msgid "Install voicecard/respeaker sound driver"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:65
+msgid "Configure system"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:66
+msgid "Create 'hal9000' (application) user & group"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:67
+msgid "Configure TTY device"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:68
+msgid "Configure ALSA sound card"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:69
+msgid "Device-specific configurations"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:73
+msgid "Reduce GPU memory to 16MB"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:74
+msgid "Deactivate CPUs #2 and #3"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:75
+msgid "Configure swap (1GB & swapiness=0)"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:86
+msgid "Microcontroller"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:89
+msgid "Build firmware"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:90
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:106
+msgid "Prepare build environment"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:91
+msgid "Compile firmware"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:92
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:96
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:99
+msgid "Flash firmware"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:93
+msgid "Pre-build firmware"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:94
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:112
+msgid "Version 'stable'"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:95
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:98
+msgid "Download firmware"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:97
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:116
+msgid "Version 'development'"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:101
+msgid "<No supported microcontroller detected>"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:103
+msgid "Application (HAL9000)"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:104
+msgid "Container"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:105
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:107
+msgid "Build images"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:108
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:114
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:118
+msgid "Create containers"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:109
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:115
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:119
+msgid "Run containers (via systemd)"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:111
+msgid "Pre-build container images"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:113
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:117
+msgid "Download images from ghcr.io"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:121
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:230
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:282
+msgid "Execute"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:150
+msgid "Just what do you think you're doing, Dave?"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:152
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:229
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:281
+msgid "Command execution"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:208
+msgid "Abort execution"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:210
+#, python-brace-format
+msgid "Command execution: {title}"
+msgstr ""
+
+#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:269
+msgid ""
+"An installer process is currently executing, must wait for its completion "
+"(or abort its execution) to exit"
+msgstr ""

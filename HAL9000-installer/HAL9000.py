@@ -1,5 +1,6 @@
 import os
 import sys
+import gettext
 
 from textual.app import App, ComposeResult, RenderResult
 from textual.containers import Horizontal, Vertical, VerticalScroll, ScrollableContainer
@@ -8,6 +9,9 @@ from textual.widgets import Button, ContentSwitcher, Footer, Header, MarkdownVie
 from textual import events
 from textual_terminal import Terminal
 from rich_pixels import Pixels
+
+
+gettext.translation('HAL9000-installer', 'resources/locales', fallback=True, languages=['en', 'de']).install()
 
 
 class HAL9000(Widget):
@@ -22,10 +26,10 @@ class HAL9000(Widget):
 
 class HAL9000InstallerApp(App):
 	CSS_PATH = 'HAL9000.tcss'
-	BINDINGS = [ ('1', 'tab_installer', "Show the HAL9000 installer"),
-	             ('2', 'tab_terminal',  "Show a terminal window"),
-	             ('9', 'tab_help', "Help"),
-	             ('ctrl+c', 'app_exit', "Exit") ]
+	BINDINGS = [ ('1', 'tab_installer', _("Show the HAL9000 installer")),
+	             ('2', 'tab_terminal',  _("Show a terminal window")),
+	             ('9', 'tab_help', _("Help")),
+	             ('ctrl+c', 'app_exit', _("Exit")) ]
 
 
 	def __init__(self):
@@ -35,39 +39,39 @@ class HAL9000InstallerApp(App):
 
 
 	def on_mount(self) -> None:
-		self.title = "HAL9000 Installer"
+		self.title = _("HAL9000 Installer")
 
 
 	def compose(self) -> ComposeResult:
 		self.installer_menu_system: Tree[str] = Tree("System setup", id='installer_menu_system', data=None)
-		self.installer_menu_system_software = self.installer_menu_system.root.add("Install software",  data='resources/scripts/linux/software/run.sh')
-		self.installer_menu_system_software.add_leaf("Install required system packages",               data='resources/scripts/linux/software/install_packages.sh')
-		for node_model in [self.installer_menu_system_software.add("Device-specific software",         data=None)]:
+		self.installer_menu_system_software = self.installer_menu_system.root.add(_("Install software"),  data='resources/scripts/linux/software/run.sh')
+		self.installer_menu_system_software.add_leaf(_("Install required system packages"),               data='resources/scripts/linux/software/install_packages.sh')
+		for node_model in [self.installer_menu_system_software.add(_("Device-specific software"),         data=None)]:
 			if os.getenv('HAL9000_HARDWARE_VENDOR', default='unknown') == 'Raspberry Pi':
 				if os.getenv('HAL9000_HARDWARE_PRODUCT', default='unknown') == 'Zero 2W':
 					for node in [node_model.add("Raspberry Pi:Zero 2W",               data='resources/scripts/linux/software/rpi-zero2w/run.sh')]:
-						node.add_leaf("Install voicecard/respeaker sound driver", data='resources/scripts/linux/software/rpi-zero2w/install_voicecard.sh')
+						node.add_leaf(_("Install voicecard/respeaker sound driver"), data='resources/scripts/linux/software/rpi-zero2w/install_voicecard.sh')
 			if os.getenv('HAL9000_HARDWARE_VENDOR', default='unknown') == 'Orange Pi':
 				if os.getenv('HAL9000_HARDWARE_PRODUCT', default='unknown') == 'Zero 2W':
 					for node in [node_model.add("Orange Pi: Zero 2W",           data='resources/scripts/linux/software/opi-zero2w/run.sh')]:
-						node.add_leaf("Install voicecard/respeaker sound driver", data='resources/scripts/linux/software/rpi-zero2w/install_voicecard.sh')
+						node.add_leaf(_("Install voicecard/respeaker sound driver"), data='resources/scripts/linux/software/rpi-zero2w/install_voicecard.sh')
 			if os.getenv('HAL9000_HARDWARE_VENDOR', default='unknown') == 'Radxa':
 				if os.getenv('HAL9000_HARDWARE_PRODUCT', default='unknown') == 'Zero 3W':
 					for node in [node_model.add("Radxa: Zero 3W",              data='resources/scripts/linux/software/radxa-zero3w/run.sh')]:
-						node.add_leaf("Install voicecard/respeaker sound driver", data='resources/scripts/linux/software/radxa-zero3w/install_voicecard.sh')
+						node.add_leaf(_("Install voicecard/respeaker sound driver"), data='resources/scripts/linux/software/radxa-zero3w/install_voicecard.sh')
 			if len(node_model.children) == 0:
 				node_model.remove()
-		self.installer_menu_system_configure = self.installer_menu_system.root.add("Configure system", data='resources/scripts/linux/configure/run.sh')
-		self.installer_menu_system_configure.add_leaf("Create 'hal9000' (application) user & group",   data='resources/scripts/linux/configure/create_user.sh')
-		self.installer_menu_system_configure.add_leaf("Configure TTY device",                          data='resources/scripts/linux/configure/create_udev_tty.sh')
-		self.installer_menu_system_configure.add_leaf("Configure ALSA sound card",                     data='resources/scripts/linux/configure/create_udev_alsa.sh')
-		for node_model in [self.installer_menu_system_configure.add("Device-specific configurations",   data=None)]:
+		self.installer_menu_system_configure = self.installer_menu_system.root.add(_("Configure system"), data='resources/scripts/linux/configure/run.sh')
+		self.installer_menu_system_configure.add_leaf(_("Create 'hal9000' (application) user & group"),   data='resources/scripts/linux/configure/create_user.sh')
+		self.installer_menu_system_configure.add_leaf(_("Configure TTY device"),                          data='resources/scripts/linux/configure/create_udev_tty.sh')
+		self.installer_menu_system_configure.add_leaf(_("Configure ALSA sound card"),                     data='resources/scripts/linux/configure/create_udev_alsa.sh')
+		for node_model in [self.installer_menu_system_configure.add(_("Device-specific configurations"),   data=None)]:
 			if os.getenv('HAL9000_HARDWARE_VENDOR', default='unknown') == 'Raspberry Pi':
 				if os.getenv('HAL9000_HARDWARE_PRODUCT', default='unknown') == 'Zero 2W':
 					for node in [node_model.add("Raspberry Pi: Zero 2W",          data='resources/scripts/linux/configure/rpi-zero2w/run.sh')]:
-						node.add_leaf("Set GPU memory to 16MB",              data='resources/scripts/linux/configure/rpi-zero2w/configure_gpu.sh 16')
-						node.add_leaf("Deactivate CPUs #2 and #3",           data='resources/scripts/linux/configure/rpi-zero2w/configure_maxcpus.sh 2')
-						node.add_leaf("Configure swap (1GB & swapiness=0)",  data='resources/scripts/linux/configure/rpi-zero2w/configure_swap.sh 1024')
+						node.add_leaf(_("Reduce GPU memory to 16MB"),         data='resources/scripts/linux/configure/rpi-zero2w/configure_gpu.sh 16')
+						node.add_leaf(_("Deactivate CPUs #2 and #3"),           data='resources/scripts/linux/configure/rpi-zero2w/configure_maxcpus.sh 2')
+						node.add_leaf(_("Configure swap (1GB & swapiness=0)"),  data='resources/scripts/linux/configure/rpi-zero2w/configure_swap.sh 1024')
 			if os.getenv('HAL9000_HARDWARE_VENDOR', default='unknown') == 'Orange Pi':
 				if os.getenv('HAL9000_HARDWARE_PRODUCT', default='unknown') == 'Zero 2W':
 					for node in [node_model.add("Orange Pi: Zero 2W",          data='resources/scripts/linux/configure/opi-zero2w/run.sh')]:
@@ -78,53 +82,57 @@ class HAL9000InstallerApp(App):
 						pass
 			if len(node_model.children) == 0:
 				node_model.remove()
-		for node_mcu in [self.installer_menu_system.root.add("Microcontroller", data=None)]:
+		for node_mcu in [self.installer_menu_system.root.add(_("Microcontroller"), data=None)]:
 			if os.getenv('HAL9000_ARDUINO_VENDOR', default='unknown') in ['SBComponents', 'M5Stack', 'Waveshare']:
 				if os.getenv('HAL9000_ARDUINO_PRODUCT', default='unknown') in ['RoundyPi', 'Core2', 'RP2040_LCD128']:
-					for node in [node_mcu.add("Build firmware",           data='resources/scripts/arduino/build/run.sh')]:
-						node.add_leaf("Prepare build environment",    data='resources/scripts/arduino/build/prepare_buildenv.sh')
-						node.add_leaf("Compile firmware",             data='resources/scripts/arduino/build/compile.sh')
-						node.add_leaf("Flash firmware",               data='resources/scripts/arduino/build/flash.sh')
-					for node_github in [node_mcu.add("Pre-build firmware",data=None)]:
-						for node in [node_github.add("Version 'stable'",      data='resources/scripts/arduino/github.com/run.sh stable')]:
-							node.add_leaf("Download firmware",            data='resources/scripts/arduino/github.com/download.sh stable')
-							node.add_leaf("Flash firmware",               data='resources/scripts/arduino/github.com/flash.sh stable')
-						for node in [node_github.add("Version 'development'", data='resources/scripts/arduino/github.com/run.sh development')]:
-							node.add_leaf("Download firmware",            data='resources/scripts/arduino/github.com/download.sh development')
-							node.add_leaf("Flash firmware",               data='resources/scripts/arduino/github.com/flash.sh development')
+					for node in [node_mcu.add(_("Build firmware"),           data='resources/scripts/arduino/build/run.sh')]:
+						node.add_leaf(_("Prepare build environment"),    data='resources/scripts/arduino/build/prepare_buildenv.sh')
+						node.add_leaf(_("Compile firmware"),             data='resources/scripts/arduino/build/compile.sh')
+						node.add_leaf(_("Flash firmware"),               data='resources/scripts/arduino/build/flash.sh')
+					for node_github in [node_mcu.add(_("Pre-build firmware"),data=None)]:
+						for node in [node_github.add(_("Version 'stable'"),      data='resources/scripts/arduino/github.com/run.sh stable')]:
+							node.add_leaf(_("Download firmware"),            data='resources/scripts/arduino/github.com/download.sh stable')
+							node.add_leaf(_("Flash firmware"),               data='resources/scripts/arduino/github.com/flash.sh stable')
+						for node in [node_github.add(_("Version 'development'"), data='resources/scripts/arduino/github.com/run.sh development')]:
+							node.add_leaf(_("Download firmware"),            data='resources/scripts/arduino/github.com/download.sh development')
+							node.add_leaf(_("Flash firmware"),               data='resources/scripts/arduino/github.com/flash.sh development')
 			if len(node_mcu.children) == 0:
-				node_mcu.add_leaf("<No supported microcontroller detected>",  data=None)
+				node_mcu.add_leaf(_("<No supported microcontroller detected>"),  data=None)
 		self.installer_menu_system.root.expand_all()
-		self.installer_menu_hal9000: Tree[str] = Tree("Application (HAL9000)", id='installer_menu_hal9000', data=None)
-		for node_container in [self.installer_menu_hal9000.root.add("Container",              data=self.hook_installer_container_source)]:
-			for node_build in [node_container.add("Build images",                         data='resources/scripts/container/build/run.sh')]:
-				node_build.add_leaf("Prepare build environment",                      data='resources/scripts/container/build/prepare_buildenv.sh')
-				node_build.add_leaf("Build images",                                   data='resources/scripts/container/build/build_images.sh')
-				node_build.add_leaf("Create containers",                              data='resources/scripts/container/build/create_containers.sh localhost latest')
-				node_build.add_leaf("Run containers (via systemd)",                   data='resources/scripts/container/build/deploy_containers.sh localhost latest')
+		self.installer_menu_hal9000: Tree[str] = Tree(_("Application (HAL9000)"), id='installer_menu_hal9000', data=None)
+		for node_container in [self.installer_menu_hal9000.root.add(_("Container"),              data=self.hook_installer_container_source)]:
+			for node_build in [node_container.add(_("Build images"),                         data='resources/scripts/container/build/run.sh')]:
+				node_build.add_leaf(_("Prepare build environment"),                      data='resources/scripts/container/build/prepare_buildenv.sh')
+				node_build.add_leaf(_("Build images"),                                   data='resources/scripts/container/build/build_images.sh')
+				node_build.add_leaf(_("Create containers"),                              data='resources/scripts/container/build/create_containers.sh localhost latest')
+				node_build.add_leaf(_("Run containers (via systemd)"),                   data='resources/scripts/container/build/deploy_containers.sh localhost latest')
 			if os.getenv('HAL9000_PLATFORM_ARCH', default='unknown') in ['arm64', 'amd64']:
-				for node_ghcrio in [node_container.add("Pre-build container images",  data=self.hook_installer_container_download_version)]:
-					for node in [node_ghcrio.add("Version 'stable'",              data='resources/scripts/container/ghcr.io/run.sh stable')]:
-						node.add_leaf("Download images from ghcr.io",         data='resources/scripts/container/ghcr.io/download_images.sh stable')
-						node.add_leaf("Create containers",                    data='resources/scripts/container/ghcr.io/create_containers.sh ghcr.io/juergenpabel stable')
-						node.add_leaf("Run containers (via systemd)",         data='resources/scripts/container/ghcr.io/deploy_containers.sh ghcr.io/juergenpabel stable')
-					for node in [node_ghcrio.add("Version 'development'",         data='resources/scripts/container/ghcr.io/run.sh development')]:
-						node.add_leaf("Download image from ghcr.io",          data='resources/scripts/container/ghcr.io/download_images.sh development')
-						node.add_leaf("Create containers",                    data='resources/scripts/container/ghcr.io/create_containers.sh ghcr.io/juergenpabel development')
-						node.add_leaf("Run containers (via systemd)",         data='resources/scripts/container/ghcr.io/deploy_containers.sh ghcr.io/juergenpabel development')
+				for node_ghcrio in [node_container.add(_("Pre-build container images"),  data=self.hook_installer_container_download_version)]:
+					for node in [node_ghcrio.add(_("Version 'stable'"),              data='resources/scripts/container/ghcr.io/run.sh stable')]:
+						node.add_leaf(_("Download images from ghcr.io"),         data='resources/scripts/container/ghcr.io/download_images.sh stable')
+						node.add_leaf(_("Create containers"),                    data='resources/scripts/container/ghcr.io/create_containers.sh ghcr.io/juergenpabel stable')
+						node.add_leaf(_("Run containers (via systemd)"),         data='resources/scripts/container/ghcr.io/deploy_containers.sh ghcr.io/juergenpabel stable')
+					for node in [node_ghcrio.add(_("Version 'development'"),         data='resources/scripts/container/ghcr.io/run.sh development')]:
+						node.add_leaf(_("Download images from ghcr.io"),          data='resources/scripts/container/ghcr.io/download_images.sh development')
+						node.add_leaf(_("Create containers"),                    data='resources/scripts/container/ghcr.io/create_containers.sh ghcr.io/juergenpabel development')
+						node.add_leaf(_("Run containers (via systemd)"),         data='resources/scripts/container/ghcr.io/deploy_containers.sh ghcr.io/juergenpabel development')
 		self.installer_menu_hal9000.root.expand_all()
-		self.installer_btn = Button("Execute", id='installer_btn')
+		self.installer_btn = Button(_("Execute"), id='installer_btn')
 		self.installer_log = Terminal(command=None, id='installer_log')
 		self.terminal = Terminal(command='bash', id='terminal')
 		try:
-			with open('README.md', 'r') as file:
+			lang_id = os.getenv('LANG', default='en')
+			readme_filename = f'README_{lang_id[0:2].lower()}.md'
+			if os.path.exists(readme_filename) is False:
+				readme_filename = 'README.md'
+			with open(readme_filename, 'r') as file:
 				self.help = MarkdownViewer(file.read(), id='help', show_table_of_contents=False)
 		except BaseException as e:
 			self.help = Static(f"ERROR: failed to open 'README.md' (cwd='{os.getcwd()}')\nException: {e}", id='help')
 		with Horizontal():
 			yield HAL9000(id='hal9000')
 			with Vertical():
-				yield Static("HAL9000 Installer", id='title')
+				yield Static(_("HAL9000 Installer"), id='title')
 				with ContentSwitcher(initial='help', id='content'):
 					with Vertical(id='installer'):
 						with Horizontal(id='installer_menu'):
@@ -140,9 +148,9 @@ class HAL9000InstallerApp(App):
 
 
 	def on_mount(self) -> None:
-		self.query_one('#installer_menu').border_title = "Just what do you think you're doing, Dave?"
+		self.query_one('#installer_menu').border_title = _("Just what do you think you're doing, Dave?")
 		self.query_one('#help').border_title = 'README.md'
-		self.installer_log.border_title = "Command execution"
+		self.installer_log.border_title = _("Command execution")
 
 
 	def on_ready(self) -> None:
@@ -198,9 +206,9 @@ class HAL9000InstallerApp(App):
 		if os.path.isfile(executable) is True:
 			self.installer_menu_system.disabled = True
 			self.installer_menu_hal9000.disabled = True
-			self.installer_btn.label = 'Abort execution'
+			self.installer_btn.label = _("Abort execution")
 			self.installer_log.command = command
-			self.installer_log.border_title = f"Command execution: {title}"
+			self.installer_log.border_title = _("Command execution: {title}").format(title=title)
 			self.installer_log.start()
 			self.installer_log_timer = self.installer_log.set_interval(1, self.on_installer_timer)
 			self.installer_log.ncol = self.installer_log.content_size.width
@@ -219,8 +227,8 @@ class HAL9000InstallerApp(App):
 		self.installer_log.stop()
 		self.installer_log.refresh()
 		self.installer_log.command = None
-		self.installer_log.border_title = "Command execution"
-		self.installer_btn.label = 'Execute'
+		self.installer_log.border_title = _("Command execution")
+		self.installer_btn.label = _("Execute")
 		self.installer_menu_system.disabled = False
 		self.installer_menu_hal9000.disabled = False
 		if hasattr(self.installer_node, 'focusable') is True:
@@ -259,7 +267,7 @@ class HAL9000InstallerApp(App):
 
 	def action_app_exit(self) -> None:
 		if self.installer_log.command is not None:
-			self.notify("An installer process is currently executing, must wait for its completion (or abort its execution) to exit")
+			self.notify(_("An installer process is currently executing, must wait for its completion (or abort its execution) to exit"))
 		else:
 			self.exit()
 
@@ -271,8 +279,8 @@ class HAL9000InstallerApp(App):
 			self.installer_log.refresh()
 			self.installer_log.stop()
 			self.installer_log.command = None
-			self.installer_log.border_title = "Command execution"
-			self.installer_btn.label = 'Execute'
+			self.installer_log.border_title = _("Command execution")
+			self.installer_btn.label = _("Execute")
 			self.installer_menu_system.disabled = False
 			self.installer_menu_hal9000.disabled = False
 			if hasattr(self.installer_node, 'focusable') is True:
