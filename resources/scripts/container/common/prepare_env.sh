@@ -7,3 +7,5 @@ if [ $? -ne 0 ]; then
 	sudo apt install -y podman
 fi
 
+sudo loginctl enable-linger hal9000 >/dev/null
+

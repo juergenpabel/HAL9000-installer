@@ -6,8 +6,6 @@ if [ $? -ne 0 ]; then
 	exit 1 
 fi
 
-sudo -i -u hal9000 loginctl enable-linger
-
 echo "Generating systemd files (in ~hal9000/.config/systemd/user)..."
 sudo -i -u hal9000 sh -c 'mkdir -p ~hal9000/.config/systemd/user'
 cd ~/.config/systemd/user
