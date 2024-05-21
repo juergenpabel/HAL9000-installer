@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 echo "#############################################################"
 echo "#                     HAL9000 Installer                     #"
@@ -11,7 +11,7 @@ HAL9000_PLATFORM_OS="${HAL9000_PLATFORM_OS:-unknown}"
 HAL9000_ARDUINO_VENDOR="${HAL9000_ARDUINO_VENDOR:-unknown}"
 HAL9000_ARDUINO_PRODUCT="${HAL9000_ARDUINO_PRODUCT:-unknown}"
 
-if [ "$HAL9000_HARDWARE_VENDOR" == "unknown" ]; then
+if [ "$HAL9000_HARDWARE_VENDOR" = "unknown" ]; then
 	if [ -e /sys/devices/virtual/dmi/id/sys_vendor ]; then
 		HAL9000_HARDWARE_VENDOR=`cat /sys/devices/virtual/dmi/id/sys_vendor`
 	fi
@@ -26,7 +26,7 @@ if [ "$HAL9000_HARDWARE_VENDOR" == "unknown" ]; then
 		esac
 	fi
 fi
-if [ "$HAL9000_HARDWARE_PRODUCT" == "unknown" ]; then
+if [ "$HAL9000_HARDWARE_PRODUCT" = "unknown" ]; then
 	if [ -e /sys/devices/virtual/dmi/id/product_name ]; then
 		HAL9000_HARDWARE_PRODUCT=`cat /sys/devices/virtual/dmi/id/product_name`
 	fi
@@ -41,20 +41,20 @@ if [ "$HAL9000_HARDWARE_PRODUCT" == "unknown" ]; then
 		esac
 	fi
 fi
-if [ "$HAL9000_HARDWARE_VENDOR" == "unknown" ] && [ "$HAL9000_HARDWARE_PRODUCT" == "unknown" ]; then
+if [ "$HAL9000_HARDWARE_VENDOR" = "unknown" ] && [ "$HAL9000_HARDWARE_PRODUCT" = "unknown" ]; then
 	grep Model /proc/cpuinfo >/dev/null
 	if [ $? -eq 0 ]; then
-		HAL9000_MODEL=`cat /proc/cpuinfo | grep Model | cut -d' ' -f2-`
-		if [ "${HAL9000_MODEL:0:12}" == "Raspberry Pi" ]; then
+		RPI_MODEL=`cat /proc/cpuinfo | grep Model | cut -d' ' -f2-`
+		if [ "${RPI_MODEL:0:12}" = "Raspberry Pi" ]; then
 			HAL9000_HARDWARE_VENDOR="Raspberry Pi"
-			if [ "${HAL9000_MODEL:13:8}" == "Zero 2 W" ]; then
+			if [ "${RPI_MODEL:13:8}" = "Zero 2 W" ]; then
 				HAL9000_HARDWARE_PRODUCT="Zero 2W"
 			fi
 		fi
 	fi
 fi
 
-if [ "$HAL9000_PLATFORM_OS" == "unknown" ]; then
+if [ "$HAL9000_PLATFORM_OS" = "unknown" ]; then
 	case `/usr/bin/uname -o` in
 		GNU/Linux)
 			HAL9000_PLATFORM_OS="linux"
@@ -65,7 +65,7 @@ if [ "$HAL9000_PLATFORM_OS" == "unknown" ]; then
 	esac
 fi
 
-if [ "$HAL9000_PLATFORM_ARCH" == "unknown" ]; then
+if [ "$HAL9000_PLATFORM_ARCH" = "unknown" ]; then
 	case `/usr/bin/uname -m` in
 		aarch64)
 			HAL9000_PLATFORM_ARCH="arm64"
@@ -79,7 +79,7 @@ if [ "$HAL9000_PLATFORM_ARCH" == "unknown" ]; then
 	esac
 fi
 
-if [ "$HAL9000_ARDUINO_VENDOR" == "unknown" ] || [ "$HAL9000_ARDUINO_PRODUCT" == "unknown" ]; then
+if [ "$HAL9000_ARDUINO_VENDOR" = "unknown" ] || [ "$HAL9000_ARDUINO_PRODUCT" = "unknown" ]; then
 	USB_DEVICES=`lsusb | cut -d' ' -f 6 | xargs echo`
 	for USB_DEVICE in $USB_DEVICES; do
 		case $USB_DEVICE in
@@ -146,7 +146,7 @@ if [ $? -eq 0 ]; then
 	id hal9000 2>/dev/null >/dev/null
 	CHECK_USER=$?
 	HAL9000_SYSTEMD=`ps -ef | grep "systemd --user" | grep hal9000 | wc -l`
-	if [ "x$HAL9000_SYSTEMD" == "x1" ]; then
+	if [ "x$HAL9000_SYSTEMD" = "x1" ]; then
 		CHECK_CONTAINER=0
 	else
 		CHECK_CONTAINER=1
@@ -157,18 +157,18 @@ if [ $? -eq 0 ]; then
 	CHECK_TTY=$?
 	if [ $CHECK_USER -eq 0 ] && [ $CHECK_CONTAINER -eq 0 ] && [ $CHECK_ALSA -eq 0 ] && [ $CHECK_TTY -eq 0 ]; then
 		echo " "
-		echo -e "\e[31mGood afternoon, gentlemen. I am (now) a HAL 9000 computer.\e[0m"
+		echo "\e[31mGood afternoon, gentlemen. I am (now) a HAL 9000 computer.\e[0m"
 		echo " "
 		echo "All post-installation checks have passed; please shutdown (power-"
 		echo "off) the system (to fully reset the microcontroller) than power-on"
 		echo "...and enjoy!"
 	else
-		echo -e "\e[31mI just picked up a fault in the AE-35 Unit.\e[0m"
+		echo "\e[31mI just picked up a fault in the AE-35 Unit.\e[0m"
 		echo " "
 		echo "Some post-installation checks have failed; did you run all installation steps?"
 	fi
 else
-	echo -e "\e[31mI just picked up a fault in the AE-35 Unit.\e[0m"
+	echo "\e[31mI just picked up a fault in the AE-35 Unit.\e[0m"
 	echo " "
 	echo "Something unexpected happened with the installer - please file a bug report at"
 	echo "https://github.com/juergenpabel/HAL9000-installer/issues/new"

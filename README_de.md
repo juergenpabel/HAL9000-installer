@@ -59,5 +59,5 @@ Ausführung von Installationsschritten).
 ## Bildschirmseite: Hilfe
 ![Screenshot: Help screen](resources/images/screen_help.png)
 
-Also, wenn Sie das gerade in dem Installationsprogramm lesen...hier ist sie.
+Nun ja... hier ist sie.
 

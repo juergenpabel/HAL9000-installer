@@ -49,12 +49,12 @@ class HAL9000InstallerApp(App):
 		for node_model in [self.installer_menu_system_software.add(_("Device-specific software"),         data=None)]:
 			if os.getenv('HAL9000_HARDWARE_VENDOR', default='unknown') == 'Raspberry Pi':
 				if os.getenv('HAL9000_HARDWARE_PRODUCT', default='unknown') == 'Zero 2W':
-					for node in [node_model.add("Raspberry Pi:Zero 2W",               data='resources/scripts/linux/software/rpi-zero2w/run.sh')]:
-						node.add_leaf(_("Install voicecard/respeaker sound driver"), data='resources/scripts/linux/software/rpi-zero2w/install_voicecard.sh')
+					for node in [node_model.add("Raspberry Pi:Zero 2W",               data='resources/scripts/linux/software/raspberrypi-zero2w/run.sh')]:
+						node.add_leaf(_("Install voicecard/respeaker sound driver"), data='resources/scripts/linux/software/raspberrypi-zero2w/install_voicecard.sh')
 			if os.getenv('HAL9000_HARDWARE_VENDOR', default='unknown') == 'Orange Pi':
 				if os.getenv('HAL9000_HARDWARE_PRODUCT', default='unknown') == 'Zero 2W':
-					for node in [node_model.add("Orange Pi: Zero 2W",           data='resources/scripts/linux/software/opi-zero2w/run.sh')]:
-						node.add_leaf(_("Install voicecard/respeaker sound driver"), data='resources/scripts/linux/software/rpi-zero2w/install_voicecard.sh')
+					for node in [node_model.add("Orange Pi: Zero 2W",           data='resources/scripts/linux/software/orangepi-zero2w/run.sh')]:
+						node.add_leaf(_("Install voicecard/respeaker sound driver"), data='resources/scripts/linux/software/raspberrypi-zero2w/install_voicecard.sh')
 			if os.getenv('HAL9000_HARDWARE_VENDOR', default='unknown') == 'Radxa':
 				if os.getenv('HAL9000_HARDWARE_PRODUCT', default='unknown') == 'Zero 3W':
 					for node in [node_model.add("Radxa: Zero 3W",              data='resources/scripts/linux/software/radxa-zero3w/run.sh')]:
@@ -68,13 +68,13 @@ class HAL9000InstallerApp(App):
 		for node_model in [self.installer_menu_system_configure.add(_("Device-specific configurations"),   data=None)]:
 			if os.getenv('HAL9000_HARDWARE_VENDOR', default='unknown') == 'Raspberry Pi':
 				if os.getenv('HAL9000_HARDWARE_PRODUCT', default='unknown') == 'Zero 2W':
-					for node in [node_model.add("Raspberry Pi: Zero 2W",          data='resources/scripts/linux/configure/rpi-zero2w/run.sh')]:
-						node.add_leaf(_("Reduce GPU memory to 16MB"),         data='resources/scripts/linux/configure/rpi-zero2w/configure_gpu.sh 16')
-						node.add_leaf(_("Deactivate CPUs #2 and #3"),           data='resources/scripts/linux/configure/rpi-zero2w/configure_maxcpus.sh 2')
-						node.add_leaf(_("Configure swap (1GB & swapiness=0)"),  data='resources/scripts/linux/configure/rpi-zero2w/configure_swap.sh 1024')
+					for node in [node_model.add("Raspberry Pi: Zero 2W",          data='resources/scripts/linux/configure/raspberrypi-zero2w/run.sh')]:
+						node.add_leaf(_("Reduce GPU memory to 16MB"),         data='resources/scripts/linux/configure/raspberrypi-zero2w/configure_gpu.sh 16')
+						node.add_leaf(_("Deactivate CPUs #2 and #3"),           data='resources/scripts/linux/configure/raspberrypi-zero2w/configure_maxcpus.sh 2')
+						node.add_leaf(_("Configure swap (1GB & swapiness=0)"),  data='resources/scripts/linux/configure/raspberrypi-zero2w/configure_swap.sh 1024')
 			if os.getenv('HAL9000_HARDWARE_VENDOR', default='unknown') == 'Orange Pi':
 				if os.getenv('HAL9000_HARDWARE_PRODUCT', default='unknown') == 'Zero 2W':
-					for node in [node_model.add("Orange Pi: Zero 2W",          data='resources/scripts/linux/configure/opi-zero2w/run.sh')]:
+					for node in [node_model.add("Orange Pi: Zero 2W",          data='resources/scripts/linux/configure/orangepi-zero2w/run.sh')]:
 						pass
 			if os.getenv('HAL9000_HARDWARE_VENDOR', default='unknown') == 'Radxa':
 				if os.getenv('HAL9000_HARDWARE_PRODUCT', default='unknown') == 'Zero 3W':
@@ -119,7 +119,7 @@ class HAL9000InstallerApp(App):
 		self.installer_menu_hal9000.root.expand_all()
 		self.installer_btn = Button(_("Execute"), id='installer_btn')
 		self.installer_log = Terminal(command=None, id='installer_log')
-		self.terminal = Terminal(command='bash', id='terminal')
+		self.terminal = Terminal(command='sh', id='terminal')
 		try:
 			lang_id = os.getenv('LANG', default='en')
 			readme_filename = f'README_{lang_id[0:2].lower()}.md'
