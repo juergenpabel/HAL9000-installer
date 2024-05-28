@@ -1,0 +1,11 @@
+---
+id: "installer_screen_wizard_sourcing"
+name: "HAL9000_INSTALL_ORIGIN"
+label: "Installation image sources"
+type: "select"
+options:
+  - value: "download"
+    label: "Download pre-build images"
+  - value: "build"
+    label: "Build from source"
+...

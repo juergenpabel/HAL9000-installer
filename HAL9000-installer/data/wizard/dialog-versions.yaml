@@ -1,0 +1,13 @@
+---
+id: "installer_screen_wizard_versions"
+name: "HAL9000_INSTALL_VERSION"
+label: "Version"
+type: "select"
+options:
+  - value: "stable"
+    label: "Stable"
+  - value: "development"
+    label: "Development"
+  - value: "latest"
+    label: "Latest (untested)"
+...

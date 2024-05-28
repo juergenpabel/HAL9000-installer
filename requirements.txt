@@ -1,3 +1,5 @@
+pyyaml
 textual
 textual-terminal
 rich-pixels
+pyalsaaudio

@@ -1,0 +1,11 @@
+---
+id: "installer_screen_wizard_strategy"
+name: "HAL9000_INSTALL_STRATEGY"
+label: "Installation strategy"
+type: "select"
+options:
+  - value: "standard"
+    label: "Standard"
+  - value: "expert"
+    label: "Expert"
+...

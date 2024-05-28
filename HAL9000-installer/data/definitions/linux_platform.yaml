@@ -1,0 +1,11 @@
+---
+platforms:
+  - id: linux/amd64
+    label: "linux/amd64"
+    os: "linux"
+    arch: "amd64"
+  - id: linux/arm64
+    label: "linux/arm64"
+    os: "linux"
+    arch: "arm64"
+...

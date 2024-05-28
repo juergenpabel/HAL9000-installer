@@ -1,0 +1,18 @@
+---
+arduinos:
+  - id: m5stack-core2
+    label: "M5Stack: Core2"
+    vendor: "M5Stack"
+    product: "Core2"
+    mcu: "ESP32"
+  - id: sbcomponents-roundypi
+    label: "SBC: RoundyPi"
+    vendor: "SBComponents"
+    product: "RoundyPi"
+    mcu: "RP2040"
+  - id: waveshare-rp2040_lcd128
+    label: "Waveshare: RP2040 LCD 1.28"
+    vendor: "Waveshare"
+    product: "RP2040_LCD128"
+    mcu: "RP2040"
+...

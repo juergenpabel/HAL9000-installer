@@ -1,0 +1,9 @@
+---
+id: "installer_screen_wizard_progress"
+name: "HAL9000_INSTALLER_PROGRESS"
+label: "Installation progress"
+type: "list"
+options:
+  - value: "dummy"
+    label: "dummy"
+...

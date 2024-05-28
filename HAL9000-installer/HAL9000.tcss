@@ -21,32 +21,70 @@ Screen {
     border: double red;
 }
 
-#content {
+#body {
     height: 90%;
     width: 100%;
     color: white;
 }
 
-#installer {
+#tab_installer {
     width: 100%;
     height: 100%;
 }
 
-#installer_menu {
+#installer_screen {
     width: 100%;
     height: 50%;
     border: double grey;
 }
 
-#installer_menu_system {
+#installer_screen_wizard {
+    width: 100%;
+    height: 100%;
+}
+
+#installer_screen_wizard_dialog {
+    width: 100%;
+    height: 100%;
+}
+
+
+#installer_screen_wizard_strategy {
+    border: grey;
+}
+
+#installer_screen_wizard_sourcing {
+    border: grey;
+}
+
+#installer_screen_wizard_versions {
+    border: grey;
+}
+
+#installer_screen_wizard_soundcard {
+    border: grey;
+}
+
+#installer_screen_wizard_arduinos {
+    border: grey;
+}
+
+#installer_screen_wizard_progress {
     width: 100%;
     height: 100%;
     border: grey;
 }
 
-#installer_menu_hal9000 {
+#installer_screen_expert {
     width: 100%;
     height: 100%;
+}
+
+#installer_screen_expert_system {
+    border: grey;
+}
+
+#installer_screen_expert_application {
     border: grey;
 }
 
@@ -57,7 +95,7 @@ Screen {
     border: double grey;
 }
 
-#installer_log {
+#installer_cmd {
     width: 100%;
     height: 40%;
     min-height: 6;
@@ -66,13 +104,13 @@ Screen {
     background: black;
 }
 
-#terminal {
+#tab_terminal {
     width: 100%;
     height: 100%;
     border: double grey;
 }
 
-#help {
+#tab_help {
     width: 100%;
     height: 100%;
     background: blue;

@@ -1,0 +1,15 @@
+---
+boards:
+  - id: orangepi-zero2w
+    label: "Orange Pi: Zero 2W"
+    vendor: "Orange Pi"
+    product: "Zero 2W"
+  - id: radxa-zero3w
+    label: "Raxda: Zero 3W"
+    vendor: "Radxa"
+    product: "Zero 3W"
+  - id: raspberrypi-zero2w
+    label: "Raspberry Pi: Zero 2W"
+    vendor: "Raspberry Pi"
+    product: "Zero 2W"
+...
