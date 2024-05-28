@@ -3,19 +3,6 @@
 echo "#############################################################"
 echo "#                     HAL9000 Installer                     #"
 echo "#############################################################"
-echo "Verifying sudo privileges..."
-echo "NOTICE: This installer requires sudo privileges (for users"
-echo "        'root' and 'hal9000') for various tasks, therefore"
-echo "        we now verify that sudo privileges are granted; the"
-echo "        command to verify this is: sudo -u root -l /bin/sh"
-echo "        Depending on your sudo configuration, it might be"
-echo "        neccessary to enter your password next."
-sudo -u root -l /bin/sh > /dev/null
-if [ $? -ne 0 ]; then
-	echo "ERROR:  Due to missing/unverifiable privileges for sudo"
-	echo "        usage, the installer can not continue."
-	exit 0
-fi
 
 echo "Detecting system configuration..."
 HAL9000_HARDWARE_VENDOR="${HAL9000_HARDWARE_VENDOR:-unknown}"
@@ -125,6 +112,20 @@ echo "- System Arch:     $HAL9000_PLATFORM_ARCH"
 echo "- System OS:       $HAL9000_PLATFORM_OS"
 echo "- Arduino Vendor:  $HAL9000_ARDUINO_VENDOR"
 echo "- Arduino Product: $HAL9000_ARDUINO_PRODUCT"
+
+echo "Verifying sudo privileges..."
+echo "NOTICE: This installer requires sudo privileges (for users"
+echo "        'root' and 'hal9000') for various tasks, therefore"
+echo "        we now verify that sudo privileges are granted; the"
+echo "        command to verify this is: sudo -u root -l /bin/sh"
+echo "        Depending on your sudo configuration, it might be"
+echo "        neccessary to enter your password next."
+sudo -u root -l /bin/sh > /dev/null
+if [ $? -ne 0 ]; then
+	echo "ERROR:  Due to missing/unverifiable privileges for sudo"
+	echo "        usage, the installer can not continue."
+	exit 0
+fi
 
 echo "Checking required software packages (for this installer)..."
 MISSING_SOFTWARE_PACKAGES=""
