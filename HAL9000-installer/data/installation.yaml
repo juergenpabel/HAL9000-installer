@@ -65,10 +65,13 @@ nodes:
                 id: "HAL9000_INSTALL_ORIGIN"
                 value: "download"
             nodes:
-              - id: system_microcontroller_github_stable_download
+              - id: system_microcontroller_github_prepare
+                label: "Prepare download environment"
+                command: "resources/scripts/arduino/github.com/prepare_flashenv.sh"
+              - id: system_microcontroller_github_download
                 label: "Download from github.com/juergenpabel/HAL9000/"
                 command: "resources/scripts/arduino/github.com/download.sh ${HAL9000_INSTALL_VERSION}"
-              - id: system_microcontroller_github_stable_flash
+              - id: system_microcontroller_github_flash
                 label: "Flash firmware"
                 command: "resources/scripts/arduino/github.com/flash.sh ${HAL9000_INSTALL_VERSION}"
   - id: application
