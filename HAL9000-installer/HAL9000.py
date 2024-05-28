@@ -116,7 +116,7 @@ class HAL9000InstallerApp(App):
 		self.tab_installer = Vertical(id='tab_installer')
 		self.installer_btn = Button(_("Next"), id='installer_btn')
 		self.installer_cmd = Terminal(command=None, id='installer_cmd')
-		self.tab_terminal = Terminal(command='sh', id='tab_terminal')
+		self.tab_terminal = Terminal(command='bash', id='tab_terminal')
 		try:
 			lang_id = os.getenv('LANG', default='en')
 			readme_filename = f'README_{lang_id[0:2].lower()}.md'
