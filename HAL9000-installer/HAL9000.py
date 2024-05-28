@@ -259,7 +259,7 @@ class HAL9000InstallerApp(App):
 			elif self.query_one('#installer_screen').current == 'installer_screen_expert':
 				for tree in self.installer_screen_expert_trees.values():
 					if tree.cursor_node is not None and tree.cursor_node.data is not None:
-						self.installer_execute_command(tree.cursor_node.id, tree.cursor_node.data, tree.cursor_node.data)
+						self.installer_execute_command(tree.cursor_node.id, tree.cursor_node.data, None)
 				self.installer_btn.label = _("Abort")
 
 
