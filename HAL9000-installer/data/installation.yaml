@@ -12,10 +12,9 @@ nodes:
           - id: system_software_specific
             label: "Install board-specific software"
             conditions:
-              - variable:
-                id: "HAL9000_INSTALL_BOARD_SPECIFIC_SOFTWARE"
-                value: "yes"
-            command: "resources/scripts/linux/software/${HAL9000_SYSTEM_BOARD}/run.sh"
+              - filesystem:
+                path: "resources/scripts/linux/software/${HAL9000_SYSTEM_ID}"
+            command: "resources/scripts/linux/software/${HAL9000_SYSTEM_ID}/run.sh"
       - id: system_configure
         label: "Linux system configuration"
         nodes:
@@ -37,10 +36,9 @@ nodes:
           - id: system_configure_specific
             label: "Configure board-specific items"
             conditions:
-              - variable:
-                id: "HAL9000_CONFIGURE_BOARD_SPECIFIC_SOFTWARE"
-                value: "yes"
-            command: "resources/scripts/linux/configure/${HAL9000_SYSTEM_BOARD}/run.sh"
+              - filesystem:
+                path: "resources/scripts/linux/configure/${HAL9000_SYSTEM_ID}"
+            command: "resources/scripts/linux/configure/${HAL9000_SYSTEM_ID}/run.sh"
       - id: system_microcontroller
         label: "Arduino firmware"
         nodes:

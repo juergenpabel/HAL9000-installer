@@ -17,6 +17,5 @@ GIT_REPODIR="$GIT_REPODIR/resources/repositories/seeed-voicecard"
 
 cd "$GIT_REPODIR"
 git checkout v`uname -r | cut -d. -f1-2`
-sed -i 's/dkms build -k/dkms build -j 1 -k/g' install.sh
 sudo ./install.sh 
 

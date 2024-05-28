@@ -152,6 +152,8 @@ export HAL9000_PLATFORM_ARCH
 export HAL9000_PLATFORM_OS
 export HAL9000_ARDUINO_VENDOR
 export HAL9000_ARDUINO_PRODUCT
+export HAL9000_SYSTEM_ID=`echo "$HAL9000_HARDWARE_VENDOR-$HAL9000_HARDWARE_PRODUCT" | sed 's/ //g' | tr '[:upper:]' '[:lower:]'`
+export HAL9000_ARDUINO_ID=`echo "$HAL9000_ARDUINO_VENDOR-$HAL9000_ARDUINO_PRODUCT" | sed 's/ //g' | tr '[:upper:]' '[:lower:]'`
 
 echo "Installing dependencies in python virtual environment..."
 pip install -q -r requirements.txt

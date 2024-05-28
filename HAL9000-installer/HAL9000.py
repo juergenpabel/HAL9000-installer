@@ -48,6 +48,10 @@ class HAL9000InstallerApp(App):
 		show_node = True
 		if 'conditions' in data_node:
 			for condition in data_node['conditions']:
+				if 'filesystem' in condition:
+					path = os.path.expandvars(condition['path'])
+					if os.path.exists(path) is False:
+						show_node = False
 				if 'variable' in condition:
 					if os.getenv(condition['id'], default='') != condition['value']:
 						show_node = False
