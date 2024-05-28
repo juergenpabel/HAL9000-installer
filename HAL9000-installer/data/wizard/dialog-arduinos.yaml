@@ -1,19 +1,15 @@
 ---
 id: "installer_screen_wizard_arduinos"
-name: "HAL9000_ARDUINO"
+name: "HAL9000_ARDUINO_ID"
 label: "Hardware: Arduino"
 type: "select"
 options:
-  - value: "none"
-    label: "None of the below"
+  - value: "unknown-unknown"
+    label: "None (of the below)"
   - value: "sbc-roundypi"
-    label: "SBComponents RoundyPi"
-    actions:
-      - variable:
-        name: ""
-        value: ""
+    label: "SBComponents: RoundyPi"
   - value: "m5stack-core2"
-    label: "M5stack Core2"
+    label: "M5stack: Core2"
   - value: "waveshare-rp2040_lcd128"
-    label: "Waveshare RP2040 LCD1.28"
+    label: "Waveshare: RP2040 LCD1.28"
 ...
