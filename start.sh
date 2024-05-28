@@ -65,7 +65,7 @@ if [ "$HAL9000_PLATFORM_OS" = "unknown" ]; then
 			HAL9000_PLATFORM_OS="linux"
 			;;
 		*)
-			echo "ERROR: unknown operating system, please add mapping to this script and run again"
+			echo "\e[31mERROR\e[0m: unknown operating system, please add mapping to this script and run again"
 			;;
 	esac
 fi
@@ -79,7 +79,7 @@ if [ "$HAL9000_PLATFORM_ARCH" = "unknown" ]; then
 			HAL9000_PLATFORM_ARCH="amd64"
 			;;
 		*)
-			echo "ERROR: unknown hardware platform, please add mapping to this script and run again"
+			echo "\e[31mERROR\e[0m: unknown hardware platform, please add mapping to this script and run again"
 			;;
 	esac
 fi
@@ -122,7 +122,7 @@ echo "        Depending on your sudo configuration, it might be"
 echo "        neccessary to enter your password next."
 sudo -u root -l /bin/sh > /dev/null
 if [ $? -ne 0 ]; then
-	echo "ERROR:  Due to missing/unverifiable privileges for sudo"
+	echo "\e[31mERROR\e[0m:  Due to missing/unverifiable privileges for sudo"
 	echo "        usage, the installer can not continue."
 	exit 0
 fi
@@ -136,7 +136,7 @@ for SOFTWARE_PACKAGE in python3 python3-venv python3-pip-whl libpython3-dev liba
 	fi
 done
 if [ "x$MISSING_SOFTWARE_PACKAGES" != "x" ]; then
-	echo "ERROR: some required software packages are not installed, please install them:"
+	echo "\e[31mERROR\e[0m: some required software packages are not installed, please install them:"
 	echo "       sudo apt install -y $MISSING_SOFTWARE_PACKAGES"
 	exit 1
 fi
