@@ -87,9 +87,6 @@ nodes:
                 id: "HAL9000_INSTALL_ORIGIN"
                 value: "build"
             nodes:
-              - id: application_podman_build_prepare
-                label: "Prepare build environment"
-                command: "resources/scripts/container/build/prepare_buildenv.sh"
               - id: application_podman_build_compile
                 label: "Compile container images"
                 command: "resources/scripts/container/build/build_images.sh"
