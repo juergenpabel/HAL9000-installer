@@ -8,4 +8,8 @@ options:
     label: "Download pre-build images"
   - value: "build"
     label: "Build from source"
+help: >
+  This pertains both container images and the arduino firmware.
+  For building, at least 1 GB RAM is required (don't do this on
+  a Pi Zero).
 ...

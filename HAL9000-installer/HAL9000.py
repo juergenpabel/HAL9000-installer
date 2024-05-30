@@ -53,8 +53,15 @@ class HAL9000InstallerApp(App):
 					if os.path.exists(path) is False:
 						show_node = False
 				if 'variable' in condition:
-					if os.getenv(condition['id'], default='') != condition['value']:
-						show_node = False
+					operator = condition['operator'] if 'operator' in condition else 'is'
+					if operator == 'is':
+						if os.getenv(condition['id'], default='') != condition['value']:
+							show_node = False
+					elif operator == 'not':
+						if os.getenv(condition['id'], default='') == condition['value']:
+							show_node = False
+					else:
+						self.notify(f"Unsupported value '{condition['operator']}' in operator for {data_node['label']}")
 		if show_node is True:
 			if 'nodes' in data_node:
 				tree_node = tree_node.add(data_node['label'], data=data_node.get('command', None))
@@ -103,6 +110,7 @@ class HAL9000InstallerApp(App):
 			                                            allow_blank=False)
 				if dialog_yaml['type'] == 'list':
 					dialog_widget = SelectionList[str](id=dialog_yaml['id'])
+					dialog_widget.watch_show_vertical_scrollbar()
 					for option in dialog_yaml['options']:
 						dialog_widget.add_option(Selection(option['label'], option['value']))
 				if dialog_yaml['type'] == 'plugin':
@@ -115,6 +123,7 @@ class HAL9000InstallerApp(App):
 						dialog_widget = plugin.build()
 			if dialog_widget is not None:
 				dialog_widget.border_title = dialog_yaml['label']
+				dialog_widget.help = dialog_yaml['help'] if 'help' in dialog_yaml else None
 				dialog_widget.next_dialog = install_dialog_yaml['next']
 				self.installer_screen_wizard_dialog[install_dialog_yaml['id']] = dialog_widget
 		self.tab_installer = Vertical(id='tab_installer')
@@ -138,12 +147,13 @@ class HAL9000InstallerApp(App):
 					with self.tab_installer:
 						with ContentSwitcher(id='installer_screen', initial='installer_screen_wizard'):
 							with Vertical(id='installer_screen_wizard'):
+								first_dialog = self.installer_screen_wizard_dialog['__init__']
 								with ContentSwitcher(id='installer_screen_wizard_dialog', initial='installer_screen_wizard_strategy'):
-									next = self.installer_screen_wizard_dialog['__init__']
-									while next != '':
-										dialog = self.installer_screen_wizard_dialog[next]
-										next = dialog.next_dialog
-										yield dialog
+									dialog = first_dialog
+									while dialog in self.installer_screen_wizard_dialog:
+										yield self.installer_screen_wizard_dialog[dialog]
+										dialog = self.installer_screen_wizard_dialog[dialog].next_dialog
+								yield MarkdownViewer(self.installer_screen_wizard_dialog[first_dialog].help, id='installer_screen_wizard_dialog_help')
 							with Horizontal(id='installer_screen_expert'):
 								self.load_installation_yaml(False)
 								for id, tree in self.installer_screen_expert_trees.items():
@@ -195,6 +205,12 @@ class HAL9000InstallerApp(App):
 				os.environ[event.select.name] = event.select.value
 
 
+	def on_selection_list_selection_toggled(self, event: SelectionList.SelectionToggled) -> None:
+		if self.query_one('#installer_screen_wizard_dialog').current == 'installer_screen_wizard_progress':
+			if str(self.installer_btn.label) != str(_("Abort")):
+				event.control.deselect(event.selection)
+
+
 	def on_tree_node_highlighted(self, event: Tree.NodeHighlighted) -> None:
 		if self.query_one('#installer_screen').current == 'installer_screen_expert':
 			for tree in self.installer_screen_expert_trees.values():
@@ -226,8 +242,14 @@ class HAL9000InstallerApp(App):
 								self.installer_screen_wizard_dialog[dialog_next].value = os.environ[key]
 							except InvalidSelectValueError:
 								pass
+						if self.installer_screen_wizard_dialog[dialog_next].help is not None:
+							self.query_one('#installer_screen_wizard_dialog_help').document.update(self.installer_screen_wizard_dialog[dialog_next].help)
+							self.query_one('#installer_screen_wizard_dialog_help').display = True
+						else:
+							self.query_one('#installer_screen_wizard_dialog_help').display = False
 				elif str(self.installer_btn.label) == str(_("Start installation")):
 					self.installer_screen_wizard_dialog['progress'].action_first()
+					self.installer_screen_wizard_dialog['progress'].scroll_to_highlight()
 					data = self.installer_cmd_queue.pop(0)
 					self.installer_execute_command(data['id'], data['command'], data['title'])
 				elif str(self.installer_btn.label) == str(_("Abort")):
@@ -248,7 +270,7 @@ class HAL9000InstallerApp(App):
 									                                                                     data['id'],
 									                                                                     False,
 									                                                                     data['id'],
-									                                                                     True))
+									                                                                     False))
 							self.installer_btn.label = _("Start installation")
 							self.set_focus(self.installer_btn)
 						elif os.environ['HAL9000_INSTALL_STRATEGY'] == 'expert':
@@ -298,6 +320,7 @@ class HAL9000InstallerApp(App):
 			if self.query_one('#installer_screen').current == 'installer_screen_wizard':
 				if len(self.installer_cmd_queue) > 0:
 					self.installer_screen_wizard_dialog['progress'].action_cursor_down()
+					self.installer_screen_wizard_dialog['progress'].scroll_to_highlight()
 					data = self.installer_cmd_queue.pop(0)
 					self.installer_execute_command(data['id'], data['command'], data['title'] if 'title' in data else data['command'])
 			if self.query_one('#installer_screen').current == 'installer_screen_expert':
@@ -341,6 +364,7 @@ class HAL9000InstallerApp(App):
 					self.installer_cmd.command_id = None
 				if len(self.installer_cmd_queue) > 0:
 					self.installer_screen_wizard_dialog['progress'].action_cursor_down()
+					self.installer_screen_wizard_dialog['progress'].scroll_to_highlight()
 					data = self.installer_cmd_queue.pop(0)
 					self.installer_execute_command(data['id'], data['command'], data['title'] if 'title' in data else data['command'])
 				else:

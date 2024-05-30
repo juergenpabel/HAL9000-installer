@@ -48,6 +48,10 @@ nodes:
               - variable:
                 id: "HAL9000_INSTALL_ORIGIN"
                 value: "build"
+              - variable:
+                id: "HAL9000_ARDUINO_ID"
+                operator: "not"
+                value: "unknown-unknown"
             nodes:
               - id: system_microcontroller_build_prepare
                 label: "Prepare build environment"
@@ -64,6 +68,10 @@ nodes:
               - variable:
                 id: "HAL9000_INSTALL_ORIGIN"
                 value: "download"
+              - variable:
+                id: "HAL9000_ARDUINO_ID"
+                operator: "not"
+                value: "unknown-unknown"
             nodes:
               - id: system_microcontroller_github_prepare
                 label: "Prepare download environment"

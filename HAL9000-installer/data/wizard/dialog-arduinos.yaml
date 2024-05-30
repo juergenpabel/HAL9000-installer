@@ -5,11 +5,15 @@ label: "Hardware: Arduino"
 type: "select"
 options:
   - value: "unknown-unknown"
-    label: "None (of the below)"
+    label: "None"
   - value: "sbc-roundypi"
     label: "SBComponents: RoundyPi"
   - value: "m5stack-core2"
     label: "M5stack: Core2"
   - value: "waveshare-rp2040_lcd128"
     label: "Waveshare: RP2040 LCD1.28"
+help: >
+  If you're installing this on a system without an Arduino,
+  use "None" - you can still use the HTML fronend (HTTP on
+  port 9000).
 ...

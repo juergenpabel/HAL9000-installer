@@ -8,4 +8,7 @@ options:
     label: "Standard"
   - value: "expert"
     label: "Expert"
+help: >
+  In "Standard" mode the installation steps are executed all-at-once.
+  In "Expert" mode you select and execute them individually.
 ...

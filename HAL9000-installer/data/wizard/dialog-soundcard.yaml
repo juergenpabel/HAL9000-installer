@@ -6,4 +6,7 @@ type: "plugin"
 plugin:
   module: "plugins.soundcard"
   class: "Soundcard"
+help: >
+  For a (freshly installed) RPI Zero board, use 'vc4hdmi' - it
+  will be replaced with the respeaker-soundcard once installed.
 ...
