@@ -24,8 +24,9 @@ case "${HAL9000_ARDUINO_VENDOR}:${HAL9000_ARDUINO_PRODUCT}" in
 			echo "ERROR: missing picotool (${GIT_DIR}/resources/downloads/picotool)"
 			exit 1
 		fi
-		"${GIT_DIR}/resources/downloads/picotool" load --verify -t bin --offset 0x10000000 \
-		                                          "${GIT_DIR}/resources/downloads/${HAL9000_PIO_NAME}_firmware_${FIRMWARE_VERSION}.bin"
+		"${GIT_DIR}/resources/downloads/picotool" load --verify \
+		                                          "${GIT_DIR}/resources/downloads/${HAL9000_PIO_NAME}_firmware_${FIRMWARE_VERSION}.bin" \
+                                                          -t bin --offset 0x10000000
 		;;
 	"M5Stack:Core2")
 		if [ ! -x "${GIT_DIR}/resources/downloads/esptool" ]; then

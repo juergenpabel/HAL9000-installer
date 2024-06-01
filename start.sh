@@ -88,7 +88,7 @@ if [ "$HAL9000_ARDUINO_VENDOR" = "unknown" ] || [ "$HAL9000_ARDUINO_PRODUCT" = "
 	USB_DEVICES=`lsusb | cut -d' ' -f 6 | xargs echo`
 	for USB_DEVICE in $USB_DEVICES; do
 		case $USB_DEVICE in
-			2e8a:TODO)
+			2e8a:000a)
 				HAL9000_ARDUINO_VENDOR="SBComponents"
 				HAL9000_ARDUINO_PRODUCT="RoundyPi"
 				;;
