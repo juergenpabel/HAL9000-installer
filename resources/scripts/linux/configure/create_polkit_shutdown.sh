@@ -8,6 +8,10 @@ if [ $? -eq 0 ]; then
 	sudo apt remove -y policykit-1
 	sudo apt autoremove -y
 fi
+dpkg -s polkitd-pkla 2>/dev/null >/dev/null
+if [ $? -eq 0 ]; then
+	sudo apt remove -y polkitd-pkla
+fi
 sudo sh -c 'stat /etc/polkit-1/rules.d/99-hal9000-shutdown.rules 2>/dev/null >/dev/null'
 if [ $? -ne 0 ]; then
 	sudo sh -c 'echo "/* Allow user hal9000 to reboot/poweroff */"                                        >> /etc/polkit-1/rules.d/99-hal9000-shutdown.rules'
