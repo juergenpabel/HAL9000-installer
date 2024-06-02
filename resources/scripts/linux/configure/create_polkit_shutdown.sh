@@ -2,14 +2,11 @@
 
 echo "HAL9000: Configuring polkit for system shutdown/reboot..."
 
-## polkitd-pkla (via policykit-1) is installed on raspian by default, but it "blocks" the execution of JS-rules - so we get rid of it
+## polkitd-pkla (via policykit-1) is installed on raspbian by default, but it "blocks" the execution of JS-rules - so we get rid of it
 dpkg -s policykit-1 2>/dev/null >/dev/null
 if [ $? -eq 0 ]; then
 	sudo apt remove -y policykit-1
-fi
-dpkg -s polkitd-pkla 2>/dev/null >/dev/null
-if [ $? -eq 0 ]; then
-	sudo apt remove -y polkitd-pkla
+	sudo apt autoremove -y
 fi
 sudo sh -c 'stat /etc/polkit-1/rules.d/99-hal9000-shutdown.rules 2>/dev/null >/dev/null'
 if [ $? -ne 0 ]; then
