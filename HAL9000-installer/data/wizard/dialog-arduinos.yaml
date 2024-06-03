@@ -6,7 +6,7 @@ type: "select"
 options:
   - value: "unknown-unknown"
     label: "None"
-  - value: "sbc-roundypi"
+  - value: "sbcomponents-roundypi"
     label: "SBComponents: RoundyPi"
   - value: "m5stack-core2"
     label: "M5stack: Core2"
