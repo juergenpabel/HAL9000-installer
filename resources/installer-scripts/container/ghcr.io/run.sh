@@ -8,6 +8,5 @@ SCRIPT_SRC=`realpath -s $0`
 SCRIPT_DIR=`dirname "$SCRIPT_SRC"`
 
 $SCRIPT_DIR/download_images.sh $IMAGE_TAG
-$SCRIPT_DIR/create_containers.sh ghcr.io/juergenpabel $IMAGE_TAG
-$SCRIPT_DIR/deploy_containers.sh ghcr.io/juergenpabel $IMAGE_TAG
+$SCRIPT_DIR/install_systemd_user_service.sh ghcr.io/juergenpabel $IMAGE_TAG
 

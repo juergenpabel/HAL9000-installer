@@ -8,37 +8,37 @@ nodes:
         nodes:
           - id: system_software_packages
             label: "Install required software"
-            command: "resources/scripts/linux/software/install_packages.sh"
+            command: "resources/installer-scripts/linux/software/install_packages.sh"
           - id: system_software_specific
             label: "Install board-specific software"
             conditions:
               - filesystem:
-                path: "resources/scripts/linux/software/${HAL9000_SYSTEM_ID}"
-            command: "resources/scripts/linux/software/${HAL9000_SYSTEM_ID}/run.sh"
+                path: "resources/installer-scripts/linux/software/${HAL9000_SYSTEM_ID}"
+            command: "resources/installer-scripts/linux/software/${HAL9000_SYSTEM_ID}/run.sh"
       - id: system_configure
         label: "Linux system configuration"
         nodes:
           - id: system_configure_user_hal9000
             label: "Create (application) user 'hal9000'"
-            command: "resources/scripts/linux/configure/create_user_hal9000.sh"
+            command: "resources/installer-scripts/linux/configure/create_user_hal9000.sh"
           - id: system_configure_udev_tty
             label: "Configure udev rule for /dev/ttyHAL9000"
-            command: "resources/scripts/linux/configure/create_udev_tty.sh"
+            command: "resources/installer-scripts/linux/configure/create_udev_tty.sh"
           - id: system_configure_udev_alsa
             label: "Configure udev rule for ALSA"
-            command: "resources/scripts/linux/configure/create_udev_alsa.sh ${HAL9000_HARDWARE_ALSA_DEVICE_NR}"
+            command: "resources/installer-scripts/linux/configure/create_udev_alsa.sh ${HAL9000_HARDWARE_ALSA_DEVICE_NR}"
           - id: system_configure_asound_conf
             label: "Create /etc/asound.conf (if it doesn't exist)"
-            command: "resources/scripts/linux/configure/touch_asound_conf.sh"
+            command: "resources/installer-scripts/linux/configure/touch_asound_conf.sh"
           - id: system_configure_polkit_shutdown
             label: "Configure polkit rule for shutdown/reboot"
-            command: "resources/scripts/linux/configure/create_polkit_shutdown.sh"
+            command: "resources/installer-scripts/linux/configure/create_polkit_shutdown.sh"
           - id: system_configure_specific
             label: "Configure board-specific items"
             conditions:
               - filesystem:
-                path: "resources/scripts/linux/configure/${HAL9000_SYSTEM_ID}"
-            command: "resources/scripts/linux/configure/${HAL9000_SYSTEM_ID}/run.sh"
+                path: "resources/installer-scripts/linux/configure/${HAL9000_SYSTEM_ID}"
+            command: "resources/installer-scripts/linux/configure/${HAL9000_SYSTEM_ID}/run.sh"
       - id: system_microcontroller
         label: "Arduino firmware"
         nodes:
@@ -55,13 +55,13 @@ nodes:
             nodes:
               - id: system_microcontroller_build_prepare
                 label: "Prepare build environment"
-                command: "resources/scripts/arduino/build/prepare_buildenv.sh"
+                command: "resources/installer-scripts/arduino/build/prepare_buildenv.sh"
               - id: system_microcontroller_build_compile
                 label: "Build firmware"
-                command: "resources/scripts/arduino/build/compile.sh"
+                command: "resources/installer-scripts/arduino/build/compile.sh"
               - id: system_microcontroller_build_flash
                 label: "Flash firmware"
-                command: "resources/scripts/arduino/build/flash.sh"
+                command: "resources/installer-scripts/arduino/build/flash.sh"
           - id: system_microcontroller_github
             label: "Download and install pre-build firmware"
             conditions:
@@ -75,13 +75,13 @@ nodes:
             nodes:
               - id: system_microcontroller_github_prepare
                 label: "Prepare download environment"
-                command: "resources/scripts/arduino/github.com/prepare_flashenv.sh"
+                command: "resources/installer-scripts/arduino/github.com/prepare_flashenv.sh"
               - id: system_microcontroller_github_download
                 label: "Download from github.com/juergenpabel/HAL9000/"
-                command: "resources/scripts/arduino/github.com/download.sh ${HAL9000_INSTALL_VERSION}"
+                command: "resources/installer-scripts/arduino/github.com/download.sh ${HAL9000_INSTALL_VERSION}"
               - id: system_microcontroller_github_flash
                 label: "Flash firmware"
-                command: "resources/scripts/arduino/github.com/flash.sh ${HAL9000_INSTALL_VERSION}"
+                command: "resources/installer-scripts/arduino/github.com/flash.sh ${HAL9000_INSTALL_VERSION}"
   - id: application
     label: "Application"
     nodes:
@@ -97,13 +97,13 @@ nodes:
             nodes:
               - id: application_podman_build_compile
                 label: "Compile container images"
-                command: "resources/scripts/container/build/build_images.sh"
+                command: "resources/installer-scripts/container/build/build_images.sh"
               - id: application_podman_build_create
                 label: "Create containers"
-                command: "resources/scripts/container/build/create_containers.sh localhost latest"
+                command: "resources/installer-scripts/container/build/create_containers.sh localhost ${HAL9000_INSTALL_VERSION}"
               - id: application_podman_build_deploy
                 label: "Deploy containers"
-                command: "resources/scripts/container/build/deploy_containers.sh localhost latest"
+                command: "resources/installer-scripts/container/build/deploy_containers.sh localhost ${HAL9000_INSTALL_VERSION}"
           - id: application_podman_ghcrio
             label: "Download container images"
             conditions:
@@ -113,11 +113,11 @@ nodes:
             nodes:
               - id: application_podman_ghcrio_download
                 label: "Download from ghcr.io/juergenpabel/HAL9000/"
-                command: "resources/scripts/container/ghcr.io/download_images.sh ${HAL9000_INSTALL_VERSION}"
+                command: "resources/installer-scripts/container/ghcr.io/download_images.sh ${HAL9000_INSTALL_VERSION}"
               - id: application_podman_ghcrio_create
                 label: "Create containers"
-                command: "resources/scripts/container/ghcr.io/create_containers.sh ghcr.io/juergenpabel ${HAL9000_INSTALL_VERSION}"
+                command: "resources/installer-scripts/container/ghcr.io/create_containers.sh ghcr.io/juergenpabel ${HAL9000_INSTALL_VERSION}"
               - id: application_podman_ghcrio_deploy
                 label: "Deploy containers"
-                command: "resources/scripts/container/ghcr.io/deploy_containers.sh ghcr.io/juergenpabel ${HAL9000_INSTALL_VERSION}"
+                command: "resources/installer-scripts/container/ghcr.io/deploy_containers.sh ghcr.io/juergenpabel ${HAL9000_INSTALL_VERSION}"
 ...

@@ -1,0 +1,11 @@
+[Unit]
+Description=HAL9000-installer service for pod-hal9000s.service installation
+
+[Service]
+Type=oneshot
+ExecCondition=sh -c '~hal9000/.local/share/HAL9000-installer/install_pod-hal9000.sh'
+ExecStart=sh     -c '~hal9000/.local/share/HAL9000-installer/install_pod-hal9000.sh IMAGE_SRC IMAGE_TAG'
+
+[Install]
+WantedBy=default.target
+

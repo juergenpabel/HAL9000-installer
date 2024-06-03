@@ -113,23 +113,26 @@ echo "- System OS:       $HAL9000_PLATFORM_OS"
 echo "- Arduino Vendor:  $HAL9000_ARDUINO_VENDOR"
 echo "- Arduino Product: $HAL9000_ARDUINO_PRODUCT"
 
-echo "Verifying sudo privileges..."
-echo "NOTICE: This installer requires sudo privileges (for users"
-echo "        'root' and 'hal9000') for various tasks, therefore"
-echo "        we now verify that sudo privileges are granted; the"
-echo "        command to verify this is: sudo -u root -l /bin/sh"
-echo "        Depending on your sudo configuration, it might be"
-echo "        neccessary to enter your password next."
-sudo -u root -l /bin/sh > /dev/null
-if [ $? -ne 0 ]; then
-	echo "\e[31mERROR\e[0m:  Due to missing/unverifiable privileges for sudo"
-	echo "        usage, the installer can not continue."
-	exit 0
+USER_UID=`id -u`
+if [ "$USER_UID" != "0" ]; then
+	echo "Verifying sudo privileges..."
+	echo "NOTICE: This installer requires sudo privileges (for users"
+	echo "        'root' and 'hal9000') for various tasks, therefore"
+	echo "        we now verify that sudo privileges are granted; the"
+	echo "        command to verify this is: sudo -u root -l /bin/sh"
+	echo "        Depending on your sudo configuration, it might be"
+	echo "        neccessary to enter your password next."
+	sudo -u root -l /bin/sh > /dev/null
+	if [ $? -ne 0 ]; then
+		echo "\e[31mERROR\e[0m:  Due to missing/unverifiable privileges for sudo"
+		echo "        usage, the installer can not continue."
+		exit 0
+	fi
 fi
 
 echo "Checking required software packages (for this installer)..."
 MISSING_SOFTWARE_PACKAGES=""
-for SOFTWARE_PACKAGE in python3 python3-venv python3-pip-whl libpython3-dev libasound2-dev ; do
+for SOFTWARE_PACKAGE in python3 python3-venv python3-pip-whl libpython3-dev libasound2-dev polkitd ; do
 	dpkg -s $SOFTWARE_PACKAGE 2>/dev/null >/dev/null
 	if [ $? -ne 0 ]; then
 		MISSING_SOFTWARE_PACKAGES="$SOFTWARE_PACKAGE $MISSING_SOFTWARE_PACKAGES"

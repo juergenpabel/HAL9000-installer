@@ -7,6 +7,5 @@ echo "HAL9000: Building images and deploying containers..."
 
 SCRIPT_DIR=`dirname $0`
 $SCRIPT_DIR/build_images.sh
-$SCRIPT_DIR/create_containers.sh $IMAGE_SRC $IMAGE_TAG
-$SCRIPT_DIR/deploy_containers.sh $IMAGE_SRC $IMAGE_TAG
+$SCRIPT_DIR/install_systemd_user_service.sh $IMAGE_SRC $IMAGE_TAG
 
