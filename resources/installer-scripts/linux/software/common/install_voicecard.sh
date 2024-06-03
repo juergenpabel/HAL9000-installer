@@ -28,6 +28,16 @@ if [ $? -ne 0 ]; then
 		exit 1
 	fi
 	sudo ./install.sh
+	# notes: 1. install dkms module on all installed kernels
+        #        2. dkms install with '--force' neccessary to replace non-functional module 'snd_soc_wm8960' from packaged kernel
+	. /etc/voicecard/dkms.conf
+	find /boot/ -maxdepth 1 -name 'vmlinuz-*v8' | sed 's#/boot/vmlinuz-##g' | while read KERNEL_VERSION ; do
+		sudo dkms install --force ${PACKAGE_NAME}/${PACKAGE_VERSION} -k ${KERNEL_VERSION}
+	done
+	grep -q '^autoinstall_all_kernels="yes"$' /etc/dkms/framework.conf
+	if [ $? -eq 1 ]; then
+		sudo sh -c 'echo "autoinstall_all_kernels=\"yes\"" >> /etc/dkms/framework.conf'
+	fi
 else
 	echo "NOTICE:  Already installed"
 fi
