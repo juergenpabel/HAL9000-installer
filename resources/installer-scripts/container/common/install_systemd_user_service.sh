@@ -22,3 +22,6 @@ sudo -i -u hal9000 sh -c "cat - > ~hal9000/.local/share/HAL9000-installer/instal
                    < "$SCRIPT_DIR"/install_pod-hal9000.sh.template
 sudo -i -u hal9000 sh -c "chmod 755 ~hal9000/.local/share/HAL9000-installer/install_pod-hal9000.sh"
 
+sudo -i -u hal9000 systemctl --user daemon-reload
+sudo -i -u hal9000 systemctl --user enable HAL9000-installer.service
+

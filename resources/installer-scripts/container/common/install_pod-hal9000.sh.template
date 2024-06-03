@@ -106,3 +106,6 @@ systemctl --user daemon-reload
 echo "Enabling pod-hal9000.service in systemd (user instance)..."
 systemctl --user enable pod-hal9000.service
 
+echo "Starting pod-hal9000.service in systemd (user instance)..."
+systemctl --user start pod-hal9000.service
+
