@@ -3,6 +3,7 @@ import sys
 import gettext
 from yaml import safe_load as yaml_safe_load
 from importlib import import_module as importlib_import_module
+from asyncio.exceptions import CancelledError as asyncio_exceptions_CancelledError
 
 from textual.app import App, ComposeResult, RenderResult
 from textual.containers import Horizontal, Vertical, VerticalScroll, ScrollableContainer
@@ -13,7 +14,6 @@ from textual.widgets.select import InvalidSelectValueError
 from textual import events
 from textual_terminal import Terminal
 from rich_pixels import Pixels
-
 
 gettext.translation('HAL9000-installer', 'HAL9000-installer/locales', fallback=True, languages=['en', 'de']).install()
 
@@ -29,7 +29,7 @@ class HAL9000(Widget):
 
 
 class HAL9000InstallerApp(App):
-	CSS_PATH = 'HAL9000.tcss'
+	CSS_PATH = 'HAL9000-installer.tcss'
 	BINDINGS = [ ('1', 'tab_installer', _("Show the HAL9000 installer")),
 	             ('2', 'tab_terminal',  _("Show a terminal window")),
 	             ('9', 'tab_help', _("Help")),
@@ -395,5 +395,8 @@ if __name__ == "__main__":
 		return fd
 	TerminalEmulator.open_terminal = hacky_TerminalEmulator_open_terminal_hack
 	app = HAL9000InstallerApp()
-	app.run()
+	try:
+		app.run()
+	except asyncio_exceptions_CancelledError as e:
+		pass
 

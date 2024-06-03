@@ -163,7 +163,7 @@ echo "Installing dependencies in python virtual environment..."
 pip install -q -r requirements.txt
 
 echo "Starting the installer..."
-python3 HAL9000-installer/HAL9000.py
+python3 HAL9000-installer/HAL9000-installer.py
 
 if [ $? -eq 0 ]; then
 	echo "Running post-installation checks..."
