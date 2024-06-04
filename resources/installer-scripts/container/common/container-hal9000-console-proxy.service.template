@@ -1,0 +1,10 @@
+[Unit]
+Description=container-hal9000-console-proxy.service
+Requires=container-hal9000-console.service
+After=container-hal9000-console.service
+Requires=container-hal9000-console-proxy.socket
+After=container-hal9000-console-proxy.socket
+
+[Service]
+ExecStart=/usr/lib/systemd/systemd-socket-proxyd 127.0.0.1:8080
+

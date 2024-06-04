@@ -34,7 +34,7 @@ if [ ! -e /run/systemd/timesync ]; then
 	SYSTEMD_TIMESYNC_ARGS=""
 fi
 
-hal9000 podman network exists hal9000
+podman network exists hal9000
 if [ $? -ne 0 ]; then
 	echo -n "Creating network 'hal9000':                 "
 	podman network create hal9000
@@ -100,12 +100,42 @@ fi
 sh -c "cd ~hal9000/.config/systemd/user ; \
        podman generate systemd -n -f --start-timeout 5 --stop-timeout 5 hal9000"
 
+SYSTEM_IF=`ip -br address show | grep -v "^lo " | grep -v "^loop" | grep UP | cut -d' ' -f 1 | head -1`
+if [ "x$SYSTEM_IF" != "x" ]; then
+	SYSTEM_IP=`ip -br address show dev $SYSTEM_IF | cut -d'/' -f 1 | rev | cut -d' ' -f 1 | rev 2>/dev/null`
+	if [ "x$SYSTEM_IP" = "x" ]; then
+		echo "Skipping systemd socket-proxy setup (because no primary IP address could be determined), services will be bound to 127.0.0.1 only"
+	else
+		echo "Activating socket-proxy for frontend in systemd (user instance)..."
+		cp ~hal9000/.local/share/HAL9000-installer/container-hal9000-frontend-proxy.service.template \
+		   ~hal9000/.config/systemd/user/container-hal9000-frontend-proxy.service
+		cp ~hal9000/.local/share/HAL9000-installer/container-hal9000-frontend-proxy.socket.template \
+		   ~hal9000/.config/systemd/user/container-hal9000-frontend-proxy.socket
+		sed -i "s/SYSTEM_IP/$SYSTEM_IP/g" ~hal9000/.config/systemd/user/container-hal9000-frontend-proxy.socket
+		sed -i 's/After=container/Requires=container-hal9000-frontend-proxy.socket\nAfter=container-hal9000-frontend-proxy.socket\nAfter=container/' \
+		    ~hal9000/.config/systemd/user/container-hal9000-frontend.service
+		sed -i 's/container-hal9000-frontend.service/container-hal9000-frontend-proxy.socket/g' \
+		    ~hal9000/.config/systemd/user/pod-hal9000.service
+
+		echo "Activating socket-proxy for console in systemd (user instance) - including socket-activation of container..."
+		cp ~hal9000/.local/share/HAL9000-installer/container-hal9000-console-proxy.socket.template \
+		   ~hal9000/.config/systemd/user/container-hal9000-console-proxy.socket
+		cp ~hal9000/.local/share/HAL9000-installer/container-hal9000-console-proxy.service.template \
+		   ~hal9000/.config/systemd/user/container-hal9000-console-proxy.service
+		sed -i "s/SYSTEM_IP/$SYSTEM_IP/g" ~hal9000/.config/systemd/user/container-hal9000-console-proxy.socket
+		sed -i 's/After=container/Requires=container-hal9000-console-proxy.socket\nAfter=container-hal9000-console-proxy.socket\nAfter=container/' \
+		    ~hal9000/.config/systemd/user/container-hal9000-console.service
+		sed -i 's/container-hal9000-console.service/container-hal9000-console-proxy.socket/g' \
+		    ~hal9000/.config/systemd/user/pod-hal9000.service
+	fi
+fi
+
 echo "Reloading systemd (user instance)..."
 systemctl --user daemon-reload
 
 echo "Enabling pod-hal9000.service in systemd (user instance)..."
-systemctl --user enable pod-hal9000.service
+systemctl --user --quiet enable pod-hal9000.service
 
 echo "Starting pod-hal9000.service in systemd (user instance)..."
-systemctl --user start pod-hal9000.service
+systemctl --user --quiet start pod-hal9000.service
 

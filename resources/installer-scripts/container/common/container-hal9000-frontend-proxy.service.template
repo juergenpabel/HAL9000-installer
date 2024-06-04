@@ -1,0 +1,10 @@
+[Unit]
+Description=container-hal9000-frontend-proxy.service
+Requires=container-hal9000-frontend.service
+After=container-hal9000-frontend.service
+Requires=container-hal9000-frontend-proxy.socket
+After=container-hal9000-frontend-proxy.socket
+
+[Service]
+ExecStart=/usr/lib/systemd/systemd-socket-proxyd 127.0.0.1:9000
+

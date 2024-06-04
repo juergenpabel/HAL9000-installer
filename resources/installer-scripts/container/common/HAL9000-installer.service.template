@@ -1,5 +1,5 @@
 [Unit]
-Description=HAL9000-installer service for pod-hal9000s.service installation
+Description=HAL9000-installer service for pod-hal9000.service installation
 
 [Service]
 Type=oneshot
