@@ -28,27 +28,25 @@ Das Beenden des Installationsprogramms erfolgt über STRG-C (oder per Maus-Klick
 Die Bildschirmseite 'Installation' wird genutzt um das System auf die Ausführung der HAL9000-Anwendung
 (die in Containern erfolgt) vorzubereiten, z.B. Software-Pakete installieren und System-Konfigurationen
 vornehmen. Die Bildschirmseite besteht aus drei Elementen:
-- Aktionsauswahl (mit zwei Auswahlbereichen)
-- Ausführen Schaltfläche
+- Interaktionsbereich
+- Schaltfläche ("button")
 - Ausführungsfenster
 
-Um (Teile des) Installationsprozesses auszuführen, wird ein gewünschter Installations(teil)schritt in der
-Aktionsauswahl (also entweder im System- oder im Anwendungsbereich) selektiert und durch Drücken der
-Eingabetaste (oder durch Anklicken der Ausführen-Schaltfläche) werden die ausgewählten Installationsschritte
-im Ausführungsfenster ausgeführt; je nach Systemzustand und den ausgeführten Aktionen kann eine
-Benutzereingabe erforderlich sein (z.B. die Eingabe eines Passworts für sudo). Die ausgeführten Aktionen
-können abgebrochen werden, indem man auf die Schaltfläche 'Ausführen' klickt (die eigentlich eine
-Abbruch-Schaltfläche ist, während eine Installer-Aktion ausgeführt wird).
+Im ersten Schritt müssend ein paar Auswahlmöglichkeiten beantwortet werden:
+- Strategie: "Standard" oder "Experte" ("Standard" wird empfohlen, da die eigentliche Installation dann
+voll-automatisch erfolgt)
+- Binärdateien: Ob vor-kompilierte Dateien ("images") heruntergeladen werden sollen oder (als Teil der
+Installation) kompiliert werden sollen
+- Version: Welcher Versionsstand genutzt werden soll (aktuell nur 'Stable' oder 'Development')
+- Soundkarte: Welche Soundkarte genutzt werden soll (auf einem Raspberry Zero2W wird ein Treiber für den
+Respeaker 2-mic mit installiert)
+- Arduino: Welches (der unterstützten) Arduino-Boards wird eingesetzt (oder "None" zur exklusiven Nutzung
+des HTTP-Frontends)
 
-Im einfachsten Fall kann man das oberste Element in den Aktionsauswahlbereichen auswählen/ausführen. Um eine
-feinere Steuerung zu ermöglichen, können die meisten Unterelemente in den Aktionsauswahlen einzeln ausgeführt
-werden. Hinweis: Alle Unterelemente des ausgewählten Elements werden ebenfalls zur Ausführung vorgesehen (d.h. 
-die Aktivierung eines obersten Elements führt "alles" darunter aus).
-
-Um (Teile des) Installationsprozesses auszuführen, einfach den gewünschten Installations(teil)schritt in der
-Aktionsauswahl (also entweder im System- oder im Anwendungsbereich) auswählen. Durch Drücken der Eingabetaste 
-(oder durch Anklicken der Ausführen-Schaltfläche) werden diese Installationsschritte im Ausführungsfenster 
-ausgeführt.
+Danach (im "Standard" Modus) wird die berechnete Liste der Installationsschritte dargestellt und über die
+Schaltfläche ("button") kann die Installation gestartet werden. Die Ausführung der Schritte wird im
+Ausführungsfenster angezeigt, während im Interaktionsbereich die Liste der Installationsschritte entsprechend
+des Fortschritts aktualisiert wird.
 
 ## Bildschirmseite: Terminal
 ![Screenshot: Terminal screen](resources/images/screen_terminal.png)

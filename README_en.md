@@ -26,21 +26,20 @@ Exiting the installer-application is done using CTRL-c (or by clicking on the la
 
 The Installer screen is used to both install required software and configure the system for running the
 HAL9000 application (which runs in containers). The screen is composed of three elements:
-- Action selector (which actually has two selectors)
-- Execute button
+- Dialog area
+- Action button
 - Execution window
 
-To execute (parts of the) installation process, you select a desired installation (sub-)step in the action
-selector (well, either in the system or the application area). When pressing enter (or clicking the
-execute-button), the selected installation step(s) are executed in the execution window; depending on the
-system state and the executed actions, user input might be required (like entering a password for sudo).
-The executed actions can be aborted by clicking the execute button (which is actually an abort-button while
-an installer action is being executed).
+In the first steps of the installation process, some choices regarding the installation are presented:
+- Strategy: "Standard" or "Expert" ("Standard" is recommended because it does everything automatically)
+- Sourcing: Whether to download pre-build images or to compile them during the installation
+- Version: Which version to download/compile, 'stable' and 'development' are currently supported
+- Soundcard: Which soundcard to use (for a Raspberry Zero2W, a driver for the Respeaker 2-mic will be installed)
+- Arduino: Which (of the supported) Arduino board is attached (or "None" for exclusive use of the HTTP frontend)
 
-In the most convinient case, one can select (execute) the top-most item in the action selector areas. In
-order to allow for a more fine-grained user-control, most of the sub-elements in the action selectors can
-be executed individually. Please note that all sub-elements of the selected element are also queued for
-execution (thus: activating a top-most element executes 'everything').
+After that (in "Standard" mode) a list of the derived installation are presented in the dialog area and the
+action button can be used to start the installation process. The execution of the installation steps will be
+shown in the execution window while completed installation steps are marked accordingly in the dialog area.
 
 ## Terminal screen
 ![Screenshot: Terminal screen](resources/images/screen_terminal.png)
@@ -56,8 +55,8 @@ Well, if you're reading this from within the installer-application...you're look
 ## FAQ
 **Question:** Why (not simply a shell script)?  
 **Answer:** Because...I liked the idea (and it took only a few hours to implement). If you really want plain
-shell scripts, just run those under the 'resources/scripts/' folder in this repository (in the end, that's
-almost everything this installer-application does).
+shell scripts, just run those under the 'resources/installation-scripts/' folder in this repository (in the end,
+that's almost everything this installer-application does).
 
 **Question:** The shortcuts (the keys '1', '2' and '9') for switching the screen aren't working, what's wrong?  
 **Answer:** Most likely, the focus is inside a (simulated) terminal window (the execution-window on the
