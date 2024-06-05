@@ -21,16 +21,18 @@ find "$SCRIPT_DIR" -name "*.template" -printf '%f\n' | while read FILENAME; do
 	                                < "$SCRIPT_DIR/$FILENAME"
 done
 
-sudo -i -u hal9000 sh -c "sed -e 's#IMAGE_SRC#${IMAGE_SRC}#g' -e 's#IMAGE_TAG#${IMAGE_TAG}#g' \
-                          < ~hal9000/.local/share/HAL9000-installer/HAL9000-installer.service.template \
-                          > ~hal9000/.local/share/HAL9000-installer/HAL9000-installer.service"
+sudo -i -u hal9000 sh -c "mv    ~hal9000/.local/share/HAL9000-installer/HAL9000-installer.service.template \
+                                ~hal9000/.local/share/HAL9000-installer/HAL9000-installer.service"
+sudo -i -u hal9000 sh -c "sed -i -e 's#IMAGE_SRC#${IMAGE_SRC}#g' -e 's#IMAGE_TAG#${IMAGE_TAG}#g' \
+                                ~hal9000/.local/share/HAL9000-installer/HAL9000-installer.service"
 sudo -i -u hal9000 sh -c "ln -s ~hal9000/.local/share/HAL9000-installer/HAL9000-installer.service \
                                 ~hal9000/.config/systemd/user/HAL9000-installer.service"
-sudo -i -u hal9000 sh -c "cat - > ~hal9000/.local/share/HAL9000-installer/install_pod-hal9000.sh" \
-     < "$SCRIPT_DIR"/install_pod-hal9000.sh.template
+
+sudo -i -u hal9000 sh -c "mv        ~hal9000/.local/share/HAL9000-installer/install_pod-hal9000.sh.template \
+                                    ~hal9000/.local/share/HAL9000-installer/install_pod-hal9000.sh"
 sudo -i -u hal9000 sh -c "chmod 755 ~hal9000/.local/share/HAL9000-installer/install_pod-hal9000.sh"
 
 echo "HAL9000: Activating HAL9000-installer.service in systemd (user instance)..."
-sudo -i -u hal9000 systemctl --user daemon-reload
+sudo -i -u hal9000 systemctl --user --quiet daemon-reload
 sudo -i -u hal9000 systemctl --user --quiet enable HAL9000-installer.service
 
