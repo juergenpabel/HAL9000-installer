@@ -8,8 +8,6 @@ options:
     label: "Stable"
   - value: "development"
     label: "Development"
-  - value: "latest"
-    label: "Latest (untested)"
 help: >
   Choose which version you want to install ('Stable' is usually
   recommended).

@@ -1,45 +1,49 @@
 #!/bin/sh
 
-SCRIPT_SRC=`realpath -s $0`
-SCRIPT_DIR=`dirname "$SCRIPT_SRC"`
-GIT_DIR=`git rev-parse --show-toplevel`
+HAL9000_ARDUINO_ID="${1:-unknown}"
 
-HAL9000_PLATFORM_ARCH="${HAL9000_PLATFORM_ARCH:-unknown}"
-HAL9000_ARDUINO_VENDOR="${HAL9000_ARDUINO_VENDOR:-unknown}"
-HAL9000_ARDUINO_PRODUCT="${HAL9000_ARDUINO_PRODUCT:-unknown}"
-
-HAL9000_ARDUINO_MCU="unknown"
-HAL9000_ARDUINO_RP2040TOOLS_VERSION="1.0.6"
-HAL9000_ARDUINO_ESPTOOLS_VERSION="4.7.0"
-
-if [ "$HAL9000_PLATFORM_ARCH" = "unknown" ]; then
-	echo "ERROR: HAL9000_PLATFORM_ARCH not set (or 'unknown')"
+if [ "${HAL9000_ARDUINO_ID}" = "unknown" ]; then
+	echo "Usage: $0 <ARDUINO-ID>"
+	echo "       - ARDUINO-ID: something like 'm5stack-core2' or 'sbcomponents-roundypi'"
 	exit 1
 fi
 
-case "${HAL9000_ARDUINO_VENDOR}:${HAL9000_ARDUINO_PRODUCT}" in
-	"SBComponents:RoundyPi" | "Waveshare:RP2040_LCD128")
+case "${HAL9000_ARDUINO_ID}" in
+	"sbcomponents-roundypi" | "waveshare-rp2040_lcd128")
 		HAL9000_ARDUINO_MCU="RP2040"
 		;;
-	"M5Stack:Core2")
+	"m5stack-core2")
 		HAL9000_ARDUINO_MCU="ESP32"
 		;;
 	*)
+		echo "\e[31mERROR\e[0m: arduino-board id, please add mapping to this script and run again"
+		exit 1
 		;;
 esac
 
-if [ "$HAL9000_ARDUINO_MCU" = "unknown" ]; then
-	echo "ERROR: unknown MCU (probably missing HAL9000_ARDUINO_VENDOR and HAL9000_ARDUINO_PRODUCT?)"
-	exit 1
-fi
+case `/usr/bin/uname -m` in
+	aarch64)
+		SYSTEM_PLATFORM_ARCH="arm64"
+		;;
+	x86_64)
+		SYSTEM_PLATFORM_ARCH="amd64"
+		;;
+	*)
+		echo "\e[31mERROR\e[0m: unsupported hardware platform"
+		exit 1
+		;;
+esac
 
-echo "HAL9000: Preparing environment for flashing '$HAL9000_ARDUINO_VENDOR: $HAL9000_ARDUINO_PRODUCT'..."
 
-case "$HAL9000_ARDUINO_MCU" in
+echo "HAL9000: Preparing environment for flashing '${HAL9000_ARDUINO_ID}'..."
+GIT_DIR=`git rev-parse --show-toplevel`
+
+case "${HAL9000_ARDUINO_MCU}" in
 	"RP2040")
 		if [ ! -x "${GIT_DIR}/resources/downloads/picotool" ]; then
-			VERSION="$HAL9000_ARDUINO_RP2040TOOLS_VERSION"
-			ARCH="$HAL9000_PLATFORM_ARCH"
+			VERSION="1.0.6"
+
+			ARCH="${SYSTEM_PLATFORM_ARCH}"
 
 			if [ ! -f "${GIT_DIR}/resources/downloads/rp2040tools-${VERSION}-linux_${ARCH}.tar.bz2" ]; then
 				wget -q --show-progress -O "${GIT_DIR}/resources/downloads/rp2040tools-${VERSION}-linux_${ARCH}.tar.bz2" \
@@ -63,11 +67,11 @@ case "$HAL9000_ARDUINO_MCU" in
 	;;
 	"ESP32")
 		if [ ! -x "${GIT_DIR}/resources/downloads/esptool" ]; then
-			VERSION="$HAL9000_ARDUINO_ESPTOOLS_VERSION"
-			if [ "$HAL9000_PLATFORM_ARCH" = "amd64" ]; then
-				ARCH="linux-$HAL9000_PLATFORM_ARCH"
+			VERSION="4.7.0"
+			if [ "${SYSTEM_PLATFORM_ARCH}" = "amd64" ]; then
+				ARCH="linux-${SYSTEM_PLATFORM_ARCH}"
 			else
-				ARCH="$HAL9000_PLATFORM_ARCH"
+				ARCH="${SYSTEM_PLATFORM_ARCH}"
 			fi
 
 			if [ ! -f "${GIT_DIR}/resources/downloads/esptool-v${VERSION}-${ARCH}.zip" ]; then
@@ -91,8 +95,5 @@ case "$HAL9000_ARDUINO_MCU" in
 			fi
 		fi
 	;;
-	*)
-		echo "ERROR: unsupported microcontroller chip '$HAL9000_ARDUINO_MCU'"
-		exit 1
 esac
 

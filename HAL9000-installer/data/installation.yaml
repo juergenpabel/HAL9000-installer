@@ -55,13 +55,13 @@ nodes:
             nodes:
               - id: system_microcontroller_build_prepare
                 label: "Prepare build environment"
-                command: "resources/installer-scripts/arduino/build/prepare_buildenv.sh"
+                command: "resources/installer-scripts/arduino/build/prepare_buildenv.sh ${HAL9000_INSTALL_VERSION}"
               - id: system_microcontroller_build_compile
                 label: "Build firmware"
-                command: "resources/installer-scripts/arduino/build/compile.sh"
+                command: "resources/installer-scripts/arduino/build/compile.sh ${HAL9000_ARDUINO_ID} ${HAL9000_INSTALL_VERSION}"
               - id: system_microcontroller_build_flash
                 label: "Flash firmware"
-                command: "resources/installer-scripts/arduino/build/flash.sh"
+                command: "resources/installer-scripts/arduino/build/flash.sh ${HAL9000_ARDUINO_ID} ${HAL9000_INSTALL_VERSION}"
           - id: system_microcontroller_github
             label: "Download and install pre-build firmware"
             conditions:
@@ -75,13 +75,13 @@ nodes:
             nodes:
               - id: system_microcontroller_github_prepare
                 label: "Prepare download environment"
-                command: "resources/installer-scripts/arduino/github.com/prepare_flashenv.sh"
+                command: "resources/installer-scripts/arduino/github.com/prepare_flashenv.sh ${HAL9000_ARDUINO_ID}"
               - id: system_microcontroller_github_download
                 label: "Download from github.com/juergenpabel/HAL9000/"
-                command: "resources/installer-scripts/arduino/github.com/download.sh ${HAL9000_INSTALL_VERSION}"
+                command: "resources/installer-scripts/arduino/github.com/download.sh ${HAL9000_ARDUINO_ID} ${HAL9000_INSTALL_VERSION}"
               - id: system_microcontroller_github_flash
                 label: "Flash firmware"
-                command: "resources/installer-scripts/arduino/github.com/flash.sh ${HAL9000_INSTALL_VERSION}"
+                command: "resources/installer-scripts/arduino/github.com/flash.sh ${HAL9000_ARDUINO_ID} ${HAL9000_INSTALL_VERSION}"
   - id: application
     label: "Application"
     nodes:
@@ -97,7 +97,7 @@ nodes:
             nodes:
               - id: application_podman_build_compile
                 label: "Compile container images"
-                command: "resources/installer-scripts/container/build/build_images.sh"
+                command: "resources/installer-scripts/container/build/build_images.sh ${HAL9000_INSTALL_VERSION}"
               - id: application_podman_build_install
                 label: "Install containers with systemd (user instance)"
                 command: "resources/installer-scripts/container/build/install_systemd_user_service.sh localhost ${HAL9000_INSTALL_VERSION}"

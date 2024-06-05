@@ -5,7 +5,7 @@ export PATH=/bin:/usr/bin
 IMAGE_SRC="${1:-unknown}"
 IMAGE_TAG="${2:-unknown}"
 
-if [ "$IMAGE_SRC" = "unknown" ] && [ "$IMAGE_TAG" = "unknown" ]; then
+if [ "${IMAGE_SRC}" = "unknown" ] && [ "${IMAGE_TAG}" = "unknown" ]; then
 	systemctl --user --quiet list-unit-files pod-hal9000.service > /dev/null
 	case "$?" in
 		0)
@@ -20,7 +20,7 @@ if [ "$IMAGE_SRC" = "unknown" ] && [ "$IMAGE_TAG" = "unknown" ]; then
 	esac
 fi
 
-if [ "$IMAGE_SRC" = "unknown" ] || [ "$IMAGE_TAG" = "unknown" ]; then
+if [ "${IMAGE_SRC}" = "unknown" ] || [ "${IMAGE_TAG}" = "unknown" ]; then
 	exit 255 # exit code 'fail' for ExecCondition in HAL9000-installer.service (invalid invocation with only one parameter)
 fi
 
@@ -53,7 +53,7 @@ podman create --pod=hal9000 --name=hal9000-mosquitto \
               --group-add=keep-groups \
               --tz=local \
               --pull=never \
-              $IMAGE_SRC/hal9000-mosquitto:$IMAGE_TAG
+              ${IMAGE_SRC}/hal9000-mosquitto:${IMAGE_TAG}
 
 echo -n "Creating container 'hal9000-kalliope':  "
 podman create --pod=hal9000 --name=hal9000-kalliope \
@@ -63,16 +63,16 @@ podman create --pod=hal9000 --name=hal9000-kalliope \
               -v /etc/asound.conf:/etc/asound.conf:ro \
               --tz=local \
               --pull=never \
-              $IMAGE_SRC/hal9000-kalliope:$IMAGE_TAG
+              ${IMAGE_SRC}/hal9000-kalliope:${IMAGE_TAG}
 
 echo -n "Creating container 'hal9000-frontend':  "
 podman create --pod=hal9000 --name=hal9000-frontend \
               --requires hal9000-mosquitto \
               --group-add=keep-groups \
-              $DEVICE_TTYHAL9000_ARGS \
+              ${DEVICE_TTYHAL9000_ARGS} \
               --tz=local \
               --pull=never \
-              $IMAGE_SRC/hal9000-frontend:$IMAGE_TAG
+              ${IMAGE_SRC}/hal9000-frontend:${IMAGE_TAG}
 
 echo -n "Creating container 'hal9000-brain':     "
 podman create --pod=hal9000 --name=hal9000-brain \
@@ -80,9 +80,9 @@ podman create --pod=hal9000 --name=hal9000-brain \
               --group-add=keep-groups \
               --tz=local \
               -v /run/dbus/system_bus_socket:/run/dbus/system_bus_socket:rw \
-              $SYSTEMD_TIMESYNC_ARGS \
+              ${SYSTEMD_TIMESYNC_ARGS} \
               --pull=never \
-              $IMAGE_SRC/hal9000-brain:$IMAGE_TAG
+              ${IMAGE_SRC}/hal9000-brain:${IMAGE_TAG}
 
 echo -n "Creating container 'hal9000-console':   "
 podman create --pod=hal9000 --name=hal9000-console \
@@ -90,7 +90,7 @@ podman create --pod=hal9000 --name=hal9000-console \
               --group-add=keep-groups \
               --tz=local \
               --pull=never \
-              $IMAGE_SRC/hal9000-console:$IMAGE_TAG
+              ${IMAGE_SRC}/hal9000-console:${IMAGE_TAG}
 
 echo "Generating systemd files (in ~hal9000/.config/systemd/user)..."
 test -d ~hal9000/.config/systemd/user
@@ -101,9 +101,9 @@ sh -c "cd ~hal9000/.config/systemd/user ; \
        podman generate systemd -n -f --start-timeout 5 --stop-timeout 5 hal9000"
 
 SYSTEM_IF=`ip -br address show | grep -v "^lo " | grep -v "^loop" | grep UP | cut -d' ' -f 1 | head -1`
-if [ "x$SYSTEM_IF" != "x" ]; then
-	SYSTEM_IP=`ip -br address show dev $SYSTEM_IF | cut -d'/' -f 1 | rev | cut -d' ' -f 1 | rev 2>/dev/null`
-	if [ "x$SYSTEM_IP" = "x" ]; then
+if [ "x${SYSTEM_IF}" != "x" ]; then
+	SYSTEM_IP=`ip -br address show dev ${SYSTEM_IF} | cut -d'/' -f 1 | rev | cut -d' ' -f 1 | rev 2>/dev/null`
+	if [ "x${SYSTEM_IP}" = "x" ]; then
 		echo "Skipping systemd socket-proxy setup (because no primary IP address could be determined), services will be bound to 127.0.0.1 only"
 	else
 		echo "Activating socket-proxy for frontend in systemd (user instance)..."
@@ -111,7 +111,7 @@ if [ "x$SYSTEM_IF" != "x" ]; then
 		   ~hal9000/.config/systemd/user/container-hal9000-frontend-proxy.service
 		cp ~hal9000/.local/share/HAL9000-installer/container-hal9000-frontend-proxy.socket.template \
 		   ~hal9000/.config/systemd/user/container-hal9000-frontend-proxy.socket
-		sed -i "s/SYSTEM_IP/$SYSTEM_IP/g" ~hal9000/.config/systemd/user/container-hal9000-frontend-proxy.socket
+		sed -i "s/SYSTEM_IP/${SYSTEM_IP}/g" ~hal9000/.config/systemd/user/container-hal9000-frontend-proxy.socket
 		sed -i 's/After=container/Requires=container-hal9000-frontend-proxy.socket\nAfter=container-hal9000-frontend-proxy.socket\nAfter=container/' \
 		    ~hal9000/.config/systemd/user/container-hal9000-frontend.service
 		sed -i 's/container-hal9000-frontend.service/container-hal9000-frontend-proxy.socket/g' \
@@ -122,7 +122,7 @@ if [ "x$SYSTEM_IF" != "x" ]; then
 		   ~hal9000/.config/systemd/user/container-hal9000-console-proxy.socket
 		cp ~hal9000/.local/share/HAL9000-installer/container-hal9000-console-proxy.service.template \
 		   ~hal9000/.config/systemd/user/container-hal9000-console-proxy.service
-		sed -i "s/SYSTEM_IP/$SYSTEM_IP/g" ~hal9000/.config/systemd/user/container-hal9000-console-proxy.socket
+		sed -i "s/SYSTEM_IP/${SYSTEM_IP}/g" ~hal9000/.config/systemd/user/container-hal9000-console-proxy.socket
 		sed -i 's/After=container/Requires=container-hal9000-console-proxy.socket\nAfter=container-hal9000-console-proxy.socket\nAfter=container/' \
 		    ~hal9000/.config/systemd/user/container-hal9000-console.service
 		sed -i 's/container-hal9000-console.service/container-hal9000-console-proxy.socket/g' \

@@ -15,10 +15,9 @@ if [ "${HAL9000_INSTALL_VERSION}" = "unknown" ]; then
 	exit 1
 fi
 
-echo "HAL9000: Flashing firmware and filesystem (version '${HAL9000_INSTALL_VERSION}') for '${HAL9000_ARDUINO_ID}' from github..."
 SCRIPT_SRC=`realpath -s $0`
 SCRIPT_DIR=`dirname "${SCRIPT_SRC}"`
 
-"${SCRIPT_DIR}"/flash_firmware.sh   "${HAL9000_ARDUINO_ID}" "${FIRMWARE_VERSION}"
-"${SCRIPT_DIR}"/flash_filesystem.sh "${HAL9000_ARDUINO_ID}" "${FIRMWARE_VERSION}"
+"${SCRIPT_DIR}/compile_firmware.sh"   "${HAL9000_ARDUINO_ID}" "${HAL9000_INSTALL_VERSION}"
+"${SCRIPT_DIR}/compile_filesystem.sh" "${HAL9000_ARDUINO_ID}" "${HAL9000_INSTALL_VERSION}"
 

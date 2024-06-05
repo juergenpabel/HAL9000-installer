@@ -3,22 +3,22 @@
 IMAGE_SRC=${1:-unknown}
 IMAGE_TAG=${2:-unknown}
 
-if [ "$IMAGE_SRC" = "unknown" ] || [ "$IMAGE_TAG" = "unknown" ]; then
+if [ "${IMAGE_SRC}" = "unknown" ] || [ "${IMAGE_TAG}" = "unknown" ]; then
 	echo "Usage: $0 <IMAGE-SRC> <IMAGE-TAG>"
-	echo "       IMAGE-SRC: most likely 'ghcr.io/juergenpabel' or 'localhost'"
-	echo "       IMAGE-TAG: most likely 'stable', 'development' or 'latest'"
+	echo "       - IMAGE-SRC: most likely 'ghcr.io/juergenpabel' or 'localhost'"
+	echo "       - IMAGE-TAG: most likely 'stable' or 'development'"
         exit 1
 fi
 
 SCRIPT_SRC=`realpath "$0"`
-SCRIPT_DIR=`dirname "$SCRIPT_SRC"`
+SCRIPT_DIR=`dirname "${SCRIPT_SRC}"`
 
 echo "HAL9000: Installing files for HAL9000-installer.service in systemd (user instance)..."
 sudo -i -u hal9000 sh -c "mkdir -p ~hal9000/.config/systemd/user"
 sudo -i -u hal9000 sh -c "mkdir -p ~hal9000/.local/share/HAL9000-installer"
-find "$SCRIPT_DIR" -name "*.template" -printf '%f\n' | while read FILENAME; do
-	sudo -i -u hal9000 sh -c "cat - > ~hal9000/.local/share/HAL9000-installer/$FILENAME" \
-	                                < "$SCRIPT_DIR/$FILENAME"
+find "${SCRIPT_DIR}" -name "*.template" -printf '%f\n' | while read FILENAME; do
+	sudo -i -u hal9000 sh -c "cat - > ~hal9000/.local/share/HAL9000-installer/${FILENAME}" \
+	                                < "${SCRIPT_DIR}/${FILENAME}"
 done
 
 sudo -i -u hal9000 sh -c "mv    ~hal9000/.local/share/HAL9000-installer/HAL9000-installer.service.template \

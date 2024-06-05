@@ -80,6 +80,7 @@ if [ "$HAL9000_PLATFORM_ARCH" = "unknown" ]; then
 			;;
 		*)
 			echo "\e[31mERROR\e[0m: unknown hardware platform, please add mapping to this script and run again"
+			exit 1
 			;;
 	esac
 fi
@@ -139,9 +140,8 @@ for SOFTWARE_PACKAGE in python3 python3-venv python3-pip-whl libpython3-dev liba
 	fi
 done
 if [ "x$MISSING_SOFTWARE_PACKAGES" != "x" ]; then
-	echo "\e[31mERROR\e[0m: some required software packages are not installed, please install them:"
-	echo "       sudo apt install -y $MISSING_SOFTWARE_PACKAGES"
-	exit 1
+	echo "Installing missing software packages (for this installer)..."
+	sudo apt install -y $MISSING_SOFTWARE_PACKAGES
 fi
 
 if [ ! -d .venv ]; then
@@ -150,14 +150,14 @@ if [ ! -d .venv ]; then
 fi
 . .venv/bin/activate
 
-export HAL9000_HARDWARE_VENDOR
-export HAL9000_HARDWARE_PRODUCT
-export HAL9000_PLATFORM_ARCH
-export HAL9000_PLATFORM_OS
-export HAL9000_ARDUINO_VENDOR
-export HAL9000_ARDUINO_PRODUCT
 export HAL9000_SYSTEM_ID=`echo "$HAL9000_HARDWARE_VENDOR-$HAL9000_HARDWARE_PRODUCT" | sed 's/ //g' | tr '[:upper:]' '[:lower:]'`
 export HAL9000_ARDUINO_ID=`echo "$HAL9000_ARDUINO_VENDOR-$HAL9000_ARDUINO_PRODUCT" | sed 's/ //g' | tr '[:upper:]' '[:lower:]'`
+unset HAL9000_HARDWARE_VENDOR
+unset HAL9000_HARDWARE_PRODUCT
+unset HAL9000_PLATFORM_ARCH
+unset HAL9000_PLATFORM_OS
+unset HAL9000_ARDUINO_VENDOR
+unset HAL9000_ARDUINO_PRODUCT
 
 echo "Installing dependencies in python virtual environment..."
 pip install -q -r requirements.txt

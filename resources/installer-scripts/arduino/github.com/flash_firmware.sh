@@ -1,34 +1,47 @@
 #!/bin/sh
 
-SCRIPT_SRC=`realpath -s $0`
-SCRIPT_DIR=`dirname "$SCRIPT_SRC"`
-GIT_DIR=`git rev-parse --show-toplevel`
+HAL9000_ARDUINO_ID="${1:-unknown}"
+HAL9000_INSTALL_VERSION="${2:-unknown}"
 
-HAL9000_PLATFORM_ARCH="${HAL9000_PLATFORM_ARCH:-unknown}"
-HAL9000_ARDUINO_VENDOR="${HAL9000_ARDUINO_VENDOR:-unknown}"
-HAL9000_ARDUINO_PRODUCT="${HAL9000_ARDUINO_PRODUCT:-unknown}"
-
-FIRMWARE_VERSION="${1:-unknown}"
-HAL9000_PIO_NAME=`echo "$HAL9000_ARDUINO_VENDOR-$HAL9000_ARDUINO_PRODUCT" | sed 's/ //g' | tr '[:upper:]' '[:lower:]'`
-
-if [ "$FIRMWARE_VERSION" = "unknown" ]; then
-	echo "Usage: $0 <FIRMWARE-VERSION> # most likely 'stable' or 'development'"
+if [ "${HAL9000_ARDUINO_ID}" = "unknown" ]; then
+	echo "Usage: $0 <ARDUINO-ID> <FIRMWARE-VERSION>"
+	echo "       - ARDUINO-ID: something like 'm5stack-core2' or 'sbcomponents-roundypi'"
+	echo "       - FIRMWARE-VERSION: something like 'stable' or 'development'"
+	exit 1
+fi
+if [ "${HAL9000_INSTALL_VERSION}" = "unknown" ]; then
+	echo "Usage: $0 '${HAL9000_ARDUINO_ID}' <FIRMWARE-VERSION>"
+	echo "       - FIRMWARE-VERSION: something like 'stable' or 'development'"
 	exit 1
 fi
 
-echo "HAL9000: Flashing firmware '${FIRMWARE_VERSION}' on '$HAL9000_ARDUINO_VENDOR: $HAL9000_ARDUINO_PRODUCT'..."
+case "${HAL9000_ARDUINO_ID}" in
+	"sbcomponents-roundypi" | "waveshare-rp2040_lcd128")
+		HAL9000_ARDUINO_MCU="RP2040"
+		;;
+	"m5stack-core2")
+		HAL9000_ARDUINO_MCU="ESP32"
+		;;
+	*)
+		echo "\e[31mERROR\e[0m: unsupported arduino board-id, please add mapping to this script and run again"
+		exit 1
+		;;
+esac
 
-case "${HAL9000_ARDUINO_VENDOR}:${HAL9000_ARDUINO_PRODUCT}" in
-	"SBComponents:RoundyPi" | "Waveshare:RP2040_LCD128")
+echo "HAL9000: Flashing firmware '${HAL9000_INSTALL_VERSION}' on '${HAL9000_ARDUINO_ID}' (MCU='${HAL9000_ARDUINO_MCU}')..."
+GIT_DIR=`git rev-parse --show-toplevel`
+
+case "${HAL9000_ARDUINO_MCU}" in
+	"RP2040")
 		if [ ! -x "${GIT_DIR}/resources/downloads/picotool" ]; then
 			echo "ERROR: missing picotool (${GIT_DIR}/resources/downloads/picotool)"
 			exit 1
 		fi
 		"${GIT_DIR}/resources/downloads/picotool" load --verify \
-		                                          "${GIT_DIR}/resources/downloads/${HAL9000_PIO_NAME}_firmware_${FIRMWARE_VERSION}.bin" \
+		                                          "${GIT_DIR}/resources/downloads/${HAL9000_ARDUINO_ID}_firmware_${HAL9000_INSTALL_VERSION}.bin" \
                                                           -t bin --offset 0x10000000
 		;;
-	"M5Stack:Core2")
+	"ESP32")
 		if [ ! -x "${GIT_DIR}/resources/downloads/esptool" ]; then
 			echo "ERROR: missing esptool (${GIT_DIR}/resources/downloads/esptool)"
 			exit 1
@@ -39,11 +52,7 @@ case "${HAL9000_ARDUINO_VENDOR}:${HAL9000_ARDUINO_PRODUCT}" in
 		                                         0x1000 "${GIT_DIR}/resources/firmwares/ESP32/bootloader.bin" \
 		                                         0x8000 "${GIT_DIR}/resources/firmwares/ESP32/partitions.bin" \
 		                                         0xe000 "${GIT_DIR}/resources/firmwares/ESP32/boot_app0.bin" \
-		                                         0x10000 "${GIT_DIR}/resources/downloads/${HAL9000_PIO_NAME}_firmware_${FIRMWARE_VERSION}.bin"
-		;;
-	*)
-		echo "ERROR: unknown MCU (probably missing HAL9000_ARDUINO_VENDOR and HAL9000_ARDUINO_PRODUCT?)"
-		exit 1
+		                                         0x10000 "${GIT_DIR}/resources/downloads/${HAL9000_ARDUINO_ID}_firmware_${HAL9000_INSTALL_VERSION}.bin"
 		;;
 esac
 
