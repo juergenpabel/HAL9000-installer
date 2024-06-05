@@ -18,9 +18,9 @@ fi
 echo "HAL9000: Downloading filesystem version '${HAL9000_INSTALL_VERSION}' for '${HAL9000_ARDUINO_ID}'..."
 GIT_DIR=`git rev-parse --show-toplevel`
 
-if [ ! -f "${GIT_DIR}/resources/downloads/${HAL9000_ARDUINO_ID}_filesystem_${HAL9000_INSTALL_VERSION}.bin" ]; then
-	wget -q --show-progress -O "${GIT_DIR}/resources/downloads/${HAL9000_ARDUINO_ID}_filesystem_${HAL9000_INSTALL_VERSION}.bin" \
-	     "https://github.com/juergenpabel/HAL9000/releases/download/${HAL9000_INSTALL_VERSION}/${HAL9000_ARDUINO_ID}_filesystem.bin"
+if [ ! -f "${GIT_DIR}/resources/downloads/${HAL9000_ARDUINO_ID}_littlefs_${HAL9000_INSTALL_VERSION}.bin" ]; then
+	wget -q --show-progress -O "${GIT_DIR}/resources/downloads/${HAL9000_ARDUINO_ID}_littlefs_${HAL9000_INSTALL_VERSION}.bin" \
+	     "https://github.com/juergenpabel/HAL9000/releases/download/${HAL9000_INSTALL_VERSION}/${HAL9000_ARDUINO_ID}_littlefs.bin"
 	if [ $? -ne 0 ]; then
 		echo "ERROR: Download failed"
 		exit 1
