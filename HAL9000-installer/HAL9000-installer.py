@@ -15,7 +15,7 @@ from textual import events
 from textual_terminal import Terminal
 from rich_pixels import Pixels
 
-gettext.translation('HAL9000-installer', 'HAL9000-installer/locales', fallback=True, languages=['en', 'de']).install()
+gettext.translation('HAL9000-installer', 'HAL9000-installer/locales', fallback=True, languages=['en']).install()
 
 
 class HAL9000(Widget):
