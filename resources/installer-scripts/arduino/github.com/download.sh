@@ -19,6 +19,6 @@ echo "HAL9000: Downloading firmware and filesystem (version '${HAL9000_INSTALL_V
 SCRIPT_SRC=`realpath -s $0`
 SCRIPT_DIR=`dirname "${SCRIPT_SRC}"`
 
-"${SCRIPT_DIR}"/download_firmware.sh   "${HAL9000_ARDUINO_ID}" "${FIRMWARE_VERSION}"
-"${SCRIPT_DIR}"/download_filesystem.sh "${HAL9000_ARDUINO_ID}" "${FIRMWARE_VERSION}"
+"${SCRIPT_DIR}"/download_firmware.sh   "${HAL9000_ARDUINO_ID}" "${HAL9000_INSTALL_VERSION}"
+"${SCRIPT_DIR}"/download_filesystem.sh "${HAL9000_ARDUINO_ID}" "${HAL9000_INSTALL_VERSION}"
 
