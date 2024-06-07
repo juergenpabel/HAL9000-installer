@@ -15,7 +15,8 @@ from textual import events
 from textual_terminal import Terminal
 from rich_pixels import Pixels
 
-gettext.translation('HAL9000-installer', 'HAL9000-installer/locales', fallback=True, languages=['en']).install()
+lang_code = os.getenv('LANG', default='en')
+gettext.translation('HAL9000-installer', 'HAL9000-installer/locales', fallback=True, languages=[lang_code[0:2]]).install()
 
 
 class HAL9000(Widget):
@@ -251,7 +252,7 @@ class HAL9000InstallerApp(App):
 					self.installer_screen_wizard_dialog['progress'].action_first()
 					self.installer_screen_wizard_dialog['progress'].scroll_to_highlight()
 					data = self.installer_cmd_queue.pop(0)
-					self.installer_execute_command(data['id'], data['command'], data['title'])
+					self.installer_execute_command(data['id'], data['command'])
 				elif str(self.installer_btn.label) == str(_("Abort")):
 					self.installer_abort_command()
 					self.query_one('#installer_screen_wizard_dialog').current = 'installer_screen_wizard_strategy'
@@ -281,30 +282,21 @@ class HAL9000InstallerApp(App):
 			elif self.query_one('#installer_screen').current == 'installer_screen_expert':
 				for tree in self.installer_screen_expert_trees.values():
 					if tree.cursor_node is not None and tree.cursor_node.data is not None:
-						self.installer_execute_command(tree.cursor_node.id, tree.cursor_node.data, None)
+						self.installer_execute_command(tree.cursor_node.id, tree.cursor_node.data)
 				self.installer_btn.label = _("Abort")
 
 
-	def installer_queue_command(self, id, command, title=None) -> None:
-		if self.installer_cmd.command is None:
-			self.installer_execute_command(id, command, title)
-		else:
-			self.installer_cmd_queue.append({'id': id, 'command': command, 'title': title})
-
-
-	def installer_execute_command(self, id, command, title=None) -> None:
+	def installer_execute_command(self, id, command) -> None:
 		command = os.path.expandvars(command)
 		if self.installer_cmd.command is not None:
 			self.notify(f"BUG: an installer command is currently still running (this shouldn't have happened)")
 			return
-		if title is None:
-			title = command
 		executable, *arguments = command.split(' ', 1)
 		if os.path.isfile(executable) is True:
 			self.installer_btn.label = _("Abort")
 			self.installer_cmd.command = command
 			self.installer_cmd.command_id = id
-			self.installer_cmd.border_title = _("Command execution: {title}").format(title=title)
+			self.installer_cmd.border_title = _("Command execution: {command}").format(command=command)
 			self.installer_cmd.start()
 			self.installer_cmd_timer = self.installer_cmd.set_interval(1, self.on_installer_timer)
 			self.installer_cmd.ncol = self.installer_cmd.content_size.width
@@ -322,7 +314,7 @@ class HAL9000InstallerApp(App):
 					self.installer_screen_wizard_dialog['progress'].action_cursor_down()
 					self.installer_screen_wizard_dialog['progress'].scroll_to_highlight()
 					data = self.installer_cmd_queue.pop(0)
-					self.installer_execute_command(data['id'], data['command'], data['title'] if 'title' in data else data['command'])
+					self.installer_execute_command(data['id'], data['command'])
 			if self.query_one('#installer_screen').current == 'installer_screen_expert':
 				self.installer_screen_expert_trees['system'].disabled = False
 				self.installer_screen_expert_trees['application'].disabled = False
@@ -366,7 +358,7 @@ class HAL9000InstallerApp(App):
 					self.installer_screen_wizard_dialog['progress'].action_cursor_down()
 					self.installer_screen_wizard_dialog['progress'].scroll_to_highlight()
 					data = self.installer_cmd_queue.pop(0)
-					self.installer_execute_command(data['id'], data['command'], data['title'] if 'title' in data else data['command'])
+					self.installer_execute_command(data['id'], data['command'])
 				else:
 					self.installer_cmd.border_title = _("Command execution")
 					self.installer_btn.label = _("Installation finished, click (or CTRL-C) to exit installer")
