@@ -169,23 +169,22 @@ if [ $? -eq 0 ]; then
 	echo "Running post-installation checks..."
 	id hal9000 2>/dev/null >/dev/null
 	CHECK_USER=$?
-	HAL9000_SYSTEMD=`ps -ef | grep "systemd --user" | grep hal9000 | wc -l`
-	if [ "x$HAL9000_SYSTEMD" = "x1" ]; then
-		CHECK_CONTAINER=0
-	else
-		CHECK_CONTAINER=1
-	fi
+	pgrep -u hal9000 -f "/lib/systemd/systemd --user" >/dev/null
+	CHECK_SYSTEMD=$?
 	stat /etc/udev/rules.d/99-hal9000-alsa.rules 2>/dev/null >/dev/null
 	CHECK_ALSA=$?
 	stat /etc/udev/rules.d/99-hal9000-tty.rules 2>/dev/null >/dev/null
 	CHECK_TTY=$?
-	if [ $CHECK_USER -eq 0 ] && [ $CHECK_CONTAINER -eq 0 ] && [ $CHECK_ALSA -eq 0 ] && [ $CHECK_TTY -eq 0 ]; then
+	if [ $CHECK_USER -eq 0 ] && [ $CHECK_SYSTEMD -eq 0 ] && [ $CHECK_ALSA -eq 0 ] && [ $CHECK_TTY -eq 0 ]; then
 		echo " "
-		echo "\e[31mGood afternoon, gentlemen. I am (now) a HAL 9000 computer.\e[0m"
+		echo "\e[32mGood afternoon, gentlemen. I am (now) a HAL 9000 computer.\e[0m"
 		echo " "
-		echo "All post-installation checks have passed; please shutdown (power-"
-		echo "off) the system (to fully reset the microcontroller) than power-on"
+		echo "All post-installation checks have passed; please shutdown (power-off)"
+		echo "the system (to fully reset the microcontroller) than power-on"
 		echo "...and enjoy!"
+		echo " "
+		echo "For a quick guide on how to interact with this (demo) installation visit"
+		echo "\e[90mhttps://github.com/juergenpabel/HAL9000-installer/wiki/Installation-finished\e[0m"
 	else
 		echo "\e[31mI just picked up a fault in the AE-35 Unit.\e[0m"
 		echo " "
@@ -195,6 +194,6 @@ else
 	echo "\e[31mI just picked up a fault in the AE-35 Unit.\e[0m"
 	echo " "
 	echo "Something unexpected happened with the installer - please file a bug report at"
-	echo "https://github.com/juergenpabel/HAL9000-installer/issues/new"
+	echo "\e[90mhttps://github.com/juergenpabel/HAL9000-installer/issues/new\e[0m"
 fi
 
