@@ -133,7 +133,7 @@ fi
 
 echo "Checking required software packages (for this installer)..."
 MISSING_SOFTWARE_PACKAGES=""
-for SOFTWARE_PACKAGE in python3 python3-venv python3-pip-whl libpython3-dev libasound2-dev polkitd ; do
+for SOFTWARE_PACKAGE in python3 python3-venv python3-pip-whl gcc libpython3-dev libasound2-dev polkitd ; do
 	dpkg -s $SOFTWARE_PACKAGE 2>/dev/null >/dev/null
 	if [ $? -ne 0 ]; then
 		MISSING_SOFTWARE_PACKAGES="$SOFTWARE_PACKAGE $MISSING_SOFTWARE_PACKAGES"
