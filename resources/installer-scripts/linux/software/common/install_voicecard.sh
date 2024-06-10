@@ -42,7 +42,7 @@ else
 	export `grep "^PACKAGE_NAME="    /etc/voicecard/dkms.conf`
 	export `grep "^PACKAGE_VERSION=" /etc/voicecard/dkms.conf`
 	find /boot/ -maxdepth 1 -name 'vmlinuz-*v8' | sed 's#/boot/vmlinuz-##g' | while read KERNEL_VERSION ; do
-		sudo dkms install --force ${PACKAGE_NAME}/${PACKAGE_VERSION} -k ${KERNEL_VERSION}
+		sudo dkms install --force -m "${PACKAGE_NAME}" -v "${PACKAGE_VERSION}" -k "${KERNEL_VERSION}"
 	done
 	grep -q '^autoinstall_all_kernels="yes"$' /etc/dkms/framework.conf
 	if [ $? -eq 1 ]; then
