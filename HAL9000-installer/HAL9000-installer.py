@@ -294,7 +294,7 @@ class HAL9000InstallerApp(App):
 		executable, *arguments = command.split(' ', 1)
 		if os.path.isfile(executable) is True:
 			self.installer_btn.label = _("Abort")
-			self.installer_cmd.command = command
+			self.installer_cmd.command = f'( {command} ) 2>&1 | tee -a HAL9000-installer.log'
 			self.installer_cmd.command_id = id
 			self.installer_cmd.border_title = _("Command execution: {command}").format(command=command)
 			self.installer_cmd.start()
