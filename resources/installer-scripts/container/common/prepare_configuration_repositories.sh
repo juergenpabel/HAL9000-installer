@@ -16,9 +16,10 @@ echo "HAL9000: Cloning git repository '${CONFIGURATION_GIT_URL}' to '~hal9000/HA
 sudo -i -u hal9000 sh -c "mkdir -p ~hal9000/HAL9000"
 sudo -i -u hal9000 sh -c "git clone ${CONFIGURATION_GIT_URL} ~hal9000/HAL9000/${GIT_NAME}"
 for SERVICE in kalliope brain console frontend ; do
-	echo "HAL9000: Copying git repository to '~hal9000/HAL9000/${SERVICE}'..."
+	echo "HAL9000: Copying git repository to '~hal9000/HAL9000/${SERVICE}' and preparing it..."
 	sudo -i -u hal9000 sh -c "cp -r ~hal9000/HAL9000/${GIT_NAME} ~hal9000/HAL9000/${SERVICE}"
 	sudo -i -u hal9000 sh -c "cd ~hal9000/HAL9000/${SERVICE} ; git checkout ${SERVICE}"
+	sudo -i -u hal9000 sh -c "cd ~hal9000/HAL9000/${SERVICE} ; git submodule update --init --recursive"
 done
 
 echo "HAL9000: Adding 'assets' symlink to git repositories for 'console' and 'frontend'..."
