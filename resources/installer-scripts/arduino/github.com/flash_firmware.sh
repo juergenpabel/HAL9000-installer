@@ -31,6 +31,11 @@ esac
 echo "HAL9000: Flashing firmware '${HAL9000_INSTALL_VERSION}' on '${HAL9000_ARDUINO_ID}' (MCU='${HAL9000_ARDUINO_MCU}')..."
 GIT_DIR=`git rev-parse --show-toplevel`
 
+if [ ! -f "${GIT_DIR}/resources/downloads/${HAL9000_ARDUINO_ID}_firmware_${HAL9000_INSTALL_VERSION}.bin" ]; then
+	echo "ERROR: firmware image not found: (${GIT_DIR}/resources/downloads/${HAL9000_ARDUINO_ID}_firmware_${HAL9000_INSTALL_VERSION}.bin)"
+	exit 1
+fi
+
 case "${HAL9000_ARDUINO_MCU}" in
 	"RP2040")
 		if [ ! -x "${GIT_DIR}/resources/downloads/picotool" ]; then

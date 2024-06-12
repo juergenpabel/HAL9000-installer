@@ -23,6 +23,7 @@ if [ ! -f "${GIT_DIR}/resources/downloads/${HAL9000_ARDUINO_ID}_firmware_${HAL90
 	     "https://github.com/juergenpabel/HAL9000/releases/download/${HAL9000_INSTALL_VERSION}/${HAL9000_ARDUINO_ID}_firmware.bin"
 	if [ $? -ne 0 ]; then
 		echo "ERROR: Download failed"
+		rm "${GIT_DIR}/resources/downloads/${HAL9000_ARDUINO_ID}_firmware_${HAL9000_INSTALL_VERSION}.bin"
 		exit 1
 	fi
 fi

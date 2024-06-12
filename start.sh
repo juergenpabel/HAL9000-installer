@@ -189,6 +189,7 @@ if [ $? -eq 0 ]; then
 		echo "\e[31mI just picked up a fault in the AE-35 Unit.\e[0m"
 		echo " "
 		echo "Some post-installation checks have failed; did you run all installation steps?"
+		echo "Take a look at HAL9000-installer.log (output from all executed installation commands)"
 	fi
 else
 	echo "\e[31mI just picked up a fault in the AE-35 Unit.\e[0m"
