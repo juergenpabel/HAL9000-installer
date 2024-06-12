@@ -1,0 +1,1 @@
+../common/prepare_configuration_repositories.sh

@@ -98,6 +98,9 @@ nodes:
               - id: application_podman_build_compile
                 label: "Compile container images"
                 command: "resources/installer-scripts/container/build/build_images.sh ${HAL9000_INSTALL_VERSION}"
+              - id: application_podman_build_configuration
+                label: "Download HAL9000 configuration repositories"
+                command: "resources/installer-scripts/container/build/prepare_configuration_repositories.sh https://github.com/juergenpabel/HAL9000-demo-en_US.git"
               - id: application_podman_build_install
                 label: "Install containers with systemd (user instance)"
                 command: "resources/installer-scripts/container/build/install_systemd_user_service.sh localhost ${HAL9000_INSTALL_VERSION}"
@@ -111,6 +114,9 @@ nodes:
               - id: application_podman_ghcrio_download
                 label: "Download from ghcr.io/juergenpabel/HAL9000/"
                 command: "resources/installer-scripts/container/ghcr.io/download_images.sh ${HAL9000_INSTALL_VERSION}"
+              - id: application_podman_ghcrio_configuration
+                label: "Download HAL9000 configuration repositories"
+                command: "resources/installer-scripts/container/ghcr.io/prepare_configuration_repositories.sh https://github.com/juergenpabel/HAL9000-demo-en_US.git"
               - id: application_podman_ghcrio_install
                 label: "Install containers with systemd (user instance)"
                 command: "resources/installer-scripts/container/build/install_systemd_user_service.sh ghcr.io/juergenpabel ${HAL9000_INSTALL_VERSION}"
