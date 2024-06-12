@@ -21,3 +21,7 @@ for SERVICE in kalliope brain console frontend ; do
 	sudo -i -u hal9000 sh -c "cd ~hal9000/HAL9000/${SERVICE} ; git checkout ${SERVICE}"
 done
 
+echo "HAL9000: Adding 'assets' symlink to git repositories for 'console' and 'frontend'..."
+sudo -i -u hal9000 sh -c "cd ~hal9000/HAL9000/console  ; ln -sf ../assets assets"
+sudo -i -u hal9000 sh -c "cd ~hal9000/HAL9000/frontend ; ln -sf ../assets assets"
+
