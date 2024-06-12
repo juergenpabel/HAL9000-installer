@@ -1,6 +1,6 @@
 [Unit]
 Description=container-hal9000-console-proxy.socket
-BindsTo=pod-hal9000.service
+PartOf=pod-hal9000.service
 
 [Socket]
 ListenStream=SYSTEM_IP:8080
