@@ -5,26 +5,10 @@ export PATH=/bin:/usr/bin
 IMAGE_SRC="${1:-unknown}"
 IMAGE_TAG="${2:-unknown}"
 
-SYSTEM_IF=`ip -br address show | grep -v "^lo " | grep -v "^loop" | grep UP | cut -d' ' -f 1 | head -1`
-SYSTEM_IP="127.127.127.127"
-if [ "x${SYSTEM_IF}" != "x" ]; then
-	CURRENT_IP=`ip -br address show dev ${SYSTEM_IF} | cut -d'/' -f 1 | rev | cut -d' ' -f 1 | rev 2>/dev/null`
-	if [ "x${CURRENT_IP}" != "x" ]; then
-		SYSTEM_IP="$CURRENT_IP"
-	fi
-fi
-
-
 if [ "${IMAGE_SRC}" = "unknown" ] && [ "${IMAGE_TAG}" = "unknown" ]; then
 	systemctl --user --quiet list-unit-files pod-hal9000.service > /dev/null
 	case "$?" in
 		0)
-			# update ip address for container-hal9000-[console|frontend]-proxy.socket
-			sed -i "s/ListenStream=[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\:8080/ListenStream=${SYSTEM_IP}:8080/g" \
-			    ~hal9000/.config/systemd/user/container-hal9000-console-proxy.socket
-			sed -i "s/ListenStream=[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\:9000/ListenStream=${SYSTEM_IP}:9000/g" \
-			    ~hal9000/.config/systemd/user/container-hal9000-frontend-proxy.socket
-			systemctl --user daemon-reload
 			exit 1 # exit code 'skip' for ExecCondition in HAL9000-installer.service
 			;;
 		1)
@@ -59,10 +43,9 @@ fi
 echo -n "Creating pod 'hal9000':                 "
 podman pod create --name hal9000 \
                   --infra-name hal9000-infra \
-                  -p 127.0.0.1:1883:1883 \
-                  -p 127.0.0.1:5000:5000 \
-                  -p 127.0.0.1:8080:8080 \
-                  -p 127.0.0.1:9000:9000 \
+                  -p 127.0.0.1:5555:5000 \
+                  -p 127.0.0.1:8888:8080 \
+                  -p 127.0.0.1:9999:9000 \
                   --network hal9000 \
                   --hostname hal9000
 
@@ -122,28 +105,34 @@ fi
 sh -c "cd ~hal9000/.config/systemd/user ; \
        podman generate systemd -n -f --start-timeout 5 --stop-timeout 5 hal9000"
 
+echo "Activating socket-proxy for console in systemd (user instance) - including socket-activation of container..."
+cp ~hal9000/.local/share/HAL9000-installer/container-hal9000-console-proxy.socket.template \
+   ~hal9000/.config/systemd/user/container-hal9000-console-proxy.socket
+cp ~hal9000/.local/share/HAL9000-installer/container-hal9000-console-proxy.service.template \
+   ~hal9000/.config/systemd/user/container-hal9000-console-proxy.service
+sed -i 's/After=container/Requires=container-hal9000-console-proxy.socket\nAfter=container-hal9000-console-proxy.socket\nAfter=container/' \
+    ~hal9000/.config/systemd/user/container-hal9000-console.service
+sed -i 's/container-hal9000-console.service/container-hal9000-console-proxy.socket/g' \
+    ~hal9000/.config/systemd/user/pod-hal9000.service
+
 echo "Activating socket-proxy for frontend in systemd (user instance)..."
 cp ~hal9000/.local/share/HAL9000-installer/container-hal9000-frontend-proxy.service.template \
    ~hal9000/.config/systemd/user/container-hal9000-frontend-proxy.service
 cp ~hal9000/.local/share/HAL9000-installer/container-hal9000-frontend-proxy.socket.template \
-   ~hal9000/.config/systemd/user/container-hal9000-frontend-proxy.socket
-sed -i "s/ListenStream=[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\:9000/ListenStream=${SYSTEM_IP}:9000/g" \
    ~hal9000/.config/systemd/user/container-hal9000-frontend-proxy.socket
 sed -i 's/After=container/Requires=container-hal9000-frontend-proxy.socket\nAfter=container-hal9000-frontend-proxy.socket\nAfter=container/' \
     ~hal9000/.config/systemd/user/container-hal9000-frontend.service
 sed -i 's/container-hal9000-frontend.service/container-hal9000-frontend-proxy.socket/g' \
     ~hal9000/.config/systemd/user/pod-hal9000.service
 
-echo "Activating socket-proxy for console in systemd (user instance) - including socket-activation of container..."
-cp ~hal9000/.local/share/HAL9000-installer/container-hal9000-console-proxy.socket.template \
-   ~hal9000/.config/systemd/user/container-hal9000-console-proxy.socket
-cp ~hal9000/.local/share/HAL9000-installer/container-hal9000-console-proxy.service.template \
-   ~hal9000/.config/systemd/user/container-hal9000-console-proxy.service
-sed -i "s/ListenStream=[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\:8080/ListenStream=${SYSTEM_IP}:8080/g" \
-   ~hal9000/.config/systemd/user/container-hal9000-console-proxy.socket
-sed -i 's/After=container/Requires=container-hal9000-console-proxy.socket\nAfter=container-hal9000-console-proxy.socket\nAfter=container/' \
-    ~hal9000/.config/systemd/user/container-hal9000-console.service
-sed -i 's/container-hal9000-console.service/container-hal9000-console-proxy.socket/g' \
+echo "Activating socket-proxy for kalliope in systemd (user instance)..."
+cp ~hal9000/.local/share/HAL9000-installer/container-hal9000-kalliope-proxy.service.template \
+   ~hal9000/.config/systemd/user/container-hal9000-kalliope-proxy.service
+cp ~hal9000/.local/share/HAL9000-installer/container-hal9000-kalliope-proxy.socket.template \
+   ~hal9000/.config/systemd/user/container-hal9000-kalliope-proxy.socket
+sed -i 's/After=container/Requires=container-hal9000-kalliope-proxy.socket\nAfter=container-hal9000-kalliope-proxy.socket\nAfter=container/' \
+    ~hal9000/.config/systemd/user/container-hal9000-kalliope.service
+sed -i 's/container-hal9000-kalliope.service/container-hal9000-kalliope-proxy.socket/g' \
     ~hal9000/.config/systemd/user/pod-hal9000.service
 
 echo "Reloading systemd (user instance)..."

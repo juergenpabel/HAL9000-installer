@@ -4,7 +4,7 @@ BindsTo=container-hal9000-frontend.service
 PartOf=pod-hal9000.service
 
 [Socket]
-ListenStream=127.127.127.127:9000
+ListenStream=0.0.0.0:9000
 FreeBind=true
 
 [Install]
