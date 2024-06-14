@@ -1,9 +1,11 @@
 [Unit]
 Description=container-hal9000-console-proxy.socket
-PartOf=pod-hal9000.service
+PartOf=container-hal9000-console.service
+BindsTo=pod-hal9000.service
 
 [Socket]
-ListenStream=SYSTEM_IP:8080
+ListenStream=127.127.127.127:8080
+FreeBind=true
 
 [Install]
 WantedBy=sockets.target
