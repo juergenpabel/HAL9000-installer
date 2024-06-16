@@ -128,9 +128,9 @@ cp ~hal9000/.local/share/HAL9000-installer/container-hal9000-kalliope-proxy.sock
    ~hal9000/.config/systemd/user/container-hal9000-kalliope-proxy.socket
 
 echo "Switching to socket-activation for console in systemd (user instance)..."
-sed -i 's/After=container/Requires=container-hal9000-console-proxy.socket\nAfter=container-hal9000-console-proxy.socket\nAfter=container/' \
-    ~hal9000/.config/systemd/user/container-hal9000-console.service
-sed -i 's/container-hal9000-console.service/container-hal9000-console-proxy.socket/g' \
+sed -i 's/container-hal9000-console.service//g' \
+    ~hal9000/.config/systemd/user/pod-hal9000.service
+sed -i 's/After=container/ExecStopPost=systemctl --user stop pod-hal9000.socket\nAfter=container/' \
     ~hal9000/.config/systemd/user/pod-hal9000.service
 
 echo "Reloading systemd (user instance)..."
