@@ -5,7 +5,6 @@ PartOf=pod-hal9000.service
 
 [Socket]
 ListenStream=0.0.0.0:9000
-FreeBind=true
 
 [Install]
 WantedBy=sockets.target

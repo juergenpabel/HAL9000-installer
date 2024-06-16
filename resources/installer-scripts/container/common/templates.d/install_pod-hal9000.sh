@@ -105,42 +105,42 @@ fi
 sh -c "cd ~hal9000/.config/systemd/user ; \
        podman generate systemd -n -f --start-timeout 5 --stop-timeout 5 hal9000"
 
-echo "Activating socket-proxy for console in systemd (user instance) - including socket-activation of container..."
-cp ~hal9000/.local/share/HAL9000-installer/container-hal9000-console-proxy.socket.template \
+echo "Creating pod-hal9000.socket..."
+cp ~hal9000/.local/share/HAL9000-installer/pod-hal9000.socket \
+   ~hal9000/.config/systemd/user/pod-hal9000.socket
+
+echo "Creating socket-proxy for console in systemd (user instance)..."
+cp ~hal9000/.local/share/HAL9000-installer/container-hal9000-console-proxy.socket \
    ~hal9000/.config/systemd/user/container-hal9000-console-proxy.socket
-cp ~hal9000/.local/share/HAL9000-installer/container-hal9000-console-proxy.service.template \
+cp ~hal9000/.local/share/HAL9000-installer/container-hal9000-console-proxy.service \
    ~hal9000/.config/systemd/user/container-hal9000-console-proxy.service
+
+echo "Creating socket-proxy for frontend in systemd (user instance)..."
+cp ~hal9000/.local/share/HAL9000-installer/container-hal9000-frontend-proxy.service \
+   ~hal9000/.config/systemd/user/container-hal9000-frontend-proxy.service
+cp ~hal9000/.local/share/HAL9000-installer/container-hal9000-frontend-proxy.socket \
+   ~hal9000/.config/systemd/user/container-hal9000-frontend-proxy.socket
+
+echo "Creating socket-proxy for kalliope in systemd (user instance)..."
+cp ~hal9000/.local/share/HAL9000-installer/container-hal9000-kalliope-proxy.service \
+   ~hal9000/.config/systemd/user/container-hal9000-kalliope-proxy.service
+cp ~hal9000/.local/share/HAL9000-installer/container-hal9000-kalliope-proxy.socket \
+   ~hal9000/.config/systemd/user/container-hal9000-kalliope-proxy.socket
+
+echo "Switching to socket-activation for console in systemd (user instance)..."
 sed -i 's/After=container/Requires=container-hal9000-console-proxy.socket\nAfter=container-hal9000-console-proxy.socket\nAfter=container/' \
     ~hal9000/.config/systemd/user/container-hal9000-console.service
 sed -i 's/container-hal9000-console.service/container-hal9000-console-proxy.socket/g' \
     ~hal9000/.config/systemd/user/pod-hal9000.service
 
-echo "Activating socket-proxy for frontend in systemd (user instance)..."
-cp ~hal9000/.local/share/HAL9000-installer/container-hal9000-frontend-proxy.service.template \
-   ~hal9000/.config/systemd/user/container-hal9000-frontend-proxy.service
-cp ~hal9000/.local/share/HAL9000-installer/container-hal9000-frontend-proxy.socket.template \
-   ~hal9000/.config/systemd/user/container-hal9000-frontend-proxy.socket
-sed -i 's/After=container/Requires=container-hal9000-frontend-proxy.socket\nAfter=container-hal9000-frontend-proxy.socket\nAfter=container/' \
-    ~hal9000/.config/systemd/user/container-hal9000-frontend.service
-sed -i 's/container-hal9000-frontend.service/container-hal9000-frontend-proxy.socket/g' \
-    ~hal9000/.config/systemd/user/pod-hal9000.service
-
-echo "Activating socket-proxy for kalliope in systemd (user instance)..."
-cp ~hal9000/.local/share/HAL9000-installer/container-hal9000-kalliope-proxy.service.template \
-   ~hal9000/.config/systemd/user/container-hal9000-kalliope-proxy.service
-cp ~hal9000/.local/share/HAL9000-installer/container-hal9000-kalliope-proxy.socket.template \
-   ~hal9000/.config/systemd/user/container-hal9000-kalliope-proxy.socket
-sed -i 's/After=container/Requires=container-hal9000-kalliope-proxy.socket\nAfter=container-hal9000-kalliope-proxy.socket\nAfter=container/' \
-    ~hal9000/.config/systemd/user/container-hal9000-kalliope.service
-sed -i 's/container-hal9000-kalliope.service/container-hal9000-kalliope-proxy.socket/g' \
-    ~hal9000/.config/systemd/user/pod-hal9000.service
-
 echo "Reloading systemd (user instance)..."
 systemctl --user daemon-reload
 
-echo "Enabling pod-hal9000.service in systemd (user instance)..."
+echo "Enabling pod-hal9000.[socket|service] in systemd (user instance)..."
+systemctl --user --quiet enable pod-hal9000.socket
 systemctl --user --quiet enable pod-hal9000.service
 
-echo "Starting pod-hal9000.service in systemd (user instance)..."
+echo "Starting pod-hal9000.[socket|service] in systemd (user instance)..."
+systemctl --user --quiet start pod-hal9000.socket
 systemctl --user --quiet start pod-hal9000.service
 
