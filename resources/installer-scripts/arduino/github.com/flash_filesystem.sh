@@ -29,13 +29,13 @@ case "${HAL9000_ARDUINO_ID}" in
 		;;
 esac
 
+echo "HAL9000: Flashing filesystem '${HAL9000_INSTALL_VERSION}' on '${HAL9000_ARDUINO_ID}'..."
+GIT_DIR=`git rev-parse --show-toplevel`
+
 if [ ! -f "${GIT_DIR}/resources/downloads/${HAL9000_ARDUINO_ID}_littlefs_${HAL9000_INSTALL_VERSION}.bin" ]; then 
 	echo "ERROR: filesystem image not found: (${GIT_DIR}/resources/downloads/${HAL9000_ARDUINO_ID}_littlefs_${HAL9000_INSTALL_VERSION}.bin)"
 	exit 1
 fi
-
-echo "HAL9000: Flashing filesystem '${HAL9000_INSTALL_VERSION}' on '${HAL9000_ARDUINO_ID}'..."
-GIT_DIR=`git rev-parse --show-toplevel`
 
 case "${HAL9000_ARDUINO_MCU}" in
 	"RP2040")
