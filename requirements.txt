@@ -1,5 +1,6 @@
-pyyaml
-textual
+textual==0.69.0
 textual-terminal
 rich-pixels
 pyalsaaudio
+pyyaml
+
