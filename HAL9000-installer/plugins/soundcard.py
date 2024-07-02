@@ -1,5 +1,6 @@
 import os
 import alsaaudio 
+from typing import Union
 from textual.app import App
 from textual.widget import Widget
 from textual.widgets import Select
@@ -10,7 +11,7 @@ class Soundcard(Plugin):
 	def __init__(self, id: str, name: str, app: App):
 		super().__init__(id, name, app)
 
-	def build(self) -> Widget:
+	def build(self) -> Union[Widget, None]:
 		options = []
 		cards = alsaaudio.cards()
 		if os.getenv('HAL9000_SYSTEM_ID', default='') == 'raspberrypi-zero2w' and len(cards) == 1 and cards[0] == 'vc4hdmi':

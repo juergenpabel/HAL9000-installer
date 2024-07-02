@@ -1,3 +1,4 @@
+from typing import Union
 from textual.app import App
 from textual.widget import Widget
 
@@ -7,6 +8,6 @@ class Plugin:
 		self.name = name
 		self.app = app
 
-	def build(self) -> Widget:
+	def build(self) -> Union[Widget, None]:
 		return None
 

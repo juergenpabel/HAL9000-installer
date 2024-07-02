@@ -1,0 +1,17 @@
+---
+id: "installer_screen_wizard_configuration"
+name: "HAL9000_CONFIGURATION_URL"
+label: "Configuration"
+type: "select"
+options:
+  - value: "https://github.com/juergenpabel/HAL9000-demo-en_US.git"
+    label: "Demo: English (US)"
+  - value: "https://github.com/juergenpabel/HAL9000-demo-de_DE.git"
+    label: "Demo: Deutsch (DE)"
+  - value: ""
+    label: "Provide URL for a custom configuration repository"
+help: >
+  Configuration aspects include the language both for
+  voice-commands and the user-interface but also integrations
+  (plugins) with other systems.
+...

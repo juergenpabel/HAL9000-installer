@@ -67,6 +67,14 @@ Screen {
     border: grey;
 }
 
+#installer_screen_wizard_configuration {
+    border: grey;
+}
+
+#installer_screen_wizard_configuration_url {
+    border: grey;
+}
+
 #installer_screen_wizard_soundcard {
     border: grey;
 }

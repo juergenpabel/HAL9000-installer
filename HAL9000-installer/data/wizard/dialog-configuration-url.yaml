@@ -1,0 +1,12 @@
+---
+id: "installer_screen_wizard_configuration_url"
+name: "HAL9000_CONFIGURATION_URL"
+label: "Custom configuration repository URL"
+type: "input"
+help: >
+  You chose to use a custom configuration (git)
+  repository. Please enter the URL to the
+  repository. The repository must contain the
+  following branches: brain, console, frontend
+  and kalliope.
+...
