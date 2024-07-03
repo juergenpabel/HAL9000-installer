@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HAL9000-installer HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-22 12:35+0200\n"
+"POT-Creation-Date: 2024-07-02 23:22+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Juergen Pabel <juergen@pabel.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,187 +17,166 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:29
+#: HAL9000-installer/HAL9000-installer.py:36
 msgid "Show the HAL9000 installer"
 msgstr "HAL9000 Installationsprogramm anzeigen"
 
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:30
+#: HAL9000-installer/HAL9000-installer.py:37
 msgid "Show a terminal window"
 msgstr "Terminal-Fenster anzeigen"
 
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:31
+#: HAL9000-installer/HAL9000-installer.py:38
 msgid "Help"
 msgstr "Hilfe anzeigen"
 
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:32
+#: HAL9000-installer/HAL9000-installer.py:39
 msgid "Exit"
 msgstr "Beenden"
 
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:42
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:135
+#: HAL9000-installer/HAL9000-installer.py:138
+#: HAL9000-installer/HAL9000-installer.py:291
+#: HAL9000-installer/HAL9000-installer.py:295
+#: HAL9000-installer/HAL9000-installer.py:371
+msgid "Next"
+msgstr "Weiter"
+
+#: HAL9000-installer/HAL9000-installer.py:153
+#: HAL9000-installer/HAL9000-installer.py:177
 msgid "HAL9000 Installer"
 msgstr "HAL9000 Installationsprogramm"
 
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:47
-msgid "Install software"
-msgstr "Software installieren"
-
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:48
-msgid "Install required system packages"
-msgstr "Installiere notwendige System-Pakete"
-
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:49
-msgid "Device-specific software"
-msgstr "Geräte-spezifische Software"
-
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:53
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:57
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:61
-msgid "Install voicecard/respeaker sound driver"
-msgstr "Installieren voicecard/respeaker Audio Treiber"
-
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:64
-msgid "Configure system"
-msgstr "System konfigurieren"
-
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:65
-msgid "Create 'hal9000' (application) user & group"
-msgstr "Erstelle 'hal9000' (Applikations-)Benutzer & Gruppe"
-
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:66
-msgid "Configure TTY device"
-msgstr "Konfigurieren des TTY Gerätes"
-
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:67
-msgid "Configure ALSA sound card"
-msgstr "Konfigurieren der ALSA Soundkarte"
-
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:68
-msgid "Device-specific configurations"
-msgstr "Geräte-spezifische Konfigurationen"
-
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:72
-msgid "Reduce GPU memory to 16MB"
-msgstr "Reduziere GPU Speicher auf 16MB"
-
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:73
-msgid "Deactivate CPUs #2 and #3"
-msgstr "Deaktiviere CPUs #2 und #3"
-
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:74
-msgid "Configure swap (1GB & swapiness=0)"
-msgstr "Konfiguriere swap (1GB & swappiness=0)"
-
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:85
-msgid "Microcontroller"
-msgstr "Mikrokontroller"
-
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:88
-msgid "Build firmware"
-msgstr "Baue Firmware"
-
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:89
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:105
-msgid "Prepare build environment"
-msgstr "Vorbereitung der build-Umgebung"
-
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:90
-msgid "Compile firmware"
-msgstr "Kompiliere Firmware"
-
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:91
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:95
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:98
-msgid "Flash firmware"
-msgstr "Installiere Firmware"
-
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:92
-#, fuzzy
-msgid "Pre-build firmware"
-msgstr "Baue Firmware"
-
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:93
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:111
-msgid "Version 'stable'"
-msgstr ""
-
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:94
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:97
-msgid "Download firmware"
-msgstr ""
-
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:96
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:115
-msgid "Version 'development'"
-msgstr ""
-
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:100
-msgid "<No supported microcontroller detected>"
-msgstr "<Kein unterstützer Mikrokontroller erkannt>"
-
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:102
-msgid "Application (HAL9000)"
-msgstr "Applikation (HAL9000)"
-
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:103
-msgid "Container"
-msgstr "Container"
-
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:104
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:106
-msgid "Build images"
-msgstr "Baue Container-Images"
-
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:107
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:113
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:117
-msgid "Create containers"
-msgstr "Erstelle Container"
-
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:108
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:114
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:118
-msgid "Run containers (via systemd)"
-msgstr "Starte container (per systemd)"
-
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:110
-msgid "Pre-build container images"
-msgstr "Vor-gebaute Container-Images"
-
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:112
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:116
-msgid "Download images from ghcr.io"
-msgstr "Container-Images von ghcr.io runterladen"
-
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:120
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:231
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:283
-msgid "Execute"
-msgstr "Ausführen"
-
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:151
+#: HAL9000-installer/HAL9000-installer.py:179
 msgid "Just what do you think you're doing, Dave?"
 msgstr "Was hast du eigentlich vor, Dave?"
 
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:153
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:230
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:282
+#: HAL9000-installer/HAL9000-installer.py:180
+#: HAL9000-installer/HAL9000-installer.py:353
+#: HAL9000-installer/HAL9000-installer.py:366
+#: HAL9000-installer/HAL9000-installer.py:395
+#: HAL9000-installer/HAL9000-installer.py:402
 msgid "Command execution"
 msgstr "Befehlsausführung"
 
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:209
-msgid "Abort execution"
-msgstr "Kommandoausführung abbrechen"
-
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:211
-#, python-brace-format
-msgid "Command execution: {title}"
-msgstr "Befehlsausführung: {title}"
-
-#: /home/juergen/Git/github.com/juergenpabel/HAL9000-installer/HAL9000-installer/HAL9000.py:270
+#: HAL9000-installer/HAL9000-installer.py:205
 msgid ""
 "An installer process is currently executing, must wait for its completion "
 "(or abort its execution) to exit"
 msgstr ""
 "Ein Installationsprozess läuft aktuell, daher muss auf das Ende gewartet "
 "(oder abgebrochen) werden, um den Installer zu beenden"
+
+#: HAL9000-installer/HAL9000-installer.py:232
+#: HAL9000-installer/HAL9000-installer.py:317
+#: HAL9000-installer/HAL9000-installer.py:328
+msgid "Abort"
+msgstr "Abbrechen"
+
+#: HAL9000-installer/HAL9000-installer.py:261
+msgid ""
+"The provided URL doesn't point to a compliant configuration repository "
+"(invalid URL or not all required branches exist)."
+msgstr ""
+"Die eingegebene URL verweist auf kein Vorgaben-konformes Konfigurations-"
+"Repository. Die URL ist entweder ungültig oder es sind nicht alle"
+"Zweige (git branches) vorhanden"
+
+#: HAL9000-installer/HAL9000-installer.py:306
+msgid "Start installation"
+msgstr "Installation starten"
+
+#: HAL9000-installer/HAL9000-installer.py:310
+#: HAL9000-installer/HAL9000-installer.py:375
+#: HAL9000-installer/HAL9000-installer.py:401
+msgid "Execute"
+msgstr "Ausführen"
+
+#: HAL9000-installer/HAL9000-installer.py:331
+#, fuzzy
+msgid "Command execution: {command}"
+msgstr "Befehlsausführung: {title}"
+
+#: HAL9000-installer/HAL9000-installer.py:396
+msgid "Installation finished, click (or CTRL-C) to exit installer"
+msgstr "Installation abgeschlossen, klicken (oder STRG-C) zum beenden"
+
+#~ msgid "Install software"
+#~ msgstr "Software installieren"
+
+#~ msgid "Install required system packages"
+#~ msgstr "Installiere notwendige System-Pakete"
+
+#~ msgid "Device-specific software"
+#~ msgstr "Geräte-spezifische Software"
+
+#~ msgid "Install voicecard/respeaker sound driver"
+#~ msgstr "Installieren voicecard/respeaker Audio Treiber"
+
+#~ msgid "Configure system"
+#~ msgstr "System konfigurieren"
+
+#~ msgid "Create 'hal9000' (application) user & group"
+#~ msgstr "Erstelle 'hal9000' (Applikations-)Benutzer & Gruppe"
+
+#~ msgid "Configure TTY device"
+#~ msgstr "Konfigurieren des TTY Gerätes"
+
+#~ msgid "Configure ALSA sound card"
+#~ msgstr "Konfigurieren der ALSA Soundkarte"
+
+#~ msgid "Device-specific configurations"
+#~ msgstr "Geräte-spezifische Konfigurationen"
+
+#~ msgid "Reduce GPU memory to 16MB"
+#~ msgstr "Reduziere GPU Speicher auf 16MB"
+
+#~ msgid "Deactivate CPUs #2 and #3"
+#~ msgstr "Deaktiviere CPUs #2 und #3"
+
+#~ msgid "Configure swap (1GB & swapiness=0)"
+#~ msgstr "Konfiguriere swap (1GB & swappiness=0)"
+
+#~ msgid "Microcontroller"
+#~ msgstr "Mikrokontroller"
+
+#~ msgid "Build firmware"
+#~ msgstr "Baue Firmware"
+
+#~ msgid "Prepare build environment"
+#~ msgstr "Vorbereitung der build-Umgebung"
+
+#~ msgid "Compile firmware"
+#~ msgstr "Kompiliere Firmware"
+
+#~ msgid "Flash firmware"
+#~ msgstr "Installiere Firmware"
+
+#, fuzzy
+#~ msgid "Pre-build firmware"
+#~ msgstr "Baue Firmware"
+
+#~ msgid "<No supported microcontroller detected>"
+#~ msgstr "<Kein unterstützer Mikrokontroller erkannt>"
+
+#~ msgid "Application (HAL9000)"
+#~ msgstr "Applikation (HAL9000)"
+
+#~ msgid "Container"
+#~ msgstr "Container"
+
+#~ msgid "Build images"
+#~ msgstr "Baue Container-Images"
+
+#~ msgid "Create containers"
+#~ msgstr "Erstelle Container"
+
+#~ msgid "Run containers (via systemd)"
+#~ msgstr "Starte container (per systemd)"
+
+#~ msgid "Pre-build container images"
+#~ msgstr "Vor-gebaute Container-Images"
+
+#~ msgid "Download images from ghcr.io"
+#~ msgstr "Container-Images von ghcr.io runterladen"
+
+#~ msgid "Abort execution"
+#~ msgstr "Kommandoausführung abbrechen"

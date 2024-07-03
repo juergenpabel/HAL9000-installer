@@ -17,8 +17,8 @@ from textual import events
 from textual_terminal import Terminal
 from rich_pixels import Pixels
 
-lang_code = os.getenv('LANG', default='en')
-gettext.translation('HAL9000-installer', 'HAL9000-installer/locales', fallback=True, languages=[lang_code[0:2]]).install()
+gettext_language = os.getenv('LANG', default='en_US').split('_', 1).pop(0)
+gettext.translation('HAL9000-installer', 'HAL9000-installer/locales', fallback=True, languages=[gettext_language, 'en']).install()
 
 
 class HAL9000(Widget):
@@ -124,7 +124,8 @@ class HAL9000InstallerApp(App):
 				if dialog_yaml['type'] == 'plugin':
 					plugin_module = importlib_import_module(dialog_yaml['plugin']['module'])
 					if dialog_yaml['plugin']['class'] not in plugin_module.__dict__:
-						self.notify(f"BUG: {dialog_yaml['plugin']['class']} not found in {dialog_yaml['plugin']['module']}")
+						self.notify(_("BUG: {plugin_class} not found in {plugin_module}".format(plugin_class=dialog_yaml['plugin']['class'],
+						                                                                        plugin_module=dialog_yaml['plugin']['module'])))
 					else:
 						plugin_class = plugin_module.__dict__[dialog_yaml['plugin']['class']]
 						plugin = plugin_class(dialog_yaml['id'], dialog_yaml['name'], self)
@@ -210,7 +211,7 @@ class HAL9000InstallerApp(App):
 	def on_configuration_git_url_validate(self, value: str) -> bool:
 		result = subprocess.run(['git', 'ls-remote', '--heads', value], capture_output=True, text=True)
 		for branch in ['brain', 'console', 'frontend', 'kalliope']:
-			if f"refs/heads/{branch}\n" not in result.stdout:
+			if f'refs/heads/{branch}\n' not in result.stdout:
 				return False
 		return True
 
@@ -252,45 +253,42 @@ class HAL9000InstallerApp(App):
 	def on_button_pressed(self, event: Button.Pressed) -> None:
 		if event.button.id == 'installer_btn':
 			if self.query_one('#installer_screen').current == 'installer_screen_wizard':
-				match str(gettext.dgettext('en', self.installer_btn.label)):
-					case "Next":
-						dialog_current_id = self.query_one('#installer_screen_wizard_dialog').current
-						dialog_current_widget = self.query_one(f"#{dialog_current_id}")
-						if hasattr(dialog_current_widget, 'validate'):
-							if dialog_current_widget.validate(dialog_current_widget.value) != ValidationResult.success():
-								self.notify(_("The provided URL doesn't point to a compliant configuration repository (invalid URL or not all required branches exist)."))
-								return
-						dialog_next_id = dialog_current_widget.next_dialog_id
-						if dialog_next_id == 'configuration-url' and os.environ['HAL9000_CONFIGURATION_URL'] != '':
-							dialog_next_id = self.installer_screen_wizard_dialog[dialog_current_widget.next_dialog_id].next_dialog_id
-						if dialog_next_id in self.installer_screen_wizard_dialog:
-							dialog_next_widget = self.installer_screen_wizard_dialog[dialog_next_id]
-							self.query_one('#installer_screen_wizard_dialog').current = dialog_next_widget.id
-							self.set_focus(dialog_next_widget)
-							if dialog_next_widget.name is not None and dialog_next_widget.name in os.environ:
-								try:
-									dialog_next_widget.value = os.environ[dialog_next_widget.name]
-								except InvalidSelectValueError:
-									pass
-							dialog_help_widget = self.query_one('#installer_screen_wizard_dialog_help')
-							if dialog_next_widget.help is not None:
-								dialog_help_widget.document.update(dialog_next_widget.help)
-								dialog_help_widget.display = True
-							else:
-								dialog_help_widget.document.update('')
-								dialog_help_widget.display = False
-					case "Start installation":
-						self.installer_screen_wizard_dialog['progress'].action_first()
-						self.installer_screen_wizard_dialog['progress'].scroll_to_highlight()
-						data = self.installer_cmd_queue.pop(0)
-						self.installer_execute_command(data['id'], data['command'])
-					case "Abort":
-						self.installer_abort_command()
-						self.query_one('#installer_screen_wizard_dialog').current = 'installer_screen_wizard_strategy'
-						self.set_focus(self.installer_screen_wizard_dialog['strategy'])
-						self.installer_btn.label = _("Next")
-					case _:
-						self.exit()
+				if _(self.installer_btn.label.plain) == _("Next"):
+					dialog_current_id = self.query_one('#installer_screen_wizard_dialog').current
+					dialog_current_widget = self.query_one(f"#{dialog_current_id}")
+					if hasattr(dialog_current_widget, 'validate'):
+						if dialog_current_widget.validate(dialog_current_widget.value) != ValidationResult.success():
+							self.notify(_("The provided URL doesn't point to a compliant configuration repository (invalid URL or not all required branches exist)."))
+							return
+					dialog_next_id = dialog_current_widget.next_dialog_id
+					if dialog_next_id == 'configuration-url' and os.environ['HAL9000_CONFIGURATION_URL'] != '':
+						dialog_next_id = self.installer_screen_wizard_dialog[dialog_current_widget.next_dialog_id].next_dialog_id
+					if dialog_next_id in self.installer_screen_wizard_dialog:
+						dialog_next_widget = self.installer_screen_wizard_dialog[dialog_next_id]
+						self.query_one('#installer_screen_wizard_dialog').current = dialog_next_widget.id
+						self.set_focus(dialog_next_widget)
+						if dialog_next_widget.name is not None and dialog_next_widget.name in os.environ:
+							try:
+								dialog_next_widget.value = os.environ[dialog_next_widget.name]
+							except InvalidSelectValueError:
+								pass
+						dialog_help_widget = self.query_one('#installer_screen_wizard_dialog_help')
+						if dialog_next_widget.help is not None:
+							dialog_help_widget.document.update(dialog_next_widget.help)
+							dialog_help_widget.display = True
+						else:
+							dialog_help_widget.document.update('')
+							dialog_help_widget.display = False
+				elif _(self.installer_btn.label.plain) == _("Start installation"):
+					self.installer_screen_wizard_dialog['progress'].action_first()
+					self.installer_screen_wizard_dialog['progress'].scroll_to_highlight()
+					data = self.installer_cmd_queue.pop(0)
+					self.installer_execute_command(data['id'], data['command'])
+				elif _(self.installer_btn.label.plain) == _("Abort"):
+					self.installer_abort_command()
+					self.query_one('#installer_screen_wizard_dialog').current = 'installer_screen_wizard_strategy'
+					self.set_focus(self.installer_screen_wizard_dialog['strategy'])
+					self.installer_btn.label = _("Next")
 				if self.query_one('#installer_screen_wizard_dialog').current == 'installer_screen_wizard_progress':
 					if str(self.installer_btn.label) == str(_("Next")):
 						self.load_installation_yaml(True)
@@ -320,7 +318,7 @@ class HAL9000InstallerApp(App):
 	def installer_execute_command(self, id, command) -> None:
 		command = os.path.expandvars(command)
 		if self.installer_cmd.command is not None:
-			self.notify(f"BUG: an installer command is currently still running (this shouldn't have happened)")
+			self.notify(_("BUG: an installer command is currently still running (this shouldn't have happened)"))
 			return
 		executable, *arguments = command.split(' ', 1)
 		if os.path.isfile(executable) is True:
@@ -340,7 +338,7 @@ class HAL9000InstallerApp(App):
 				self.installer_screen_expert_trees['system'].disabled = True
 				self.installer_screen_expert_trees['application'].disabled = True
 		else:
-			self.notify(f"BUG: command not found or not executable ('{executable}' as per '{command}')")
+			self.notify(_("BUG: command not found or not executable ('{executable}' as per '{command}')".format(executable=executable, command=command)))
 			if self.query_one('#installer_screen').current == 'installer_screen_wizard':
 				if len(self.installer_cmd_queue) > 0:
 					self.installer_screen_wizard_dialog['progress'].action_cursor_down()
@@ -356,7 +354,7 @@ class HAL9000InstallerApp(App):
 
 	def installer_abort_command(self) -> None:
 		if self.installer_cmd.command is None:
-			self.notify(f"BUG: no installer command is currently running (this shouldn't have happened)")
+			self.notify(_("BUG: no installer command is currently running (this shouldn't have happened)"))
 			return
 		self.installer_cmd_timer.stop()
 		self.installer_cmd.stop()
