@@ -56,27 +56,6 @@ podman create --pod=hal9000 --name=hal9000-mosquitto \
               --pull=never \
               ${IMAGE_SRC}/hal9000-mosquitto:${IMAGE_TAG}
 
-echo -n "Creating container 'hal9000-kalliope':  "
-podman create --pod=hal9000 --name=hal9000-kalliope \
-              --requires hal9000-mosquitto \
-              --group-add=keep-groups \
-              --device /dev/snd:/dev/snd \
-              -v /etc/asound.conf:/etc/asound.conf:ro \
-              -v ~hal9000/HAL9000/kalliope:/kalliope/data:ro \
-              --tz=local \
-              --pull=never \
-              ${IMAGE_SRC}/hal9000-kalliope:${IMAGE_TAG}
-
-echo -n "Creating container 'hal9000-frontend':  "
-podman create --pod=hal9000 --name=hal9000-frontend \
-              --requires hal9000-mosquitto \
-              --group-add=keep-groups \
-              -v ~hal9000/HAL9000/frontend:/frontend/data:ro \
-              ${DEVICE_TTYHAL9000_ARGS} \
-              --tz=local \
-              --pull=never \
-              ${IMAGE_SRC}/hal9000-frontend:${IMAGE_TAG}
-
 echo -n "Creating container 'hal9000-brain':     "
 podman create --pod=hal9000 --name=hal9000-brain \
               --requires hal9000-kalliope,hal9000-frontend \
@@ -96,6 +75,27 @@ podman create --pod=hal9000 --name=hal9000-console \
               --tz=local \
               --pull=never \
               ${IMAGE_SRC}/hal9000-console:${IMAGE_TAG}
+
+echo -n "Creating container 'hal9000-frontend':  "
+podman create --pod=hal9000 --name=hal9000-frontend \
+              --requires hal9000-mosquitto \
+              --group-add=keep-groups \
+              -v ~hal9000/HAL9000/frontend:/frontend/data:ro \
+              ${DEVICE_TTYHAL9000_ARGS} \
+              --tz=local \
+              --pull=never \
+              ${IMAGE_SRC}/hal9000-frontend:${IMAGE_TAG}
+
+echo -n "Creating container 'hal9000-kalliope':  "
+podman create --pod=hal9000 --name=hal9000-kalliope \
+              --requires hal9000-mosquitto \
+              --group-add=keep-groups \
+              --device /dev/snd:/dev/snd \
+              -v /etc/asound.conf:/etc/asound.conf:ro \
+              -v ~hal9000/HAL9000/kalliope:/kalliope/data:ro \
+              --tz=local \
+              --pull=never \
+              ${IMAGE_SRC}/hal9000-kalliope:${IMAGE_TAG}
 
 echo "Generating systemd files (in ~hal9000/.config/systemd/user)..."
 test -d ~hal9000/.config/systemd/user
@@ -127,7 +127,7 @@ cp ~hal9000/.local/share/HAL9000-installer/container-hal9000-kalliope-proxy.serv
 cp ~hal9000/.local/share/HAL9000-installer/container-hal9000-kalliope-proxy.socket \
    ~hal9000/.config/systemd/user/container-hal9000-kalliope-proxy.socket
 
-echo "Switching to socket-activation for console in systemd (user instance)..."
+echo "Configuring socket-activation for console in systemd (user instance)..."
 sed -i 's/container-hal9000-console.service//g' \
     ~hal9000/.config/systemd/user/pod-hal9000.service
 sed -i 's/After=container/ExecStopPost=systemctl --user stop pod-hal9000.socket\nAfter=container/' \
