@@ -13,8 +13,20 @@ SCRIPT_SRC=`realpath "$0"`
 SCRIPT_DIR=`dirname "${SCRIPT_SRC}"`
 
 echo "HAL9000: Cloning git repository '${CONFIGURATION_GIT_URL}' to '~hal9000/HAL9000/${GIT_NAME}'..."
+sudo -i -u hal9000 sh -c "test -e ~hal9000/HAL9000"
+if [ $? -eq 0 ]; then
+	echo "ERROR: ~hal9000/HAL9000 already exists, not executing configuration repository setup"
+	exit 1
+fi
 sudo -i -u hal9000 sh -c "mkdir -p ~hal9000/HAL9000"
 sudo -i -u hal9000 sh -c "git clone ${CONFIGURATION_GIT_URL} ~hal9000/HAL9000/${GIT_NAME}"
+
+if [ $? -ne 0 ]; then
+	echo "ERROR: 'git clone ${CONFIGURATION_GIT_URL} ~hal9000/HAL9000/${GIT_NAME}' failed,"
+	echo "       check git url and/or network connectivity"
+	exit 1
+fi
+
 for SERVICE in brain console frontend kalliope ; do
 	echo "HAL9000: Copying git repository to '~hal9000/HAL9000/${SERVICE}' and preparing it..."
 	sudo -i -u hal9000 sh -c "cp -r ~hal9000/HAL9000/${GIT_NAME} ~hal9000/HAL9000/${SERVICE}"
@@ -23,6 +35,6 @@ for SERVICE in brain console frontend kalliope ; do
 done
 
 echo "HAL9000: Adding 'assets' symlink to git repositories for 'console' and 'frontend'..."
-sudo -i -u hal9000 sh -c "cd ~hal9000/HAL9000/console  ; ln -sf ../assets assets"
-sudo -i -u hal9000 sh -c "cd ~hal9000/HAL9000/frontend ; ln -sf ../assets assets"
+sudo -i -u hal9000 sh -c "ln -sf ../assets ~hal9000/HAL9000/console/assets"
+sudo -i -u hal9000 sh -c "ln -sf ../assets ~hal9000/HAL9000/console/assets"
 
