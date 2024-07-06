@@ -34,6 +34,7 @@ In the first steps of the installation process, some choices regarding the insta
 - Strategy: "Standard" or "Expert" ("Standard" is recommended because it does everything automatically)
 - Sourcing: Whether to download pre-build images or to compile them during the installation
 - Version: Which version to download/compile, 'stable' and 'development' are currently supported
+- Configuration: Which (demo-)configuration to download (english/german)
 - Soundcard: Which soundcard to use (for a Raspberry Zero2W, a driver for the Respeaker 2-mic will be installed)
 - Arduino: Which (of the supported) Arduino board is attached (or "None" for exclusive use of the HTTP frontend)
 

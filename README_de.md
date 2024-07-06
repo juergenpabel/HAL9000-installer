@@ -38,6 +38,7 @@ voll-automatisch erfolgt)
 - Binärdateien: Ob vor-kompilierte Dateien ("images") heruntergeladen werden sollen oder (als Teil der
 Installation) kompiliert werden sollen
 - Version: Welcher Versionsstand genutzt werden soll (aktuell nur 'Stable' oder 'Development')
+- Konfiguration: Welche (Demo-)Konfiguration genutzt werden soll (Deutsch/Englisch)
 - Soundkarte: Welche Soundkarte genutzt werden soll (auf einem Raspberry Zero2W wird ein Treiber für den
 Respeaker 2-mic mit installiert)
 - Arduino: Welches (der unterstützten) Arduino-Boards wird eingesetzt (oder "None" zur exklusiven Nutzung
