@@ -56,25 +56,15 @@ podman create --pod=hal9000 --name=hal9000-mosquitto \
               --pull=never \
               ${IMAGE_SRC}/hal9000-mosquitto:${IMAGE_TAG}
 
-echo -n "Creating container 'hal9000-brain':     "
-podman create --pod=hal9000 --name=hal9000-brain \
-              --requires hal9000-kalliope,hal9000-frontend \
-              --group-add=keep-groups \
-              --tz=local \
-              -v ~hal9000/HAL9000/brain:/brain/data:ro \
-              -v /run/dbus/system_bus_socket:/run/dbus/system_bus_socket:rw \
-              ${SYSTEMD_TIMESYNC_ARGS} \
-              --pull=never \
-              ${IMAGE_SRC}/hal9000-brain:${IMAGE_TAG}
-
-echo -n "Creating container 'hal9000-console':   "
-podman create --pod=hal9000 --name=hal9000-console \
+podman create --pod=hal9000 --name=hal9000-kalliope \
               --requires hal9000-mosquitto \
               --group-add=keep-groups \
-              -v ~hal9000/HAL9000/console:/console/data:ro \
+              --device /dev/snd:/dev/snd \
+              -v /etc/asound.conf:/etc/asound.conf:ro \
+              -v ~hal9000/HAL9000/kalliope:/kalliope/data:ro \
               --tz=local \
               --pull=never \
-              ${IMAGE_SRC}/hal9000-console:${IMAGE_TAG}
+              ${IMAGE_SRC}/hal9000-kalliope:${IMAGE_TAG}
 
 echo -n "Creating container 'hal9000-frontend':  "
 podman create --pod=hal9000 --name=hal9000-frontend \
@@ -86,17 +76,27 @@ podman create --pod=hal9000 --name=hal9000-frontend \
               --pull=never \
               ${IMAGE_SRC}/hal9000-frontend:${IMAGE_TAG}
 
-echo -n "Creating container 'hal9000-kalliope':  "
-podman create --pod=hal9000 --name=hal9000-kalliope \
+echo -n "Creating container 'hal9000-console':   "
+podman create --pod=hal9000 --name=hal9000-console \
               --requires hal9000-mosquitto \
               --group-add=keep-groups \
-              --device /dev/snd:/dev/snd \
-              -v /etc/asound.conf:/etc/asound.conf:ro \
-              -v ~hal9000/HAL9000/kalliope:/kalliope/data:ro \
+              -v ~hal9000/HAL9000/console:/console/data:ro \
               --tz=local \
               --pull=never \
-              ${IMAGE_SRC}/hal9000-kalliope:${IMAGE_TAG}
+              ${IMAGE_SRC}/hal9000-console:${IMAGE_TAG}
 
+echo -n "Creating container 'hal9000-brain':     "
+podman create --pod=hal9000 --name=hal9000-brain \
+              --requires hal9000-kalliope,hal9000-frontend \
+              --group-add=keep-groups \
+              --tz=local \
+              -v ~hal9000/HAL9000/brain:/brain/data:ro \
+              -v /run/dbus/system_bus_socket:/run/dbus/system_bus_socket:rw \
+              ${SYSTEMD_TIMESYNC_ARGS} \
+              --pull=never \
+              ${IMAGE_SRC}/hal9000-brain:${IMAGE_TAG}
+
+echo -n "Creating container 'hal9000-kalliope':  "
 echo "Generating systemd files (in ~hal9000/.config/systemd/user)..."
 test -d ~hal9000/.config/systemd/user
 if [ $? -ne 0 ]; then

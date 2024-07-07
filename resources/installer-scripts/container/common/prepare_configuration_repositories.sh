@@ -27,7 +27,7 @@ if [ $? -ne 0 ]; then
 	exit 1
 fi
 
-for SERVICE in brain console frontend kalliope ; do
+for SERVICE in kalliope frontend console brain; do
 	echo "HAL9000: Copying git repository to '~hal9000/HAL9000/${SERVICE}' and preparing it..."
 	sudo -i -u hal9000 sh -c "cp -r ~hal9000/HAL9000/${GIT_NAME} ~hal9000/HAL9000/${SERVICE}"
 	sudo -i -u hal9000 sh -c "cd ~hal9000/HAL9000/${SERVICE} ; git checkout ${SERVICE}"
@@ -35,6 +35,6 @@ for SERVICE in brain console frontend kalliope ; do
 done
 
 echo "HAL9000: Adding 'assets' symlink to git repositories for 'console' and 'frontend'..."
-sudo -i -u hal9000 sh -c "ln -sf ../assets ~hal9000/HAL9000/console/assets"
+sudo -i -u hal9000 sh -c "ln -sf ../assets ~hal9000/HAL9000/frontend/assets"
 sudo -i -u hal9000 sh -c "ln -sf ../assets ~hal9000/HAL9000/console/assets"
 
