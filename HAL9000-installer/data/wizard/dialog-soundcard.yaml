@@ -1,6 +1,6 @@
 ---
 id: "installer_screen_wizard_soundcard"
-name: "HAL9000_HARDWARE_ALSA_DEVICE_NR"
+name: "HAL9000_HARDWARE_ALSA_ID"
 label: "Soundcard"
 type: "plugin"
 plugin:

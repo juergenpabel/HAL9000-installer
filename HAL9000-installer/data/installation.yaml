@@ -26,7 +26,7 @@ nodes:
             command: "resources/installer-scripts/linux/configure/create_udev_tty.sh"
           - id: system_configure_udev_alsa
             label: "Configure udev rule for ALSA"
-            command: "resources/installer-scripts/linux/configure/create_udev_alsa.sh ${HAL9000_HARDWARE_ALSA_DEVICE_NR}"
+            command: "resources/installer-scripts/linux/configure/create_udev_alsa.sh ${HAL9000_HARDWARE_ALSA_ID}"
           - id: system_configure_asound_conf
             label: "Create /etc/asound.conf (if it doesn't exist)"
             command: "resources/installer-scripts/linux/configure/touch_asound_conf.sh"

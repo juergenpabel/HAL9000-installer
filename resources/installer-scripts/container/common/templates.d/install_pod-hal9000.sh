@@ -59,7 +59,7 @@ podman create --pod=hal9000 --name=hal9000-mosquitto \
 podman create --pod=hal9000 --name=hal9000-kalliope \
               --requires hal9000-mosquitto \
               --group-add=keep-groups \
-              --device /dev/snd:/dev/snd \
+              --device /dev/snd/HAL9000:/dev/snd \
               -v /etc/asound.conf:/etc/asound.conf:ro \
               -v ~hal9000/HAL9000/kalliope:/kalliope/data:ro \
               --tz=local \

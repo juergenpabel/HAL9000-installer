@@ -13,17 +13,13 @@ class Soundcard(Plugin):
 
 	def build(self) -> Union[Widget, None]:
 		options = []
+		options_default = Select.BLANK
 		cards = alsaaudio.cards()
 		if os.getenv('HAL9000_SYSTEM_ID', default='') == 'raspberrypi-zero2w' and len(cards) == 1 and cards[0] == 'vc4hdmi':
-			options.append(('seeed-voicecard (driver will be installed automatically)', '0'))
-			default_value = '0'
+			options_default = 'seeed2micvoicec'
+			options.append(('ReSpeaker 2-Mic (driver will be installed automatically)', options_default))
 		else:
-			default_value = Select.BLANK
-			for pos in range(0, len(cards)):
-				name = cards[pos]
-				value = str(pos)
-				options.append((name, value))
-				if name == 'HAL9000':
-					default_value = value
-		return Select(options, id=self.id, name=self.name, value=default_value, allow_blank=False)
+			for id in cards:
+				options.append((id, id))
+		return Select(options, id=self.id, name=self.name, value=options_default, allow_blank=False)
 

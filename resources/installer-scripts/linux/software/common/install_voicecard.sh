@@ -51,11 +51,4 @@ grep -q '^autoinstall_all_kernels="yes"$' /etc/dkms/framework.conf
 if [ $? -eq 1 ]; then
 	sudo sh -c 'echo "autoinstall_all_kernels=\"yes\"" >> /etc/dkms/framework.conf'
 fi
-# notes: 1a. update /etc/asound.conf (symlink to /etc/voicecard/asound_2mic.conf) for changed ALSA ID
-#        1b. update /var/lib/alsa/asound.state (symlink to /etc/voicecard/asound_wm8960.state) for changed ALSA ID
-#        2. /etc/voicecard is a git repo, add and commit
-echo "HAL9000: Changing ALSA ID in /etc/voicecard/"
-sudo sed -i 's/seeed2micvoicec/HAL9000/g' /etc/voicecard/asound_*.conf
-sudo sed -i 's/seeed2micvoicec/HAL9000/g' /etc/voicecard/*.state
-sudo sh -c 'cd /etc/voicecard ; git add -u ; git commit -m "HAL9000: changed ALSA ID"'
 
