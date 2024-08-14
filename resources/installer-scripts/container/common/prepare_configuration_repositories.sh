@@ -1,10 +1,17 @@
 #!/bin/sh
 
 CONFIGURATION_GIT_URL=${1:-unknown}
+CONFIGURATION_GIT_TAG=${2:-unknown}
 
 if [ "${CONFIGURATION_GIT_URL}" = "unknown" ]; then
-	echo "Usage: $0 <CONFIG-GIT-URL>"
+	echo "Usage: $0 <CONFIG-GIT-URL> <CONFIG-GIT-TAG>"
 	echo "       - CONFIG-GIT-URL: most likely 'https://github.com/juergenpabel/HAL9000-demo-en_US.git' (or other language)"
+	echo "       - CONFIG-GIT-TAG: a git tag(-prefix) for which commit to use, most likely 'stable' or 'development'"
+        exit 1
+fi
+if [ "${CONFIGURATION_GIT_TAG}" = "unknown" ]; then
+	echo "Usage: $0 $1 <CONFIG-GIT-TAG>"
+	echo "       - CONFIG-GIT-TAG: a git tag(-prefix) for which commit to use, most likely 'stable' or 'development'"
         exit 1
 fi
 GIT_NAME=`echo ${CONFIGURATION_GIT_URL} | sed 's#/$##' | sed 's/.git$//' | rev | cut -d'/' -f1 | rev`
@@ -30,7 +37,13 @@ fi
 for SERVICE in kalliope frontend console brain; do
 	echo "HAL9000: Copying git repository to '~hal9000/HAL9000/${SERVICE}' and preparing it..."
 	sudo -i -u hal9000 sh -c "cp -r ~hal9000/HAL9000/${GIT_NAME} ~hal9000/HAL9000/${SERVICE}"
-	sudo -i -u hal9000 sh -c "cd ~hal9000/HAL9000/${SERVICE} ; git checkout ${SERVICE}"
+	SERVICE_GIT_TARGET="${CONFIGURATION_GIT_TAG}/${SERVICE}"
+	sudo -i -u hal9000 sh -c "cd ~hal9000/HAL9000/${SERVICE} ; git tag -l ${SERVICE_GIT_TARGET} >/dev/null"
+	if [ $? -ne 0 ]; then
+		echo "WARNING: git tag '${SERVICE_GIT_TARGET}' not found, using branch '${SERVICE}' instead"
+		SERVICE_GIT_TARGET="${SERVICE}"
+	fi
+	sudo -i -u hal9000 sh -c "cd ~hal9000/HAL9000/${SERVICE} ; git -c advice.detachedHead=false checkout ${SERVICE_GIT_TARGET}"
 	sudo -i -u hal9000 sh -c "cd ~hal9000/HAL9000/${SERVICE} ; git submodule update --init --recursive"
 done
 
