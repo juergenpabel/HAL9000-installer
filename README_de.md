@@ -5,6 +5,18 @@ Installationsprogramm für https://github.com/juergenpabel/HAL9000
 `cd HAL9000-installer`  
 `./start.sh`  
 
+
+**Hinweis**: Bei der Nutzung eines frisch installierten Raspberry-Images wird empfohlen vor der 
+HAL9000-Installation ein Software-Update der Debian-Pakete zu machen 
+(`sudo apt update ; sudo apt dist-upgrade -y`)
+und (nach einem Reboot) erst mit der HAL9000-Installation zu beginnen. Das liegt daran, dass der
+HAL9000-Installer ebenfalls ein Software-Update macht und falls ein Update für `wpasupplicant`
+vorliegt, wird dadurch die WIFI Verbindung resetted...und (zumindest bei meinem Zuhause WLAN-
+Setup) dauert es einige Zeit bis die WIFI Verbindung wieder herstellt ist. Das ist am Ende nur
+eine überschaubare Verzögerung, die aber (vor allem weil dann unerwartet), wenn sie während
+der Installation auftritt den Eindruck erwecken könnte, dass die Installation hängen geblieben
+wäre.
+
 Dieses Installationsprogramm sollte auf allen (aktuellen) Debian-basierten Linux Systemen funktionieren.
 Während der Installation werden benötigte System-Pakete (podman, ...) installiert, es wird ein lokaler
 (nicht-privilegierter) Benutzer 'hal9000' (und eine gleichnamige Gruppe) als Applikationsbenutzer
