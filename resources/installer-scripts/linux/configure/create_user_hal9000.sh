@@ -8,7 +8,7 @@ if [ $? -eq 0 ]; then
 fi
 
 sudo sh -c 'groupadd -g 9000 hal9000 > /dev/null'
-sudo sh -c 'useradd -g hal9000 -G audio,dialout -m -s /bin/sh -u 9000 hal9000 > /dev/null'
+sudo sh -c 'useradd -g hal9000 -G audio,dialout,plugdev -m -s /bin/sh -u 9000 hal9000 > /dev/null'
 sudo -u hal9000 -i sh -c 'echo "export XDG_RUNTIME_DIR=/run/user/9000" >> ~/.profile'
 
 sudo sh -c 'loginctl enable-linger hal9000 > /dev/null'

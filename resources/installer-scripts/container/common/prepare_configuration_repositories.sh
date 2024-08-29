@@ -45,6 +45,7 @@ for SERVICE in kalliope frontend console brain; do
 	fi
 	sudo -i -u hal9000 sh -c "cd ~hal9000/HAL9000/${SERVICE} ; git -c advice.detachedHead=false checkout ${SERVICE_GIT_TARGET}"
 	sudo -i -u hal9000 sh -c "cd ~hal9000/HAL9000/${SERVICE} ; git submodule update --init --recursive"
+	sudo -i -u hal9000 sh -c "cd ~hal9000/HAL9000/${SERVICE} ; if [ -x ./install.sh ] ; then ./install.sh ; fi"
 done
 
 echo "HAL9000: Adding 'assets' symlink to git repositories for 'console' and 'frontend'..."
