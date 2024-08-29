@@ -5,6 +5,14 @@ Installer for https://github.com/juergenpabel/HAL9000
 `cd HAL9000-installer`  
 `./start.sh`  
 
+**Notice**: When installing on a freshly imaged Raspberry, it's better to run 
+`sudo apt update ; sudo apt dist-upgrade -y`
+first (and reboot thereafter), as most of the time there's an update for `wpasupplicant` and that 
+causes the WIFI connection to reset...and sometimes (at least with my home WIFI setup) to not 
+re-connect immediately. It's just a little nuisance but might just be unexpected when it occurs
+while the installer is running (making it appear as if it hung) - and that's because the installer
+runs those package upgrade commands.
+
 The installer should work on any (recent) Debian-based Linux system. During the installation process it
 installs some system packages (podman, ...), creates a local non-privileged user (and group) 'hal9000'
 for executing the HAL9000 application in containers, configures various system settings for a uniform
