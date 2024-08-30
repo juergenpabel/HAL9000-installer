@@ -103,7 +103,7 @@ if [ $? -ne 0 ]; then
         mkdir -p ~hal9000/.config/systemd/user
 fi
 sh -c "cd ~hal9000/.config/systemd/user ; \
-       podman generate systemd -n -f --start-timeout 5 --stop-timeout 5 hal9000"
+       podman generate systemd -n -f --start-timeout 5 --stop-timeout 5 --restart-policy always --restart-sec 1 hal9000"
 
 echo "Creating pod-hal9000.socket..."
 cp ~hal9000/.local/share/HAL9000-installer/pod-hal9000.socket \
