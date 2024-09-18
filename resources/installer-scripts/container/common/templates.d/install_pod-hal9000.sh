@@ -56,6 +56,7 @@ podman create --pod=hal9000 --name=hal9000-mosquitto \
               --pull=never \
               ${IMAGE_SRC}/hal9000-mosquitto:${IMAGE_TAG}
 
+echo -n "Creating container 'hal9000-kalliope':  "
 podman create --pod=hal9000 --name=hal9000-kalliope \
               --requires hal9000-mosquitto \
               --group-add=keep-groups \
@@ -96,7 +97,6 @@ podman create --pod=hal9000 --name=hal9000-brain \
               --pull=never \
               ${IMAGE_SRC}/hal9000-brain:${IMAGE_TAG}
 
-echo -n "Creating container 'hal9000-kalliope':  "
 echo "Generating systemd files (in ~hal9000/.config/systemd/user)..."
 test -d ~hal9000/.config/systemd/user
 if [ $? -ne 0 ]; then
