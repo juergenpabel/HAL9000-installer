@@ -31,8 +31,11 @@ nodes:
             label: "Create /etc/asound.conf (if it doesn't exist)"
             command: "resources/installer-scripts/linux/configure/touch_asound_conf.sh"
           - id: system_configure_polkit_shutdown
-            label: "Configure polkit rule for shutdown/reboot"
+            label: "Configure polkit rule for linux shutdown/reboot"
             command: "resources/installer-scripts/linux/configure/create_polkit_shutdown.sh"
+          - id: system_configure_systemd_shutdown
+            label: "Configure systemd script for arduino poweroff/reset"
+            command: "resources/installer-scripts/linux/configure/create_systemd_shutdown_arduino.sh"
           - id: system_configure_specific
             label: "Configure board-specific items"
             conditions:
