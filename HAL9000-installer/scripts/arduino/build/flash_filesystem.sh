@@ -18,15 +18,14 @@ fi
 echo "HAL9000: Compiling arduino firmware..."
 GIT_DIR=`git rev-parse --show-toplevel`
 
-cd "${GIT_DIR}/resources/repositories/HAL9000"
+cd "${GIT_DIR}/resources/repositories/HAL9000/"
 git checkout --quiet "${HAL9000_INSTALL_VERSION}"
-cd "${GIT_DIR}/resources/repositories/HAL9000/enclosure/firmware/arduino"
+cd "${GIT_DIR}/resources/repositories/HAL9000/enclosure/firmware/arduino/"
 if [ ! -d .venv ]; then
 	echo "ERROR: no python virtual-env in '${GIT_DIR}/resources/repositories/HAL9000/enclosure/firmware/arduino/.venv'"
-	echo "       run '${GIT_DIR}/resources/installer-scripts/arduino/build/prepare_buildenv.sh' first"
-	exit 1
+	echo "       run '${GIT_DIR}/HAL9000-installer/scripts/arduino/build/prepare_buildenv.sh' first"
 fi
 
 . .venv/bin/activate
-pio run -j 1 -e "${HAL9000_ARDUINO_ID}"
+pio run -j 1 -e "${HAL9000_ARDUINO_ID}" -t uploadfs
 

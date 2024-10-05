@@ -3,7 +3,7 @@ Description=container-hal9000-console-proxy.socket
 PartOf=pod-hal9000.socket
 
 [Socket]
-ListenStream=0.0.0.0:8080
+ListenStream=0.0.0.0:2001
 
 [Install]
 WantedBy=sockets.target

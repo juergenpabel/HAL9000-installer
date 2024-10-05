@@ -44,7 +44,7 @@ echo -n "Creating pod 'hal9000':                 "
 podman pod create --name hal9000 \
                   --infra-name hal9000-infra \
                   -p 127.0.0.1:5555:5000 \
-                  -p 127.0.0.1:8888:8080 \
+                  -p 127.0.0.1:2222:2001 \
                   -p 127.0.0.1:9999:9000 \
                   --network hal9000 \
                   --hostname hal9000
@@ -88,7 +88,7 @@ podman create --pod=hal9000 --name=hal9000-console \
 
 echo -n "Creating container 'hal9000-brain':     "
 podman create --pod=hal9000 --name=hal9000-brain \
-              --requires hal9000-kalliope,hal9000-frontend \
+              --requires hal9000-mosquitto \
               --group-add=keep-groups \
               --tz=local \
               -v ~hal9000/HAL9000/brain:/brain/data:ro \

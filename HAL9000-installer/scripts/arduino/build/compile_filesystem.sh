@@ -23,7 +23,7 @@ git checkout --quiet "${HAL9000_INSTALL_VERSION}"
 cd "${GIT_DIR}/resources/repositories/HAL9000/enclosure/firmware/arduino/"
 if [ ! -d .venv ]; then
 	echo "ERROR: no python virtual-env in '${GIT_DIR}/resources/repositories/HAL9000/enclosure/firmware/arduino/.venv'"
-	echo "       run '${GIT_DIR}/resources/installer-scripts/arduino/build/prepare_buildenv.sh' first"
+	echo "       run '${GIT_DIR}/HAL9000-installer/scripts/arduino/build/prepare_buildenv.sh' first"
 	exit 1
 fi
 

@@ -5,29 +5,28 @@ HAL9000_INSTALL_VERSION="${2:-unknown}"
 
 if [ "${HAL9000_ARDUINO_ID}" = "unknown" ]; then
 	echo "Usage: $0 <ARDUINO-ID> <FIRMWARE-VERSION>"
-	echo "  - ARDUINO-ID: something like 'm5stack-core2' or 'sbcomponents-roundypi'"
-	echo "  - FIRMWARE-VERSION: something like 'stable' or 'development'"
+	echo "       - ARDUINO-ID: something like 'm5stack-core2' or 'sbcomponents-roundypi'"
+	echo "       - FIRMWARE-VERSION: something like 'stable' or 'development'"
 	exit 1
 fi
 if [ "${HAL9000_INSTALL_VERSION}" = "unknown" ]; then
 	echo "Usage: $0 '${HAL9000_ARDUINO_ID}' <FIRMWARE-VERSION>"
-	echo "  - FIRMWARE-VERSION: something like 'stable' or 'development'"
+	echo "       - FIRMWARE-VERSION: something like 'stable' or 'development'"
 	exit 1
 fi
-
 
 echo "HAL9000: Compiling arduino firmware..."
 GIT_DIR=`git rev-parse --show-toplevel`
 
-cd "${GIT_DIR}/resources/repositories/HAL9000/"
+cd "${GIT_DIR}/resources/repositories/HAL9000"
 git checkout --quiet "${HAL9000_INSTALL_VERSION}"
-if [ ! -d "${GIT_DIR}/resources/repositories/HAL9000/enclosure/firmware/arduino/.venv" ]; then
+cd "${GIT_DIR}/resources/repositories/HAL9000/enclosure/firmware/arduino"
+if [ ! -d .venv ]; then
 	echo "ERROR: no python virtual-env in '${GIT_DIR}/resources/repositories/HAL9000/enclosure/firmware/arduino/.venv'"
-	echo "       run '${GIT_DIR}/resources/installer-scripts/arduino/github.com/prepare_flashenv.sh' first"
+	echo "       run '${GIT_DIR}/HAL9000-installer/scripts/arduino/build/prepare_buildenv.sh' first"
 	exit 1
 fi
 
-cd "${GIT_DIR}/resources/repositories/HAL9000/enclosure/firmware/arduino"
 . .venv/bin/activate
-pio run -j 1 -e "${HAL9000_ARDUINO_ID}" -t upload
+pio run -j 1 -e "${HAL9000_ARDUINO_ID}"
 

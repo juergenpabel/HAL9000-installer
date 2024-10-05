@@ -47,7 +47,7 @@ for SERVICE in kalliope frontend console brain; do
 	sudo -i -u hal9000 sh -c "cd ~hal9000/HAL9000/${SERVICE} ; git submodule update --init --recursive"
 done
 
-echo "HAL9000: Adding 'assets' symlink to git repositories for 'console' and 'frontend'..."
-sudo -i -u hal9000 sh -c "ln -sf ../assets ~hal9000/HAL9000/frontend/assets"
-sudo -i -u hal9000 sh -c "ln -sf ../assets ~hal9000/HAL9000/console/assets"
+echo "HAL9000: Adding 'resources' symlink to git repositories for 'console' and 'frontend'..."
+sudo -i -u hal9000 sh -c "ln -sf ../resources ~hal9000/HAL9000/frontend/resources"
+sudo -i -u hal9000 sh -c "ln -sf ../resources ~hal9000/HAL9000/console/resources"
 

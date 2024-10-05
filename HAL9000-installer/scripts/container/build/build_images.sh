@@ -44,8 +44,8 @@ podman build --build-arg KALLIOPE_CONFIG_DIRECTORY="${HAL9000_CONFIG_DIR}" --tag
 echo "Building image 'hal9000-frontend'..."
 cd "${GIT_REPODIR}/enclosure/services/frontend/"
 git submodule update --init --recursive "${HAL9000_CONFIG_DIR}"
-if [ ! -e "${HAL9000_CONFIG_DIR}/assets" ]; then
-	ln -s ../assets "${HAL9000_CONFIG_DIR}/assets"
+if [ ! -e "${HAL9000_CONFIG_DIR}/resources" ]; then
+	ln -s ../resources "${HAL9000_CONFIG_DIR}/resources"
 fi
 podman image exists localhost/hal9000-frontend:${HAL9000_INSTALL_VERSION}
 if [ $? -eq 0 ]; then
@@ -56,8 +56,8 @@ podman build --build-arg FRONTEND_CONFIG_DIRECTORY="${HAL9000_CONFIG_DIR}" --tag
 echo "Building image 'hal9000-console'..."
 cd "${GIT_REPODIR}/enclosure/services/console/"
 git submodule update --init --recursive "${HAL9000_CONFIG_DIR}"
-if [ ! -e "${HAL9000_CONFIG_DIR}/assets" ]; then
-	ln -s ../assets "${HAL9000_CONFIG_DIR}/assets"
+if [ ! -e "${HAL9000_CONFIG_DIR}/resources" ]; then
+	ln -s ../resources "${HAL9000_CONFIG_DIR}/resources"
 fi
 podman image exists localhost/hal9000-console:${HAL9000_INSTALL_VERSION}
 if [ $? -eq 0 ]; then
