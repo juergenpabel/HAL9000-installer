@@ -1,0 +1,10 @@
+[Unit]
+Description=container-hal9000-dashboard-proxy.service
+Requires=container-hal9000-dashboard.service
+After=container-hal9000-dashboard.service
+Requires=container-hal9000-dashboard-proxy.socket
+After=container-hal9000-dashboard-proxy.socket
+
+[Service]
+ExecStart=/usr/lib/systemd/systemd-socket-proxyd 127.0.0.1:2222
+

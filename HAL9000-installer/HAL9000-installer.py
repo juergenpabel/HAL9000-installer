@@ -210,7 +210,7 @@ class HAL9000InstallerApp(App):
 
 	def on_configuration_git_url_validate(self, value: str) -> bool:
 		result = subprocess.run(['git', 'ls-remote', '--heads', value], capture_output=True, text=True)
-		for branch in ['brain', 'console', 'frontend', 'kalliope']:
+		for branch in ['brain', 'dashboard', 'frontend', 'kalliope']:
 			if f'refs/heads/{branch}\n' not in result.stdout:
 				return False
 		return True

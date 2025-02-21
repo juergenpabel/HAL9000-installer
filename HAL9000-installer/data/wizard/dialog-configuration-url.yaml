@@ -7,6 +7,6 @@ help: >
   You chose to use a custom configuration (git)
   repository. Please enter the URL to the
   repository. The repository must contain the
-  following branches: brain, console, frontend
+  following branches: brain, dashboard, frontend
   and kalliope.
 ...

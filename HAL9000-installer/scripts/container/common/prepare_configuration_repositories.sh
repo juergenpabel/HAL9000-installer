@@ -34,7 +34,7 @@ if [ $? -ne 0 ]; then
 	exit 1
 fi
 
-for SERVICE in kalliope frontend console brain; do
+for SERVICE in kalliope frontend dashboard brain; do
 	echo "HAL9000: Copying git repository to '~hal9000/HAL9000/${SERVICE}' and preparing it..."
 	sudo -i -u hal9000 sh -c "cp -r ~hal9000/HAL9000/${GIT_NAME} ~hal9000/HAL9000/${SERVICE}"
 	SERVICE_GIT_TARGET="${CONFIGURATION_GIT_TAG}/${SERVICE}"
@@ -47,7 +47,7 @@ for SERVICE in kalliope frontend console brain; do
 	sudo -i -u hal9000 sh -c "cd ~hal9000/HAL9000/${SERVICE} ; git submodule update --init --recursive"
 done
 
-echo "HAL9000: Adding 'resources' symlink to git repositories for 'console' and 'frontend'..."
+echo "HAL9000: Adding 'resources' symlink to git repositories for 'dashboard' and 'frontend'..."
 sudo -i -u hal9000 sh -c "ln -sf ../resources ~hal9000/HAL9000/frontend/resources"
-sudo -i -u hal9000 sh -c "ln -sf ../resources ~hal9000/HAL9000/console/resources"
+sudo -i -u hal9000 sh -c "ln -sf ../resources ~hal9000/HAL9000/dashboard/resources"
 

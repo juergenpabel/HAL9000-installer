@@ -22,6 +22,7 @@ echo "Using '${GIT_REPODIR}' as the base directory for the 'HAL9000' respository
 cd "${GIT_REPODIR}"
 git checkout --quiet master
 git pull
+git pull --tags -f
 git checkout --quiet "${HAL9000_INSTALL_VERSION}"
 
 echo "Building image 'hal9000-mosquitto'..."
@@ -31,6 +32,7 @@ if [ $? -eq 0 ]; then
 fi
 podman pull docker.io/library/eclipse-mosquitto:latest
 podman tag  docker.io/library/eclipse-mosquitto:latest localhost/hal9000-mosquitto:${HAL9000_INSTALL_VERSION}
+podman image save --quiet localhost/hal9000-mosquitto:${HAL9000_INSTALL_VERSION} | sudo -i -u hal9000 podman image load --quiet
 
 echo "Building image 'hal9000-kalliope'..."
 cd "${GIT_REPODIR}/kalliope"
@@ -39,7 +41,8 @@ podman image exists localhost/hal9000-kalliope:${HAL9000_INSTALL_VERSION}
 if [ $? -eq 0 ]; then
 	podman image rm localhost/hal9000-kalliope:${HAL9000_INSTALL_VERSION}
 fi
-podman build --build-arg KALLIOPE_CONFIG_DIRECTORY="${HAL9000_CONFIG_DIR}" --tag localhost/hal9000-kalliope:${HAL9000_INSTALL_VERSION} -f Containerfile .
+podman build --build-arg DATA_DIRECTORY="${HAL9000_CONFIG_DIR}" --tag localhost/hal9000-kalliope:${HAL9000_INSTALL_VERSION} -f Containerfile .
+podman image save --quiet localhost/hal9000-kalliope:${HAL9000_INSTALL_VERSION} | sudo -i -u hal9000 podman image load --quiet
 
 echo "Building image 'hal9000-frontend'..."
 cd "${GIT_REPODIR}/enclosure/services/frontend/"
@@ -51,19 +54,21 @@ podman image exists localhost/hal9000-frontend:${HAL9000_INSTALL_VERSION}
 if [ $? -eq 0 ]; then
 	podman image rm localhost/hal9000-frontend:${HAL9000_INSTALL_VERSION}
 fi
-podman build --build-arg FRONTEND_CONFIG_DIRECTORY="${HAL9000_CONFIG_DIR}" --tag localhost/hal9000-frontend:${HAL9000_INSTALL_VERSION} -f Containerfile .
+podman build --build-arg DATA_DIRECTORY="${HAL9000_CONFIG_DIR}" --tag localhost/hal9000-frontend:${HAL9000_INSTALL_VERSION} -f Containerfile .
+podman image save --quiet localhost/hal9000-frontend:${HAL9000_INSTALL_VERSION} | sudo -i -u hal9000 podman image load --quiet
 
-echo "Building image 'hal9000-console'..."
-cd "${GIT_REPODIR}/enclosure/services/console/"
+echo "Building image 'hal9000-dashboard'..."
+cd "${GIT_REPODIR}/enclosure/services/dashboard/"
 git submodule update --init --recursive "${HAL9000_CONFIG_DIR}"
 if [ ! -e "${HAL9000_CONFIG_DIR}/resources" ]; then
 	ln -s ../resources "${HAL9000_CONFIG_DIR}/resources"
 fi
-podman image exists localhost/hal9000-console:${HAL9000_INSTALL_VERSION}
+podman image exists localhost/hal9000-dashboard:${HAL9000_INSTALL_VERSION}
 if [ $? -eq 0 ]; then
-	podman image rm localhost/hal9000-console:${HAL9000_INSTALL_VERSION}
+	podman image rm localhost/hal9000-dashboard:${HAL9000_INSTALL_VERSION}
 fi
-podman build --build-arg CONSOLE_CONFIG_DIRECTORY="${HAL9000_CONFIG_DIR}" --tag localhost/hal9000-console:${HAL9000_INSTALL_VERSION} -f Containerfile .
+podman build --build-arg DATA_DIRECTORY="${HAL9000_CONFIG_DIR}" --tag localhost/hal9000-dashboard:${HAL9000_INSTALL_VERSION} -f Containerfile .
+podman image save --quiet localhost/hal9000-dashboard:${HAL9000_INSTALL_VERSION} | sudo -i -u hal9000 podman image load --quiet
 
 echo "Building image 'hal9000-brain'..."
 cd "${GIT_REPODIR}/enclosure/services/brain/"
@@ -72,5 +77,6 @@ podman image exists localhost/hal9000-brain:${HAL9000_INSTALL_VERSION}
 if [ $? -eq 0 ]; then
 	podman image rm localhost/hal9000-brain:${HAL9000_INSTALL_VERSION}
 fi
-podman build --build-arg BRAIN_CONFIG_DIRECTORY="${HAL9000_CONFIG_DIR}" --tag localhost/hal9000-brain:${HAL9000_INSTALL_VERSION} -f Containerfile .
+podman build --build-arg DATA_DIRECTORY="${HAL9000_CONFIG_DIR}" --tag localhost/hal9000-brain:${HAL9000_INSTALL_VERSION} -f Containerfile .
+podman image save --quiet localhost/hal9000-brain:${HAL9000_INSTALL_VERSION} | sudo -i -u hal9000 podman image load --quiet
 

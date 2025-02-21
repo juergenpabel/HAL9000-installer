@@ -1,6 +1,6 @@
 [Unit]
 Description=pod-hal9000.socket
-Requires=container-hal9000-console-proxy.socket container-hal9000-frontend-proxy.socket container-hal9000-kalliope-proxy.socket
+Requires=container-hal9000-dashboard-proxy.socket container-hal9000-frontend-proxy.socket container-hal9000-kalliope-proxy.socket
 
 [Socket]
 ListenFIFO=/run/user/9000/pod-hal9000.socket

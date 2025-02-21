@@ -77,14 +77,14 @@ podman create --pod=hal9000 --name=hal9000-frontend \
               --pull=never \
               ${IMAGE_SRC}/hal9000-frontend:${IMAGE_TAG}
 
-echo -n "Creating container 'hal9000-console':   "
-podman create --pod=hal9000 --name=hal9000-console \
+echo -n "Creating container 'hal9000-dashboard':   "
+podman create --pod=hal9000 --name=hal9000-dashboard \
               --requires hal9000-mosquitto \
               --group-add=keep-groups \
-              -v ~hal9000/HAL9000/console:/console/data:ro \
+              -v ~hal9000/HAL9000/dashboard:/dashboard/data:ro \
               --tz=local \
               --pull=never \
-              ${IMAGE_SRC}/hal9000-console:${IMAGE_TAG}
+              ${IMAGE_SRC}/hal9000-dashboard:${IMAGE_TAG}
 
 echo -n "Creating container 'hal9000-brain':     "
 podman create --pod=hal9000 --name=hal9000-brain \
@@ -109,11 +109,11 @@ echo "Creating pod-hal9000.socket..."
 cp ~hal9000/.local/share/HAL9000-installer/pod-hal9000.socket \
    ~hal9000/.config/systemd/user/pod-hal9000.socket
 
-echo "Creating socket-proxy for console in systemd (user instance)..."
-cp ~hal9000/.local/share/HAL9000-installer/container-hal9000-console-proxy.socket \
-   ~hal9000/.config/systemd/user/container-hal9000-console-proxy.socket
-cp ~hal9000/.local/share/HAL9000-installer/container-hal9000-console-proxy.service \
-   ~hal9000/.config/systemd/user/container-hal9000-console-proxy.service
+echo "Creating socket-proxy for dashboard in systemd (user instance)..."
+cp ~hal9000/.local/share/HAL9000-installer/container-hal9000-dashboard-proxy.socket \
+   ~hal9000/.config/systemd/user/container-hal9000-dashboard-proxy.socket
+cp ~hal9000/.local/share/HAL9000-installer/container-hal9000-dashboard-proxy.service \
+   ~hal9000/.config/systemd/user/container-hal9000-dashboard-proxy.service
 
 echo "Creating socket-proxy for frontend in systemd (user instance)..."
 cp ~hal9000/.local/share/HAL9000-installer/container-hal9000-frontend-proxy.service \
@@ -127,8 +127,8 @@ cp ~hal9000/.local/share/HAL9000-installer/container-hal9000-kalliope-proxy.serv
 cp ~hal9000/.local/share/HAL9000-installer/container-hal9000-kalliope-proxy.socket \
    ~hal9000/.config/systemd/user/container-hal9000-kalliope-proxy.socket
 
-echo "Configuring socket-activation for console in systemd (user instance)..."
-sed -i 's/container-hal9000-console.service//g' \
+echo "Configuring socket-activation for dashboard in systemd (user instance)..."
+sed -i 's/container-hal9000-dashboard.service//g' \
     ~hal9000/.config/systemd/user/pod-hal9000.service
 sed -i 's/After=container/ExecStopPost=systemctl --user stop pod-hal9000.socket\nAfter=container/' \
     ~hal9000/.config/systemd/user/pod-hal9000.service
