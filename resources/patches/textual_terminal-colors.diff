@@ -1,0 +1,24 @@
+--- .venv/lib/python3.11/site-packages/textual_terminal/_terminal.py	2025-06-03 00:49:04.605833236 +0200
++++ .venv/lib/python3.11/site-packages/textual_terminal/_terminal.py	2025-06-03 00:49:04.605833236 +0200
+@@ -31,7 +31,8 @@
+ 
+ from textual.widget import Widget
+ from textual import events
+-from textual.app import DEFAULT_COLORS
++#HAL9000-installer: incompatibility with textual > 0.69.0
++#from textual.app import DEFAULT_COLORS
+ 
+ from textual import log
+ from textual.design import ColorSystem
+@@ -83,8 +84,9 @@
+         self.command = command
+         self.default_colors = default_colors
+ 
+-        if default_colors == "textual":
+-            self.textual_colors = self.detect_textual_colors()
++#HAL9000-installer: incompatibility with textual > 0.69.0
++#        if default_colors == "textual":
++#            self.textual_colors = self.detect_textual_colors()
+ 
+         # default size, will be adapted on_resize
+         self.ncol = 80

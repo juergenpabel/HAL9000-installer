@@ -1,4 +1,4 @@
-textual==0.69.0
+textual
 textual-terminal
 rich-pixels
 pyalsaaudio

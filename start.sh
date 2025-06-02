@@ -162,6 +162,9 @@ unset HAL9000_ARDUINO_PRODUCT
 echo "Installing dependencies in python virtual environment..."
 pip install -q -r requirements.txt
 
+echo "Patching library incompatibilities in python virtual environment..."
+patch --force --reject-file=- -strip=0 --silent < resources/patches/textual_terminal-colors.diff >/dev/null 2>/dev/null
+
 echo "Starting the installer..."
 python3 HAL9000-installer/HAL9000-installer.py
 

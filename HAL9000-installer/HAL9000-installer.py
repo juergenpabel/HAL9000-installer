@@ -113,7 +113,6 @@ class HAL9000InstallerApp(App):
 			                                            allow_blank=False)
 				if dialog_yaml['type'] == 'list':
 					dialog_widget = SelectionList[str](id=dialog_yaml['id'])
-					dialog_widget.watch_show_vertical_scrollbar()
 					for option in dialog_yaml['options']:
 						dialog_widget.add_option(Selection(option['label'], option['value']))
 				if dialog_yaml['type'] == 'input':
